@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="JIcrea — Detalle del producto. Mates uruguayos hechos a mano en Paysandú.">
+  <title>JIcrea — Producto</title>
+  <link rel="icon" type="image/png" href="img/favicon.png">
+
+  <link rel="stylesheet" href="css/jicrea-pro.css?v=52">
+  <link rel="stylesheet" href="css/tienda-cart.css?v=3">
+  <link rel="stylesheet" href="css/producto.css?v=1">
+</head>
+<body class="page-producto">
+
+  <!-- HEADER (igual que tienda) -->
+  <header class="header is-scrolled" id="header">
+    <nav class="header__nav header__nav--left" aria-label="Navegación izquierda">
+      <a href="index.html">Inicio</a>
+      <a href="tienda.html" class="is-current">Tienda</a>
+    </nav>
+    <div class="header__center">
+      <a href="index.html" class="header__logo" aria-label="Inicio JIcrea">
+        <div class="header__logo--open">
+          <div class="header__side-text"><span>DESDE</span><span>2015</span></div>
+          <img src="img/logotipo-blanco.png" alt="JIcrea">
+          <div class="header__side-text"><span>HECHOS</span><span>A MANO</span></div>
+        </div>
+        <img class="header__logo--closed" src="img/JI-CON-MATE-BLANCO.png" alt="JI">
+      </a>
+    </div>
+    <nav class="header__nav header__nav--right" aria-label="Navegación derecha">
+      <a href="index.html#manos">Proceso</a>
+      <a href="index.html#contacto">Nuestra Historia</a>
+      <button class="cart-btn" id="cartBtn" aria-label="Abrir carrito">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span class="cart-btn__count" id="cartCount">0</span>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" aria-label="Migaja">
+      <a href="tienda.html">Tienda</a>
+      <span class="breadcrumb__sep">/</span>
+      <span class="breadcrumb__current" id="bcCategory">Categoría</span>
+      <span class="breadcrumb__sep">/</span>
+      <span class="breadcrumb__current" id="bcName">Producto</span>
+    </nav>
+
+    <!-- HERO DEL PRODUCTO — 2 columnas: foto grande + info+CTA -->
+    <section class="producto-hero" data-bg="light">
+      <div class="producto-hero__gallery">
+        <div class="producto-hero__main">
+          <img id="prodMainImg" src="" alt="">
+        </div>
+        <div class="producto-hero__thumbs" id="prodThumbs">
+          <!-- thumbs se inyectan vía JS -->
+        </div>
+      </div>
+      <div class="producto-hero__info" data-reveal>
+        <span class="eyebrow" id="prodCategory">Categoría</span>
+        <h1 class="producto-hero__title" id="prodTitle">—</h1>
+        <p class="producto-hero__price" id="prodPrice">$0</p>
+        <p class="producto-hero__short" id="prodShort">—</p>
+        <button class="prod__btn producto-hero__btn" id="prodAddBtn">Agregar al carrito</button>
+        <p class="producto-hero__note">El pago y la entrega se coordinan por WhatsApp.</p>
+      </div>
+    </section>
+
+    <!-- HISTORIA / CÓMO SE HACE -->
+    <section class="producto-historia" data-bg="leather">
+      <div class="manifesto__inner" data-reveal>
+        <div class="manifesto__icon" aria-hidden="true"></div>
+        <h2 class="manifesto__title">Cómo se hace</h2>
+        <p class="manifesto__text" id="prodStory">—</p>
+      </div>
+      <div class="producto-historia__steps" id="prodSteps">
+        <!-- pasos del proceso, inyectados por JS -->
+      </div>
+    </section>
+
+    <!-- SIMILARES -->
+    <section class="producto-similares" data-bg="light">
+      <div class="seccion-prod__head" data-reveal>
+        <h2 class="manifesto__title">Productos parecidos</h2>
+        <p class="manifesto__text">Otros mates y piezas que también te pueden gustar.</p>
+      </div>
+      <div class="seccion-prod__grid" id="similaresGrid">
+        <!-- similares inyectados por JS -->
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER (igual que tienda) -->
+  <footer class="footer" id="contacto">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <img class="footer__logo" src="img/logotipo-blanco.png" alt="JIcrea">
+        <p class="footer__slogan">Del campo a tus manos.</p>
+      </div>
+      <div class="footer__cols">
+        <div class="footer__col">
+          <h4>Contacto</h4>
+          <a href="https://wa.me/59898507241" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          <a href="https://www.instagram.com/jicrea/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        </div>
+        <div class="footer__col">
+          <h4>Tienda</h4>
+          <a href="tienda.html#mates">Mates</a>
+          <a href="tienda.html#posa-mates">Posa Mates</a>
+          <a href="tienda.html#materas">Materas</a>
+          <a href="tienda.html#yerberos">Yerberos</a>
+        </div>
+        <div class="footer__col">
+          <h4>Dónde estamos</h4>
+          <p>Paysandú, Uruguay</p>
+          <p>Productores y fabricantes desde 2015</p>
+        </div>
+      </div>
+      <div class="footer__base">
+        <p>© 2026 JIcrea — Mates uruguayos hechos a mano</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Cart drawer + modal de cantidad + notificación (mismos del tienda) -->
+  <div class="cart-backdrop" id="cartBackdrop"></div>
+  <aside class="cart" id="cart" aria-hidden="true">
+    <div class="cart__head">
+      <h3 class="cart__title">Tu pedido</h3>
+      <button class="cart__close" id="cartClose" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="cart__body">
+      <p class="cart__empty" id="cartEmpty">Tu carrito está vacío.<br><span>Agregá productos para coordinar la compra por WhatsApp.</span></p>
+      <ul class="cart__list" id="cartList"></ul>
+    </div>
+    <div class="cart__foot">
+      <div class="cart__total">
+        <span class="cart__total-label">Total</span>
+        <span class="cart__total-amount" id="cartTotalAmount">$0</span>
+      </div>
+      <p class="cart__note">El pago y la entrega los coordinamos por WhatsApp.</p>
+      <button class="cart__cta" id="cartCheckout" disabled>
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19.05 4.91A10 10 0 0 0 12 2c-5.5 0-10 4.5-10 10 0 1.76.46 3.48 1.34 5L2 22l5.13-1.34A10 10 0 0 0 12 22c5.5 0 10-4.5 10-10 0-2.66-1.05-5.18-2.95-7.09zM12 20.13c-1.6 0-3.18-.43-4.55-1.24l-.32-.19-3.04.79.81-2.96-.21-.34A8.13 8.13 0 1 1 20.14 12 8.14 8.14 0 0 1 12 20.13z"/></svg>
+        <span>Finalizar compra</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Modal de cantidad -->
+  <div class="qty-modal" id="qtyModal" aria-hidden="true">
+    <div class="qty-modal__backdrop" id="qtyModalBackdrop"></div>
+    <div class="qty-modal__panel">
+      <button class="qty-modal__close" id="qtyModalClose" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/>
+        </svg>
+      </button>
+      <div class="qty-modal__product">
+        <img class="qty-modal__img" id="qtyModalImg" src="" alt="">
+        <div>
+          <h4 class="qty-modal__name" id="qtyModalName">—</h4>
+          <p class="qty-modal__price" id="qtyModalPrice">—</p>
+        </div>
+      </div>
+      <p class="qty-modal__question">¿Cuántas unidades querés agregar?</p>
+      <div class="qty-modal__qty">
+        <button class="qty-modal__btn" id="qtyMinus">−</button>
+        <span class="qty-modal__value" id="qtyValue">1</span>
+        <button class="qty-modal__btn" id="qtyPlus">+</button>
+      </div>
+      <p class="qty-modal__subtotal">Subtotal: <span id="qtySubtotal">$0</span></p>
+      <button class="qty-modal__confirm" id="qtyConfirm">Agregar al carrito</button>
+    </div>
+  </div>
+
+  <!-- Notificación -->
+  <div class="cart-notif" id="cartNotif" aria-live="polite">
+    <div class="cart-notif__row">
+      <span class="cart-notif__check">✓</span>
+      <div class="cart-notif__text">
+        <p class="cart-notif__title" id="notifTitle">Agregado al carrito</p>
+        <p class="cart-notif__detail" id="notifDetail">—</p>
+      </div>
+    </div>
+    <div class="cart-notif__sep"></div>
+    <div class="cart-notif__total">
+      <span>Total carrito:</span>
+      <strong id="notifTotal">$0</strong>
+    </div>
+    <div class="cart-notif__actions">
+      <button class="cart-notif__btn cart-notif__btn--ghost" id="notifKeep">Seguir mirando</button>
+      <button class="cart-notif__btn cart-notif__btn--solid" id="notifCheckout">Finalizar compra →</button>
+    </div>
+  </div>
+
+  <!-- WhatsApp FAB -->
+  <a class="wa-fab" href="https://wa.me/59898507241" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M19.05 4.91A10 10 0 0 0 12 2c-5.5 0-10 4.5-10 10 0 1.76.46 3.48 1.34 5L2 22l5.13-1.34A10 10 0 0 0 12 22c5.5 0 10-4.5 10-10 0-2.66-1.05-5.18-2.95-7.09zM12 20.13c-1.6 0-3.18-.43-4.55-1.24l-.32-.19-3.04.79.81-2.96-.21-.34A8.13 8.13 0 1 1 20.14 12 8.14 8.14 0 0 1 12 20.13z"/></svg>
+  </a>
+
+  <script src="https://unpkg.com/lenis@1.0.42/dist/lenis.min.js" onerror="console.info('Lenis no')"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="js/jicrea-pro.js?v=51"></script>
+  <script src="js/productos-data.js?v=1"></script>
+  <script src="js/producto.js?v=1"></script>
+  <script src="js/tienda-cart.js?v=3"></script>
+</body>
+</html>

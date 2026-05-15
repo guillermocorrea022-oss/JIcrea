@@ -1,0 +1,1834 @@
+@font-face {
+  font-display: swap;
+  font-family: "super-med";
+  font-style: normal;
+  src: url(../fonts/super-med.woff2) format("woff2"),
+       url(../fonts/super-med.woff) format("woff");
+}
+@font-face {
+  font-display: swap;
+  font-family: "super-reg";
+  font-style: normal;
+  src: url(../fonts/super-reg.woff2) format("woff2"),
+       url(../fonts/super-reg.woff) format("woff");
+}
+
+:root {
+  --c-bg: #F4EBE1; /* Beige y crudo - el yute, lo artesanal */
+  --c-text: #1A1A1A; /* Negro para el texto de lectura */
+  --c-text-alt: #F4EBE1; /* Texto claro para fondos oscuros */
+  --c-green: #2B3A2C; /* Verde oscuro - el campo, la planta */
+  --c-brand: #CBA058; /* Dorado - detalles premium, logo */
+  --c-dark: #121212; /* Negro puro para fondos premium */
+  --c-earth: #6B4423; /* Marrones y tierras - calabaza, tierra */
+  --c-accent: var(--c-brand); /* Acentos dorados */
+  --c-secondary: var(--c-green);
+
+  --font-serif: 'super-med', Helvetica, sans-serif;
+  --font-sans: 'super-reg', Helvetica, sans-serif;
+
+  --ease-out: cubic-bezier(0.19, 1, 0.22, 1);
+  --header-h: max(10rem, min(10vw, 20rem));
+  
+  --columns: 12;
+  --width: 90vw;
+  --gutter: max(2rem, min(2vw, 4rem));
+  --radius: max(1.5rem, min(1.5vw, 3rem));
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 62.5%;
+  scroll-behavior: auto;
+}
+
+body {
+  font-family: var(--font-serif);
+  font-size: max(2rem, min(2vw, 3rem));
+  color: var(--c-text);
+  background-color: var(--c-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 100%;
+  overflow-x: hidden;
+  overscroll-behavior-x: contain;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   ░░░░░░░░░░░░░ PAGE CURTAIN — TRANSICIÓN ENTRE PÁGINAS ░░░░░░░░░░░░
+   ═══════════════════════════════════════════════════════════════════
+   Reemplaza la transición vieja (que animaba width/height del header
+   logo a fullscreen — propiedades de LAYOUT, causaban stutter durante
+   1.2s + 800ms de wait = ~2 segundos lentos).
+
+   Esta versión usa SOLO opacity + transform sobre un overlay fijo:
+     · GPU-only compositing (cero reflow)
+     · Misma textura cuero que el logo (visual coherente)
+     · Logo centrado que crece 8% durante el fade-out (efecto "zoom in")
+     · Total: 550ms entrada + 320ms salida = ~870ms (vs ~4s antes)
+   ─────────────────────────────────────────────────────────────────── */
+.page-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 1;
+  /* Misma textura cuero que .header__logo (coherencia visual al cargar) */
+  background-color: var(--c-earth);
+  background-image:
+    radial-gradient(ellipse at 30% 30%, rgba(255, 230, 200, 0.18), transparent 60%),
+    radial-gradient(ellipse at 70% 80%, rgba(46, 24, 12, 0.30), transparent 65%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.28 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: cover, cover, 180px 180px;
+  background-blend-mode: normal, normal, overlay;
+  transition: opacity 0.55s cubic-bezier(0.65, 0, 0.35, 1);
+  /* GPU layer hint para que el compositor lo trate como capa propia */
+  will-change: opacity;
+}
+/* Estado oculto — fade out completo. visibility 0s con delay para que
+   no bloquee clicks una vez invisible. */
+.page-curtain.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.55s cubic-bezier(0.65, 0, 0.35, 1),
+    visibility 0s linear 0.55s;
+}
+/* Logo centrado con scale-up sutil — al fade out crece 8% generando
+   sensación "zoom hacia adentro de la página". GPU-only (transform). */
+.page-curtain__logo {
+  max-width: clamp(220px, 32vw, 460px);
+  max-height: clamp(140px, 20vw, 280px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  transform: scale(1);
+  transition: transform 0.65s cubic-bezier(0.34, 1.10, 0.40, 1);
+  will-change: transform;
+}
+.page-curtain.is-hidden .page-curtain__logo {
+  transform: scale(1.08);
+}
+
+/* HEADER */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--header-h);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var(--gutter);
+  z-index: 100;
+  background-color: transparent;
+  transition: background-color 0.4s var(--ease-out), height 0.4s var(--ease-out);
+  pointer-events: none; /* Let clicks pass through transparent areas */
+}
+
+.header__nav, .header__center {
+  pointer-events: auto;
+}
+
+.header.is-scrolled {
+  background-color: transparent !important;
+  height: max(6rem, min(6vw, 10rem));
+  color: #2A1810;
+  transition: color 0.4s var(--ease-out), background-color 0.4s var(--ease-out), height 0.4s var(--ease-out);
+}
+
+.header.is-scrolled.is-dark-bg {
+  color: var(--c-text-alt); /* Cream claro sobre tierra negro — máximo contraste */
+}
+.header.is-scrolled.is-leather-bg {
+  color: #F0E2C9; /* Cream cálido sobre cuero terracotta */
+}
+
+/* Aplico color directo a los <a> con specificity alta — el inherit del
+   <header> no propaga bien en algunos browsers durante transición. */
+.header.is-scrolled .header__nav a {
+  color: #2A1810; /* Default sobre crudo */
+  transition: color 0.4s var(--ease-out);
+}
+/* Dark-bg y leather-bg aplican también cuando NO está scrolled, para que
+   al entrar a la página (hero oscuro) el navbar ya se lea correctamente. */
+.header.is-dark-bg .header__nav a {
+  color: var(--c-text-alt); /* Cream claro #F4EBE1 — alto contraste sobre fondo oscuro */
+  transition: color 0.4s var(--ease-out);
+}
+.header.is-leather-bg .header__nav a {
+  color: #F0E2C9; /* Tierra cream brillante sobre el marrón cuero */
+  transition: color 0.4s var(--ease-out);
+}
+.header[data-theme="dark"]:not(.is-scrolled) {
+  color: var(--c-text-alt);
+}
+
+.header__nav {
+  display: flex;
+  gap: max(2rem, min(3vw, 4rem));
+  font-size: max(1.2rem, min(1.2vw, 1.8rem));
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.header__nav a {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 2px;
+}
+
+.header__nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px; /* Made slightly thicker so the earth color pops */
+  background-color: currentColor; /* Hover line dynamically matches text color */
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s var(--ease-out);
+}
+
+.header__nav a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.header__center {
+  position: absolute;
+  left: 50%;
+  top: 0; /* Attach to top to hang down */
+  transform: translateX(-50%);
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+}
+
+.header__logo {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  /* Fondo CUERO — base earth tone + fractalNoise granulado + dos radiales
+     para dar profundidad/luz. Igual textura que usamos en .productos para
+     mantener la coherencia visual del brand. */
+  background-color: var(--c-earth);
+  background-image:
+    radial-gradient(ellipse at 30% 30%, rgba(255, 230, 200, 0.18), transparent 60%),
+    radial-gradient(ellipse at 70% 80%, rgba(46, 24, 12, 0.30), transparent 65%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.28 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: cover, cover, 180px 180px;
+  background-blend-mode: normal, normal, overlay;
+  width: max(32rem, min(35vw, 45rem)); /* Much wider, rectangular */
+  height: max(18rem, min(20vw, 25rem)); /* Shorter height */
+  transform-origin: top center;
+  /* Rápida por defecto para el scroll del usuario */
+  transition: width 0.4s var(--ease-out), height 0.4s var(--ease-out), background-color 0.4s var(--ease-out);
+  overflow: hidden;
+}
+
+.header.is-transitioning {
+  pointer-events: none; /* Block clicks during transition */
+}
+.header.is-transitioning .header__nav,
+.header.is-transitioning-out .header__nav {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.header.is-transitioning .header__logo {
+  width: 100vw !important;
+  height: 100vh !important;
+  cursor: default;
+  border-radius: 0 !important;
+}
+.header.is-transitioning .header__logo,
+.header.is-transitioning-out .header__logo {
+  /* La expansión hacia pantalla completa también es lenta */
+  transition: width 1.2s cubic-bezier(0.8, 0, 0.2, 1), height 1.2s cubic-bezier(0.8, 0, 0.2, 1) !important;
+}
+
+.header.is-transitioning .header__logo--open {
+  transform: translate(-50%, -50%) scale(1.1); /* Make logo slightly bigger when full screen */
+}
+.header.is-transitioning .header__logo--open,
+.header.is-transitioning-out .header__logo--open {
+  transition: transform 1.2s cubic-bezier(0.8, 0, 0.2, 1);
+}
+
+.header.is-scrolled .header__logo {
+  height: max(6rem, min(6vw, 10rem));
+  width: max(8rem, min(8vw, 12rem));
+  background-color: var(--c-earth); /* Retains the colored background! */
+}
+
+.header.is-scrolled .header__logo:hover {
+  height: max(18rem, min(20vw, 25rem));
+  width: max(32rem, min(35vw, 45rem));
+  background-color: var(--c-earth);
+}
+
+/* LOGO ELEMENTS */
+.header__logo--closed {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  opacity: 0;
+  transform: translate(-55%, -50%) scale(0.8);
+  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+  object-fit: contain;
+}
+
+.header__logo--open {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: auto;
+  height: max(12rem, min(14vw, 18rem)); /* Fixed responsive size instead of 70% of parent */
+  transform: translate(-50%, -50%);
+  opacity: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: max(1.5rem, min(2vw, 3rem)); /* Tighter gap so text hugs the logo */
+  transition: opacity 0.5s var(--ease-out), transform 1.2s cubic-bezier(0.8, 0, 0.2, 1);
+}
+
+.header__logo--open img {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+}
+
+.header__side-text {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-sans);
+  font-size: max(0.8rem, min(0.8vw, 1.2rem)); /* Slightly larger */
+  font-weight: 800; /* Much thicker */
+  text-transform: uppercase;
+  color: var(--c-brand); /* Matches the gold crown/isotipo */
+  text-align: center;
+  line-height: 1.1;
+  letter-spacing: 1px;
+}
+
+/* STATE LOGIC */
+.header.is-scrolled .header__logo--open {
+  opacity: 0;
+  transform: translate(-50%, -30%) scale(0.9);
+  pointer-events: none;
+}
+
+.header.is-scrolled .header__logo--closed {
+  opacity: 1;
+  transform: translate(-55%, -50%) scale(1);
+}
+
+.header.is-scrolled .header__logo:hover .header__logo--open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.header.is-scrolled .header__logo:hover .header__logo--closed {
+  opacity: 0;
+  transform: translate(-55%, -70%) scale(0.5);
+}
+
+/* HERO */
+.hero {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: var(--c-text-alt);
+}
+.hero__media {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('../img/hero1.jpg') center/cover no-repeat;
+  z-index: 1;
+  transform: scale(1.1);
+}
+.hero__media::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4);
+}
+.hero__inner {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding-top: max(10rem, min(12vw, 18rem)); /* Added space so banner doesn't cover text */
+}
+.hero__title {
+  font-family: var(--font-serif);
+  font-size: max(10rem, min(10vw, 24rem));
+  line-height: 85%;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+}
+.line {
+  display: block;
+  overflow: hidden;
+  clip-path: inset(-20% 0 0 0);
+}
+.line::before {
+  content: attr(data-text);
+  display: block;
+  transform: translateY(115%);
+}
+.hero__subtitle {
+  margin-top: 2rem;
+  font-family: var(--font-sans);
+  font-size: max(2rem, min(2vw, 3.5rem));
+  font-weight: 400;
+  opacity: 0;
+}
+.hero__scroll {
+  position: absolute;
+  bottom: 4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* MANIFESTO */
+.manifesto {
+  padding: max(8rem, min(10vw, 15rem)) var(--gutter) 2rem; /* Less padding at bottom so it joins the cards */
+  text-align: center;
+  background-color: var(--c-bg); /* Beige background */
+  color: var(--c-green); /* Verde oscuro para este título */
+}
+.manifesto__inner {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.manifesto__icon {
+  margin: 0 auto 1.5rem;
+  width: 2rem;
+  height: 2rem;
+  background-color: var(--c-brand); /* Dorado */
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+.manifesto__title {
+  font-family: var(--font-serif); /* Cambiado a serif para más presencia */
+  font-size: max(3rem, min(4vw, 5rem)); /* Mucho más grande */
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 3rem;
+  letter-spacing: 2px;
+  /* line-height: super-med tiene métricas verticales muy ajustadas — al
+     romper el título en varias líneas (<br>) las cajas se superponen.
+     1.05 da aire entre líneas sin perder presencia visual. */
+  line-height: 1.05;
+}
+.manifesto__text {
+  font-family: var(--font-sans); /* Use sans-serif for the all-caps look */
+  font-size: max(1.5rem, min(2vw, 2.5rem)); /* Smaller than before */
+  line-height: 1.4;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+/* CARDS */
+.cards {
+  padding-bottom: max(10rem, min(10vw, 15rem));
+  padding-top: 4rem; /* Small top padding because it continues from manifesto */
+  background-color: var(--c-bg);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.cards__inner {
+  position: relative;
+  width: calc(45vw - 1rem);
+  aspect-ratio: 580 / 770;
+}
+@media (min-width: 960px) {
+  .cards__inner {
+    width: calc(30vw);
+  }
+}
+@media (min-width: 1280px) {
+  .cards__inner {
+    width: calc(25vw);
+  }
+}
+.card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius);
+  overflow: hidden;
+  transform-origin: center;
+  will-change: transform;
+}
+.card__media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.card--left { z-index: 1; transform: rotate(12deg) translateZ(0); }
+.card--center { z-index: 2; transform: rotate(-30deg); }
+.card--right { z-index: 3; transform: rotate(-14deg) translateZ(0); }
+
+/* AMARGOR */
+.amargor {
+  padding: max(10rem, min(10vw, 20rem)) var(--gutter);
+  background-color: var(--c-bg);
+  color: var(--c-text);
+  text-align: center;
+}
+.amargor__giant {
+  font-family: var(--font-serif);
+  font-size: max(8rem, min(15vw, 30rem));
+  line-height: 85%;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  /* Color original (heredado de .amargor → var(--c-text) = #1A1A1A negro
+     tierra). Probamos efecto cuero con background-clip:text pero no quedó
+     bien — texto se mantiene en su color sólido original como antes. */
+}
+.amargor__text {
+  margin-top: max(6rem, min(6vw, 12rem));
+  font-family: var(--font-sans);
+  font-size: max(2rem, min(2vw, 3.5rem));
+  max-width: 60vw;
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--c-text);
+}
+
+/* STICKY SHOWCASE */
+.sticky {
+  height: 200vh;
+  background-color: var(--c-green); /* Verde oscuro */
+  color: var(--c-text-alt);
+  position: relative;
+}
+.sticky__giant {
+  position: sticky;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+  font-family: var(--font-serif);
+  font-size: max(7rem, min(17vw, 34rem));
+  text-transform: uppercase;
+  line-height: 85%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* MANIFIESTO 2 */
+.manifiesto {
+  padding: max(10rem, min(10vw, 20rem)) var(--gutter);
+  text-align: center;
+  background-color: var(--c-earth); /* Marrones y tierras */
+  color: var(--c-text-alt);
+}
+.manifiesto__inner {
+  max-width: 90vw;
+  margin: 0 auto;
+}
+.manifiesto__text {
+  font-family: var(--font-serif);
+  font-size: max(6rem, min(6vw, 11rem));
+  line-height: 90%;
+  margin-bottom: 4rem;
+}
+.manifiesto__close {
+  font-family: var(--font-sans);
+  font-size: max(2rem, min(2vw, 3.5rem));
+  color: var(--c-secondary);
+}
+em {
+  font-style: italic;
+  font-family: var(--font-serif);
+}
+
+/* PILLARS */
+.pillar {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.pillar__media {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+}
+.pillar__media img {
+  width: 100%; height: 100%; object-fit: cover;
+  transform: scale(1.15);
+}
+.pillar__media::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.3);
+}
+.pillar__overlay {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: var(--c-text-alt);
+}
+.pillar__title {
+  font-family: var(--font-serif);
+  font-size: max(8rem, min(15vw, 30rem));
+  line-height: 85%;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+}
+.pillar__caption {
+  margin-top: 2rem;
+  font-family: var(--font-sans);
+  font-size: max(1.6rem, min(1.6vw, 2.4rem));
+  max-width: 50vw;
+  margin-left: auto; margin-right: auto;
+}
+
+/* ORIGEN - MUSEO BOTANICO 4 ESQUINAS */
+.origen-museo {
+  padding: max(8rem, min(10vw, 12rem)) var(--gutter);
+  background-color: var(--c-bg); /* Beige background para estilo botanical */
+  position: relative;
+  overflow: hidden;
+}
+.origen-museo__header {
+  text-align: center;
+  margin-bottom: max(3rem, 5vw);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.origen-museo__main-title {
+  font-family: var(--font-serif);
+  font-size: max(3rem, min(4vw, 5rem)); /* Igual al manifesto */
+  font-weight: 700;
+  color: var(--c-green);
+  text-transform: uppercase;
+  margin-top: 1rem;
+}
+.origen-museo__grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-rows: auto auto;
+  gap: 2rem 1.5rem; /* Menor espacio de columna para acercarlos al centro */
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.origen-museo__center {
+  grid-column: 2 / 3;
+  grid-row: 1 / 3;
+  width: 40vw;
+  max-width: 350px; /* Tamaño mucho más chico y fijo */
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+.origen-museo__img {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(15px 25px 25px rgba(0,0,0,0.25));
+  transform-origin: center bottom;
+  transition: transform 0.4s ease;
+}
+.origen-museo__img:hover {
+  transform: scale(1.03); /* Leve efecto interactivo al pasar el mouse */
+}
+.origen-museo__corner {
+  display: flex;
+  align-items: center; /* Centrar verticalmente icono y texto */
+  gap: 2rem; /* Separar el texto del icono para que el icono destaque más hacia el centro */
+}
+.origen-museo__corner--tl, .origen-museo__corner--bl {
+  justify-content: flex-end; /* Alinear a la derecha, cerca del centro */
+  text-align: right;
+}
+.origen-museo__corner--tr, .origen-museo__corner--br {
+  justify-content: flex-start; /* Alinear a la izquierda, cerca del centro */
+  text-align: left;
+}
+.origen-museo__icon {
+  flex-shrink: 0;
+  width: max(100px, min(14vw, 175px)); /* Tamaño 15% más grande */
+  height: max(100px, min(14vw, 175px));
+  object-fit: contain;
+}
+.origen-museo__content {
+  display: flex;
+  flex-direction: column;
+}
+.origen-museo__title {
+  font-family: var(--font-serif);
+  font-size: max(1.5rem, 2vw);
+  color: var(--c-green); /* Verde campo premium */
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+.origen-museo__corner p {
+  font-size: max(1rem, 1.1vw);
+  line-height: 1.6;
+  color: var(--c-text); /* Black text */
+  opacity: 0.8;
+  max-width: 300px;
+}
+@media (max-width: 900px) {
+  .origen-museo__grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    gap: 3rem;
+  }
+  .origen-museo__center {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    max-width: 250px;
+  }
+  .origen-museo__corner {
+    flex-direction: column; /* Apilar en movil */
+    text-align: center;
+  }
+  .origen-museo__corner--tl, .origen-museo__corner--bl, 
+  .origen-museo__corner--tr, .origen-museo__corner--br {
+    justify-content: center;
+    text-align: center;
+  }
+  .origen-museo__icon {
+    order: -1; /* Icono arriba en movil */
+    margin-bottom: 1rem;
+  }
+}
+
+/* PROCESO 3D — scroll-pinned. Fondo NEGRO profundo (estilo oryzo) para que
+   las fotos se desvanezcan limpias y el mate 3D destaque con todo su
+   detalle. Textura sutil de noise para que no quede plano. */
+.proceso-3d {
+  position: relative;
+  /* Cinematic video natural — 100vh (no sticky pin). El video se reproduce
+     auto cuando entra al viewport. Si querés más "peso" de scroll, subí
+     esto a 120vh o 140vh — el contenedor pin sigue ocupando 100vh. */
+  height: 100vh;
+  overflow: hidden;
+  background: #0A0807;
+  color: #F4EBE1;
+}
+.proceso-3d::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.18 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 180px 180px;
+  opacity: 0.4;
+  mix-blend-mode: overlay;
+}
+/* Que el contenido quede por encima del noise */
+.proceso-3d > * {
+  position: relative;
+  z-index: 1;
+}
+.proceso-3d__pin {
+  /* Antes sticky (para scroll-scrub). Ahora el video se reproduce solo,
+     no necesita pin — el pin queda simple full-bleed dentro de la
+     sección 100vh. */
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   VIDEO CINEMÁTICO — reemplaza al sistema 3D + fotos. Full-bleed, sin
+   controles ni sonido. El JS scrubea currentTime con el scroll.
+   ═══════════════════════════════════════════════════════════════════ */
+.proceso-3d__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  pointer-events: none;
+  z-index: 0;
+  /* Pre-paint negro para evitar flash blanco mientras el video carga */
+  background: #0A0807;
+  display: block;
+}
+
+/* Vignette radial + gradient TOP — el radial vignettea bordes para foco
+   cinematográfico; el linear-gradient superior oscurece el ~40% de arriba
+   para que el título overlay sea legible sobre cualquier frame del video. */
+.proceso-3d__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background:
+    linear-gradient(to bottom, rgba(10, 8, 7, 0.75) 0%, rgba(10, 8, 7, 0.30) 35%, transparent 60%),
+    radial-gradient(ellipse 80% 90% at center, transparent 50%, rgba(10, 8, 7, 0.55) 100%);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   TÍTULO OVERLAY — gancho emocional. Centrado absoluto en el video.
+   Aparece SOLO al inicio (cuando la sección entra al viewport) con un
+   fade-in + rise sutil, queda 4.5s visible, y después fade-out — el
+   video sigue corriendo limpio. JS añade/quita .is-visible.
+   ═══════════════════════════════════════════════════════════════════ */
+.proceso-3d__title-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* Centrado absoluto via translate -50%, -50%. El translateY(20px) extra
+     es el offset del estado inicial — el título arranca 20px abajo del
+     centro y "sube" al hacer fade-in. Cuando is-visible, el translateY(0)
+     lo deja en el centro exacto. */
+  transform: translate(-50%, -50%) translateY(20px);
+  width: min(100%, 1100px);
+  z-index: 2;
+  text-align: center;
+  padding: 0 clamp(24px, 5vw, 80px);
+  pointer-events: none;
+  opacity: 0;
+  transition:
+    opacity   1.2s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.proceso-3d__title-overlay.is-visible {
+  opacity: 1;
+  transform: translate(-50%, -50%) translateY(0);
+}
+.proceso-3d__title-eyebrow {
+  display: inline-block;
+  color: var(--c-brand);
+  font-family: var(--font-serif, "super-med"), Helvetica, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: clamp(20px, 3vh, 36px);
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(203, 160, 88, 0.45);
+}
+.proceso-3d__title-text {
+  font-family: var(--font-serif, "super-med"), Helvetica, sans-serif;
+  font-weight: 500;
+  font-size: clamp(40px, 7vw, 96px);
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  color: #F4EBE1;
+  margin: 0;
+  /* drop-shadow leve para asegurar lectura en frames claros del video */
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45);
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   MUTE TOGGLE — botón sutil bottom-right. Estado por defecto: muted
+   (ícono speaker-off visible + label "Activar sonido"). Cuando el
+   usuario clickea: aria-pressed=true, ícono speaker-on, label "Silenciar".
+   ═══════════════════════════════════════════════════════════════════ */
+.proceso-3d__mute-toggle {
+  position: absolute;
+  bottom: clamp(24px, 4vh, 48px);
+  right: clamp(24px, 3vw, 48px);
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  background: rgba(10, 8, 7, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(203, 160, 88, 0.35);
+  color: var(--c-brand);
+  font-family: var(--font-serif, "super-med"), Helvetica, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.3s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1)),
+    border-color 0.3s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1)),
+    color 0.3s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1));
+}
+.proceso-3d__mute-toggle:hover {
+  background: rgba(10, 8, 7, 0.75);
+  border-color: rgba(203, 160, 88, 0.65);
+  color: #F4EBE1;
+}
+/* Estado: muted (default) → muestra ícono off, label "Activar sonido" */
+.proceso-3d__mute-icon--on { display: none; }
+.proceso-3d__mute-icon--off { display: block; }
+/* Estado: unmuted → muestra ícono on, label "Silenciar" */
+.proceso-3d__mute-toggle[aria-pressed="true"] .proceso-3d__mute-icon--on { display: block; }
+.proceso-3d__mute-toggle[aria-pressed="true"] .proceso-3d__mute-icon--off { display: none; }
+.proceso-3d__mute-toggle[aria-pressed="true"] .proceso-3d__mute-label::before {
+  content: "Silenciar";
+}
+.proceso-3d__mute-toggle[aria-pressed="true"] .proceso-3d__mute-label {
+  font-size: 0; /* oculta el texto original "Activar sonido" */
+}
+.proceso-3d__mute-toggle[aria-pressed="true"] .proceso-3d__mute-label::before {
+  font-size: 11px; /* el ::before sí muestra */
+}
+@media (max-width: 600px) {
+  /* En mobile, sólo ícono (sin label) para ahorrar espacio */
+  .proceso-3d__mute-label { display: none; }
+  .proceso-3d__mute-toggle { padding: 10px; }
+}
+
+/* Contenedor de los fondos por etapa: cubre el pin exactamente (100vh).
+   Cada bg-layer es una foto distinta que el JS controla con 3 propiedades:
+   opacity, filter brightness y transform scale → da el efecto oryzo-like
+   de "la foto se achica y se vuelve oscura hasta desaparecer" mientras el
+   mate 3D queda flotando en el centro. */
+.proceso-3d__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.proceso-3d__bg-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transform-origin: center center;
+  will-change: opacity, filter, transform;
+  /* Máscara radial controlada por variables. Cuando ambas son 100% el
+     gradiente es sólido (mask OFF) → foto cuadrada nítida, perfecta para
+     que el mate parezca apoyado en la mesa de verdad. Cuando bajan a
+     28%/88% se activa el feather → los bordes se desvanecen al achicarse. */
+  --mask-inner: 100%;
+  --mask-outer: 100%;
+  -webkit-mask-image: radial-gradient(ellipse 78% 90% at center, #000 var(--mask-inner), transparent var(--mask-outer));
+  mask-image: radial-gradient(ellipse 78% 90% at center, #000 var(--mask-inner), transparent var(--mask-outer));
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  transition: opacity 0.12s linear, filter 0.12s linear, transform 0.12s linear;
+}
+.proceso-3d__bg-layer[data-step="0"] {
+  background-image: url('../img/proceso-fondo1.png');
+  /* La foto 1 arranca SIEMPRE visible — antes de que el JS corra, antes
+     de scrollear, en cuanto el navegador renderiza. Evita el flash en
+     negro al entrar a la sección. */
+  opacity: 1;
+}
+.proceso-3d__bg-layer[data-step="1"] {
+  background-image: url('../img/proceso-fondo2.png');
+}
+/* Step 1-mate: misma escena del taller pero con mate ya en la mesa.
+   El JS cross-fadea esta capa con la step="1" al final del step 1 →
+   el cliente percibe que el mate 3D se "asentó" en el mate fotográfico. */
+.proceso-3d__bg-layer[data-step="1-mate"] {
+  background-image: url('../img/proceso-fondo2-2.png');
+}
+.proceso-3d__bg-layer[data-step="2"] {
+  background-image: url('../img/proceso-fondo3.png');
+}
+/* Step 2-mate: la misma escena de manos pero con mate + posamate ya en
+   la mesa. Cross-fade con step="2" al cerrar el efecto de emergencia. */
+.proceso-3d__bg-layer[data-step="2-mate"] {
+  background-image: url('../img/proceso-fondo3-2.png');
+}
+.proceso-3d__bg-layer[data-step="2-final"] {
+  background-image: url('../img/proceso-fondo3-final.png');
+}
+
+/* VISOR 3D — tamaño completo, centrado. La rotación NO se aplica al wrapper
+   (eso rotaría el canvas 2D y queda plano). Se aplica directamente al modelo
+   vía `orientation` (rotación real en 3D). El opacity arranca en 0: el JS lo
+   sube super rápido en los primeros 3% del scroll para dar la ilusión de
+   que el porongo de la foto "se despegó" como un mate 3D del mismo tamaño. */
+.proceso-3d__viewer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(280px, 42vw, 620px);
+  height: clamp(360px, 60vh, 640px);
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  /* `filter` en will-change → el browser promueve el viewer a su propia
+     capa compuesta. El filter se rasteriza una vez por cambio real, no
+     cada frame del WebGL del model-viewer que tiene debajo. Sin esto la
+     entrada (ramp de opacity 0→1) se notaba trabada porque cada frame
+     re-blureaba 3 sombras sobre un elemento de ~600px. */
+  will-change: opacity, transform, filter;
+  /* Stack de 3 drop-shadows que da sensación de "despegue" del mate
+     sobre la foto SIN moverlo ni cambiar su tamaño.
+       1) Contact shadow — tight, oscura, ancla el pie del mate.
+       2) Mid shadow — media distancia, da el primer nivel de elevación.
+       3) Ambient shadow — larga y difusa, vende la altura/levitación.
+     Truco clave: el offset Y de cada sombra es MAYOR que su blur radius.
+     Eso enmascara el halo superior y lateral detrás de la silueta del
+     mate (el halo cae dentro de los alphas del propio modelo) y solo
+     deja la elongación visible HACIA ABAJO — lectura inequívoca de
+     "objeto flotando sobre la foto".
+     La 3ª sombra está calibrada con blur reducido (18px en vez de 28px)
+     para que cada frame de blur sea ~38% más barato sin perder lectura
+     de altura: sigue elongada hacia abajo, sigue suave.
+     La sombra de luz interna la sigue poniendo model-viewer (shadow-intensity). */
+  filter:
+    drop-shadow(0 3px 3px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 18px 12px rgba(0, 0, 0, 0.38))
+    drop-shadow(0 36px 18px rgba(0, 0, 0, 0.32));
+}
+.proceso-3d__spin {
+  width: 100%;
+  height: 100%;
+}
+/* Los 3 model-viewers superpuestos. Solo uno visible a la vez via
+   .is-visible. El cross-fade es 0.5s con cubic-bezier suave. */
+.proceso-3d__viewer model-viewer,
+.proceso-3d__model {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  --poster-color: transparent;
+  --progress-bar-color: var(--gold, #C9A24A);
+  outline: none;
+  pointer-events: none;
+  opacity: 0;
+  /* Cross-fade más rápido (0.3s) para que coincida con el fade-in de la
+     foto al cruzar el step boundary. Ambos terminan ~al mismo tiempo. */
+  transition: opacity 0.3s cubic-bezier(0.45, 0, 0.15, 1);
+}
+.proceso-3d__model.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+/* Tronco / posa-mate — RETIRADO. El concepto se simplificó. */
+
+/* OVERLAY — texto a los costados, no en columnas. El mate respira en el medio. */
+/* ═══════════════ Overlay tipográfico estilo oryzo ═══════════════
+   Sobre fondo negro, el texto va en cream (#F4EBE1) con acentos en gold
+   (#CBA058). Las animaciones tipo "char-mask reveal" se controlan vía
+   JS: cuando cambia de step, .is-changing pone el texto fuera de su
+   máscara (translateY +110% clipeado) y al sacarse la clase el texto
+   vuelve a su lugar — entra desde abajo, escalonado, tipo oryzo.
+   ──────────────────────────────────────────────────────────────── */
+.proceso-3d__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  padding: clamp(40px, 6vh, 80px) clamp(32px, 5vw, 80px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Lado izquierdo: eyebrow + número + título + descripción */
+.proceso-3d__copy-left {
+  width: clamp(320px, 38vw, 600px);
+  pointer-events: auto;
+}
+.proceso-3d__eyebrow {
+  color: var(--c-brand, #CBA058);
+  margin-bottom: 36px;
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(203, 160, 88, 0.35);
+}
+
+/* Wrapper del texto cambiante. Cada hijo se anima con su propio delay
+   creando un staggered reveal tipo oryzo. */
+.proceso-3d__text {
+  display: block;
+}
+.proceso-3d__text .reveal {
+  display: block;
+  overflow: hidden; /* clip-path container para el char-mask reveal */
+}
+.proceso-3d__text .reveal-inner {
+  display: block;
+  transform: translateY(0);
+  opacity: 1;
+  transition:
+    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* Al cambiar de step → todo sale hacia ARRIBA escalonado */
+.proceso-3d__text.is-changing .reveal-inner {
+  transform: translateY(-115%);
+  opacity: 0;
+}
+.proceso-3d__text.is-changing .reveal:nth-child(1) .reveal-inner { transition-delay: 0s; }
+.proceso-3d__text.is-changing .reveal:nth-child(2) .reveal-inner { transition-delay: 0.04s; }
+.proceso-3d__text.is-changing .reveal:nth-child(3) .reveal-inner { transition-delay: 0.08s; }
+/* Estado de entrada después del cambio (sale del clip-path desde abajo) */
+.proceso-3d__text.is-entering .reveal-inner {
+  transform: translateY(115%);
+  opacity: 0;
+  transition: none;
+}
+.proceso-3d__text.is-entering .reveal:nth-child(1) .reveal-inner { transition-delay: 0.05s; }
+.proceso-3d__text.is-entering .reveal:nth-child(2) .reveal-inner { transition-delay: 0.13s; }
+.proceso-3d__text.is-entering .reveal:nth-child(3) .reveal-inner { transition-delay: 0.21s; }
+
+.proceso-3d__num {
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-size: 14px;
+  letter-spacing: 0.22em;
+  color: var(--c-brand, #CBA058);
+  margin-bottom: 14px;
+}
+.proceso-3d__title {
+  font-family: var(--font-display, "Super", Helvetica, sans-serif);
+  font-weight: 500;
+  font-size: clamp(48px, 6.4vw, 96px);
+  line-height: 0.92;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  color: #F4EBE1;
+  margin: 0 0 26px 0;
+}
+.proceso-3d__desc {
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(16px, 1.35vw, 21px);
+  line-height: 1.55;
+  color: rgba(244, 235, 225, 0.72);
+  margin: 0;
+  max-width: 420px;
+}
+
+/* Lado derecho: indicador de paso */
+.proceso-3d__copy-right {
+  width: clamp(200px, 24vw, 320px);
+  pointer-events: auto;
+  align-self: flex-end;
+  padding-bottom: clamp(20px, 4vh, 40px);
+}
+.proceso-3d__indicator {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.proceso-3d__bar {
+  flex: 1;
+  height: 1px;
+  background: rgba(244, 235, 225, 0.18);
+  position: relative;
+  overflow: hidden;
+}
+.proceso-3d__bar-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--c-brand, #CBA058);
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.proceso-3d__count {
+  font-family: var(--font-display, "Super", Helvetica, sans-serif);
+  font-size: 12px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--c-brand, #CBA058);
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .proceso-3d {
+    height: 360vh;
+  }
+  .proceso-3d__overlay {
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 12vh var(--gutter, 24px) 6vh;
+    text-align: left;
+    align-items: stretch;
+  }
+  .proceso-3d__copy-left,
+  .proceso-3d__copy-right {
+    width: 100%;
+  }
+  .proceso-3d__copy-right {
+    padding-bottom: 0;
+  }
+  .proceso-3d__title {
+    font-size: clamp(36px, 9vw, 56px);
+  }
+}
+
+/* PRODUCTOS TABS — fondo cuero/terracotta con textura de granulado fino
+   (cuero curtido). El base es un degradé terracotta. Encima un overlay
+   ::before con SVG noise inline (fractalNoise) que da el grain sutil
+   tipo piel. El ::after agrega un segundo layer de noise más fino para
+   profundidad de textura. Todo CSS, sin imágenes externas. */
+.productos {
+  padding: max(10rem, min(10vw, 15rem)) 0;
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(255, 230, 200, 0.10), transparent 55%),
+    radial-gradient(ellipse at 80% 70%, rgba(46, 24, 12, 0.30), transparent 60%),
+    linear-gradient(135deg, #6B4423 0%, #8B5A33 50%, #7A4A28 100%);
+  color: var(--c-text, #2A2520);
+}
+.productos::before,
+.productos::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+/* Layer 1 — grain principal, granos gruesos tipo poros de cuero */
+.productos::before {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 220px 220px;
+  opacity: 0.55;
+  mix-blend-mode: multiply;
+}
+/* Layer 2 — grano fino encima, simula la microtextura del cuero */
+.productos::after {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='2.5' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 140px 140px;
+  opacity: 0.4;
+  mix-blend-mode: overlay;
+}
+/* Asegurar que el contenido quede por encima del noise */
+.productos > * {
+  position: relative;
+  z-index: 1;
+}
+.productos__bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  text-align: center;
+  pointer-events: none;
+  z-index: 1;
+}
+.productos__giant {
+  font-family: var(--font-sans);
+  font-size: max(10rem, min(15vw, 25rem));
+  font-weight: 900;
+  line-height: 0.8;
+  color: #2A1810; /* negro tierra, alto contraste sobre el cuero */
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  opacity: 0.92;
+}
+.productos__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.productos__eyebrow {
+  /* Mismo tamaño/peso/tipografía que .manifesto__title — son ambos
+     títulos de sección con la filosofía/concepto principal. */
+  display: block;
+  font-family: var(--font-serif);
+  font-size: max(3rem, min(4vw, 5rem));
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #2A1810;
+  margin-bottom: max(3rem, min(4vw, 5rem));
+}
+.productos__stage {
+  width: max(20rem, min(30vw, 40rem));
+  height: max(20rem, min(30vw, 40rem));
+  margin: 0 0 4rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.3)); /* Premium 3D drop shadow */
+}
+.productos__mate {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.productos__tabs {
+  display: flex;
+  gap: max(1.5rem, min(2vw, 3rem));
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 3rem;
+}
+.productos__tab {
+  padding: 0.5rem 0;
+  background: none;
+  border: none;
+  color: rgba(42, 24, 16, 0.55); /* negro tierra suave en estado normal */
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: max(1rem, min(1vw, 1.5rem));
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.3s var(--ease-out);
+  position: relative;
+}
+.productos__tab:hover {
+  color: #2A1810;
+}
+.productos__tab.is-active {
+  color: #2A1810;
+}
+.productos__tab::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #2A1810;
+  transform: scaleX(0);
+  transition: transform 0.3s var(--ease-out);
+}
+.productos__tab.is-active::after,
+.productos__tab:hover::after {
+  transform: scaleX(1);
+}
+.productos__desc {
+  font-size: max(1.2rem, min(1.2vw, 1.6rem));
+  text-align: center;
+  color: #2A1810; /* negro tierra sobre el fondo cuero */
+  font-weight: 500;
+}
+
+/* FOOTER — textura cuero/terracotta, misma que .productos.
+   Base: degradé terracotta + dos capas de noise (grano grueso + micrograno)
+   simulando piel curtida. Texto en tonos oscuros (negro-tierra y crema)
+   que leen alto contraste sobre el cuero. */
+.footer {
+  position: relative;
+  overflow: hidden;
+  padding: 8rem 2rem 4rem;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(255, 230, 200, 0.10), transparent 55%),
+    radial-gradient(ellipse at 80% 70%, rgba(46, 24, 12, 0.30), transparent 60%),
+    linear-gradient(135deg, #6B4423 0%, #8B5A33 50%, #7A4A28 100%);
+  color: #2A1810;
+}
+.footer::before,
+.footer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+/* Layer 1 — grano grueso tipo poros de cuero (igual a .productos::before) */
+.footer::before {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 220px 220px;
+  opacity: 0.55;
+  mix-blend-mode: multiply;
+}
+/* Layer 2 — micrograno fino encima (igual a .productos::after) */
+.footer::after {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='2.5' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 140px 140px;
+  opacity: 0.4;
+  mix-blend-mode: overlay;
+}
+/* Contenido del footer por encima del noise */
+.footer__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.footer__brand {
+  margin-bottom: 6rem;
+  text-align: center;
+}
+.footer__logo {
+  width: 120px;
+  margin-bottom: 2rem;
+}
+.footer__slogan {
+  font-family: var(--font-serif);
+  font-size: 2.4rem;
+  color: #2A1810;
+}
+/* Mobile: stack vertical centrado. Desktop/tablet: flex row con
+   justify-content:center → con 3 o 4 columnas SIEMPRE centradas
+   (no quedan huérfanas a la izquierda con espacio vacío a la derecha
+   como pasaba con grid de 4 columnas fijas cuando solo había 3 cols). */
+.footer__cols {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  margin-bottom: 6rem;
+  text-align: center;
+  align-items: center;
+}
+@media (min-width: 600px) {
+  .footer__cols {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: clamp(4rem, 6vw, 8rem);
+    text-align: left;
+  }
+  /* Ancho fijo por columna para que el layout sea predecible y las
+     columnas tengan visualmente la misma "presencia" sin importar
+     cuántas haya. */
+  .footer__col {
+    flex: 0 0 auto;
+    min-width: 16rem;
+    max-width: 24rem;
+  }
+}
+.footer__col h4 {
+  text-transform: uppercase;
+  color: #2A1810;
+  margin-bottom: 2rem;
+  font-weight: 700;
+}
+.footer__col a, .footer__col p {
+  display: block;
+  margin-bottom: 1rem;
+  color: rgba(42, 24, 16, 0.78);
+}
+.footer__col a {
+  text-decoration: none;
+  transition: color 0.3s var(--ease-out);
+}
+.footer__col a:hover {
+  color: #2A1810;
+}
+.footer__base {
+  border-top: 1px solid rgba(42, 24, 16, 0.22);
+  padding-top: 2rem;
+  text-align: center;
+  font-size: 1.4rem;
+  color: rgba(42, 24, 16, 0.6);
+}
+
+/* FAB */
+.wa-fab {
+  position: fixed;
+  bottom: 3rem;
+  right: 3rem;
+  background-color: #25D366;
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 100;
+  transition: transform 0.3s ease;
+}
+.wa-fab:hover {
+  transform: scale(1.1);
+}
+
+/* ANIMATION UTILS */
+.intro {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: var(--c-brand);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.intro__logo {
+  width: 150px;
+}
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   ░░░░░░░░░░░░ SECCIÓN B2B — MARCAS BLANCAS & MAYORISTAS ░░░░░░░░░░░░
+   ═══════════════════════════════════════════════════════════════════
+   Estética cálida cream/terracotta — match con manifesto/amargor. Header
+   centrado con eyebrow dorado + título serif grande en verde tierra +
+   lead. Debajo dos cards limpias en cream con border tierra, texto
+   oscuro y CTA flecha terracotta. NO dark, NO glass, NO futurístico.
+   ─────────────────────────────────────────────────────────────────── */
+.b2b {
+  position: relative;
+  background-color: var(--c-bg); /* Cream beige, igual que manifesto */
+  color: var(--c-text);
+  padding: clamp(80px, 14vh, 180px) 0;
+}
+
+.b2b__inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 clamp(28px, 5vw, 80px);
+}
+
+/* Header centrado — mismo formato que manifesto: pequeño rombo dorado
+   arriba (decorativo), eyebrow, título serif grande, lead. */
+.b2b__header {
+  text-align: center;
+  margin: 0 auto clamp(48px, 8vh, 100px);
+  max-width: 820px;
+}
+.b2b__eyebrow {
+  display: inline-block;
+  color: var(--c-earth, #6B4423);
+  font-family: var(--font-sans, "super-reg"), Helvetica, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 26px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(107, 68, 35, 0.35);
+}
+.b2b__title {
+  font-family: var(--font-serif, "super-med"), Helvetica, sans-serif;
+  font-weight: 700;
+  font-size: clamp(40px, 6.5vw, 84px);
+  line-height: 0.95;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--c-green, #2B3A2C);
+  margin: 0 0 24px 0;
+}
+.b2b__lead {
+  font-family: var(--font-sans, "super-reg"), Helvetica, sans-serif;
+  font-size: clamp(16px, 1.4vw, 20px);
+  line-height: 1.55;
+  color: var(--c-text);
+  margin: 0 auto;
+  max-width: 640px;
+}
+
+/* Grid de 2 cards lado a lado (collapses a 1 columna en mobile <800px) */
+.b2b__cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(20px, 3vw, 36px);
+}
+@media (max-width: 800px) {
+  .b2b__cards { grid-template-columns: 1fr; }
+}
+
+/* Variante de UNA sola card (cuando se retira marca blanca y queda
+   sólo mayoristas). Card centrada y ancha pero no full-width — queda
+   premium sin parecer huérfana en el grid. */
+.b2b__cards--single {
+  grid-template-columns: 1fr;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   B2B SINGLE — features grid abierto + CTA grande
+   ═══════════════════════════════════════════════════════════════════
+   Cuando hay UNA sola propuesta (mayoristas), no usamos card wrapper.
+   Mostramos 3 features en grid 1x3 directo sobre el cream bg, cada una
+   con número grande dorado, título serif y descripción Garamond italic.
+   El CTA grande va centrado al pie con icono WhatsApp.
+   ─────────────────────────────────────────────────────────────────── */
+.b2b__features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(32px, 4vw, 64px);
+  max-width: 1100px;
+  margin: 0 auto clamp(48px, 6vw, 80px);
+  padding: 0 clamp(8px, 2vw, 24px);
+}
+@media (max-width: 800px) {
+  .b2b__features { grid-template-columns: 1fr; gap: clamp(40px, 6vw, 56px); }
+}
+
+/* Cada feature — número grande con stroke dorado decorativo arriba,
+   título serif uppercase, descripción italic. Separadas con un
+   hairline dorado entre columnas en desktop (decorativo). */
+.b2b__feature {
+  position: relative;
+  padding: 0 clamp(8px, 1.5vw, 20px);
+}
+/* Hairline dorada vertical entre features (sólo en desktop) */
+@media (min-width: 801px) {
+  .b2b__feature + .b2b__feature::before {
+    content: "";
+    position: absolute;
+    top: 12px;
+    bottom: 12px;
+    left: 0;
+    margin-left: clamp(-32px, -2vw, -16px); /* mitad del gap */
+    width: 1px;
+    background: linear-gradient(180deg,
+      transparent 0%,
+      rgba(107, 68, 35, 0.25) 30%,
+      rgba(107, 68, 35, 0.25) 70%,
+      transparent 100%);
+  }
+}
+
+/* Ícono SVG dorado — reemplaza al número 01/02/03 genérico. Cada
+   feature tiene un ícono temático (etiqueta/cajas/camión). Tamaño
+   responsive con clamp + stroke fino para look artesanal premium. */
+.b2b__feature-icon {
+  display: block;
+  width: clamp(40px, 4vw, 52px);
+  height: clamp(40px, 4vw, 52px);
+  margin-bottom: 1.6rem;
+  color: var(--c-brand, #CBA058);
+}
+.b2b__feature-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.b2b__feature-title {
+  font-family: var(--font-serif, "super-med"), Helvetica, sans-serif;
+  font-weight: 700;
+  font-size: clamp(20px, 1.8vw, 26px);
+  line-height: 1.1;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--c-green, #2B3A2C);
+  margin: 0 0 1.2rem 0;
+}
+.b2b__feature-desc {
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(15px, 1.2vw, 17px);
+  line-height: 1.6;
+  color: rgba(42, 24, 16, 0.78);
+  margin: 0;
+}
+
+/* CTA row — centrado, botón grande con icono WhatsApp + flecha. Sombra
+   sutil dorada en hover. Nota chica italic abajo informando timing. */
+.b2b__cta-row {
+  text-align: center;
+  margin-top: clamp(20px, 3vw, 40px);
+}
+.b2b__cta-grande {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 1.6rem 3.2rem;
+  background: var(--c-green, #2B3A2C);
+  color: var(--c-bg, #F4EBE1);
+  text-decoration: none;
+  font-family: var(--font-serif, "super-med"), Helvetica, sans-serif;
+  font-weight: 700;
+  font-size: clamp(13px, 1.1vw, 15px);
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  border-radius: 3px;
+  box-shadow: 0 4px 0 rgba(46, 24, 12, 0.22);
+  transition:
+    transform 0.35s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1)),
+    background 0.35s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1)),
+    box-shadow 0.35s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1));
+}
+.b2b__cta-grande:hover {
+  background: #1d2a1e;
+  transform: translateY(-3px);
+  box-shadow:
+    0 10px 24px -8px rgba(46, 24, 12, 0.40),
+    0 4px 0 rgba(46, 24, 12, 0.30);
+}
+.b2b__cta-grande:active { transform: translateY(0); }
+.b2b__cta-grande svg:last-of-type {
+  transition: transform 0.35s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1));
+}
+.b2b__cta-grande:hover svg:last-of-type { transform: translateX(4px); }
+
+/* .b2b__cta-note — eliminado del HTML por decisión del cliente.
+   La regla se mantiene comentada por si se quiere reactivar después.
+.b2b__cta-note {
+  margin: 1.8rem 0 0;
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(13px, 1vw, 15px);
+  color: rgba(42, 24, 16, 0.55);
+} */
+
+/* Cards en blanco roto sobre el cream, border terroso. Bordes redondeados
+   para ligereza, hover sube ligeramente. */
+.b2b__card {
+  position: relative;
+  background: rgba(255, 252, 246, 0.65); /* Off-white sobre cream */
+  border: 1px solid rgba(107, 68, 35, 0.18);
+  border-radius: clamp(8px, 1vw, 14px);
+  padding: clamp(32px, 4vw, 56px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(18px, 2.2vw, 26px);
+  transition:
+    border-color 0.4s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1)),
+    transform    0.4s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1)),
+    box-shadow   0.4s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1));
+}
+.b2b__card:hover {
+  border-color: rgba(107, 68, 35, 0.45);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(46, 24, 12, 0.10);
+}
+
+.b2b__card-eyebrow {
+  font-family: var(--font-sans, "super-reg"), Helvetica, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--c-earth, #6B4423);
+}
+.b2b__card-title {
+  font-family: var(--font-serif, "super-med"), Helvetica, sans-serif;
+  font-weight: 700;
+  font-size: clamp(28px, 3.6vw, 44px);
+  line-height: 1;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--c-green, #2B3A2C);
+  margin: 0;
+}
+.b2b__card-desc {
+  font-family: var(--font-sans, "super-reg"), Helvetica, sans-serif;
+  font-size: clamp(14px, 1.2vw, 17px);
+  line-height: 1.6;
+  color: var(--c-text);
+  margin: 0;
+}
+
+/* Lista con dash terroso en vez de bullet */
+.b2b__card-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.b2b__card-list li {
+  position: relative;
+  padding-left: 22px;
+  font-family: var(--font-sans, "super-reg"), Helvetica, sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+  color: rgba(26, 26, 26, 0.78);
+}
+.b2b__card-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 12px;
+  height: 1px;
+  background: var(--c-earth, #6B4423);
+}
+
+/* CTA flecha — color tierra, separado por un line-top sutil. Empuja
+   a la derecha en hover. */
+.b2b__card-cta {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  padding-top: 18px;
+  border-top: 1px solid rgba(107, 68, 35, 0.22);
+  color: var(--c-earth, #6B4423);
+  text-decoration: none;
+  font-family: var(--font-sans, "super-reg"), Helvetica, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition:
+    color 0.35s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1)),
+    gap   0.35s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1));
+}
+.b2b__card-cta:hover { color: var(--c-green, #2B3A2C); gap: 14px; }
+.b2b__card-cta svg {
+  transition: transform 0.35s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1));
+}
+.b2b__card-cta:hover svg { transform: translateX(4px); }

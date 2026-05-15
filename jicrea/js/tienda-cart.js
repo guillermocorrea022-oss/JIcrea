@@ -1,0 +1,520 @@
+/* ════════════════════════════════════════════════════════════════════════
+   TIENDA — Carrito + modal de cantidad + notificación + isla flotante
+   ════════════════════════════════════════════════════════════════════════
+   FLUJO:
+   1. Click "Agregar al carrito"  → abre modal de cantidad
+   2. Usuario elige cantidad      → confirma
+   3. Se agrega al carrito        → notificación cuero arriba-der
+                                     con total y CTA "Finalizar compra"
+   4. Notificación se va sola tras 5s OR al click "Seguir mirando"
+   5. "Finalizar compra"          → abre carrito drawer
+   6. En el drawer, total general + botón WhatsApp con el pedido completo
+   ════════════════════════════════════════════════════════════════════════ */
+
+(() => {
+  const WA_PHONE = "59898507241";
+  const STORAGE_KEY = "jicrea_cart_v2";
+
+  // ─────────── Estado ───────────
+  let cart = []; // [{ id, name, price, qty }]
+  let pendingProduct = null; // producto en el modal de cantidad
+  let pendingQty = 1;
+
+  // ─────────── DOM refs ───────────
+  const cartBtn      = document.getElementById("cartBtn");
+  const cartCount    = document.getElementById("cartCount");
+  const cartEl       = document.getElementById("cart");
+  const cartBackdrop = document.getElementById("cartBackdrop");
+  const cartClose    = document.getElementById("cartClose");
+  const cartList     = document.getElementById("cartList");
+  const cartEmpty    = document.getElementById("cartEmpty");
+  const cartCheckout = document.getElementById("cartCheckout");
+  const cartTotalAmount = document.getElementById("cartTotalAmount");
+
+  // Modal cantidad
+  const qtyModal      = document.getElementById("qtyModal");
+  const qtyModalBack  = document.getElementById("qtyModalBackdrop");
+  const qtyModalClose = document.getElementById("qtyModalClose");
+  const qtyMinus      = document.getElementById("qtyMinus");
+  const qtyPlus       = document.getElementById("qtyPlus");
+  const qtyValue      = document.getElementById("qtyValue");
+  const qtyConfirm    = document.getElementById("qtyConfirm");
+  const qtyModalImg   = document.getElementById("qtyModalImg");
+  const qtyModalName  = document.getElementById("qtyModalName");
+  const qtyModalPrice = document.getElementById("qtyModalPrice");
+  const qtySubtotal   = document.getElementById("qtySubtotal");
+
+  // Notificación
+  const cartNotif    = document.getElementById("cartNotif");
+  const notifTitle   = document.getElementById("notifTitle");
+  const notifDetail  = document.getElementById("notifDetail");
+  const notifTotal   = document.getElementById("notifTotal");
+  const notifKeep    = document.getElementById("notifKeep");
+  const notifCheckout = document.getElementById("notifCheckout");
+
+  // Isla flotante
+  const floatingIsland = document.getElementById("floatingIsland");
+
+  // ─────────── Persistencia ───────────
+  function load() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) cart = JSON.parse(raw);
+    } catch (e) { cart = []; }
+  }
+  function save() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(cart)); } catch (e) {}
+  }
+
+  // ─────────── Formato precios ───────────
+  function fmt(n) {
+    return "$" + Math.round(n).toLocaleString("es-UY");
+  }
+  function totalQty() {
+    return cart.reduce((s, it) => s + it.qty, 0);
+  }
+  function totalPrice() {
+    return cart.reduce((s, it) => s + (it.price || 0) * it.qty, 0);
+  }
+
+  // ─────────── Mutaciones ───────────
+  function addItem(id, name, price, qty) {
+    const existing = cart.find(it => it.id === id);
+    if (existing) {
+      existing.qty += qty;
+    } else {
+      cart.push({ id, name, price, qty });
+    }
+    save();
+    renderCart();
+    pulseCount();
+  }
+  function changeQty(id, delta) {
+    const item = cart.find(it => it.id === id);
+    if (!item) return;
+    item.qty += delta;
+    if (item.qty <= 0) cart = cart.filter(it => it.id !== id);
+    save();
+    renderCart();
+  }
+  function removeItem(id) {
+    cart = cart.filter(it => it.id !== id);
+    save();
+    renderCart();
+  }
+
+  // ─────────── Render cart drawer ───────────
+  function renderCart() {
+    const tq = totalQty();
+    const tp = totalPrice();
+
+    cartCount.textContent = tq;
+    cartCount.classList.toggle("is-visible", tq > 0);
+
+    cartList.innerHTML = "";
+    if (cart.length === 0) {
+      cartEmpty.style.display = "block";
+      cartList.style.display = "none";
+      cartCheckout.disabled = true;
+      if (cartTotalAmount) cartTotalAmount.textContent = "$0";
+    } else {
+      cartEmpty.style.display = "none";
+      cartList.style.display = "flex";
+      cartCheckout.disabled = false;
+      if (cartTotalAmount) cartTotalAmount.textContent = fmt(tp);
+      cart.forEach(item => {
+        const li = document.createElement("li");
+        li.className = "cart-item";
+        // Si el item no trae .img (carrito legacy en localStorage), usamos
+        // un placeholder transparente — no rompe el layout.
+        const imgSrc = item.img ? escapeHtml(item.img) : "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'/>";
+        li.innerHTML = `
+          <div class="cart-item__thumb"><img src="${imgSrc}" alt="${escapeHtml(item.name)}" loading="lazy"></div>
+          <div class="cart-item__info">
+            <span class="cart-item__name">${escapeHtml(item.name)}</span>
+            <span class="cart-item__price">${fmt(item.price)} c/u</span>
+          </div>
+          <div class="cart-item__qty">
+            <button class="cart-item__qty-btn" data-action="minus" data-id="${item.id}" aria-label="Restar">−</button>
+            <span class="cart-item__qty-value">${item.qty}</span>
+            <button class="cart-item__qty-btn" data-action="plus" data-id="${item.id}" aria-label="Sumar">+</button>
+          </div>
+          <button class="cart-item__remove" data-action="remove" data-id="${item.id}" aria-label="Quitar">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+              <path d="M10 11v6M14 11v6"/>
+              <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+            </svg>
+          </button>
+        `;
+        cartList.appendChild(li);
+      });
+    }
+  }
+  function pulseCount() {
+    cartCount.classList.remove("is-pulse");
+    void cartCount.offsetWidth;
+    cartCount.classList.add("is-pulse");
+  }
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" })[c]);
+  }
+
+  // ─────────── Drawer ───────────
+  function openCart() {
+    cartEl.classList.add("is-open");
+    cartEl.setAttribute("aria-hidden", "false");
+    cartBackdrop.classList.add("is-open");
+    document.body.style.overflow = "hidden";
+  }
+  function closeCart() {
+    cartEl.classList.remove("is-open");
+    cartEl.setAttribute("aria-hidden", "true");
+    cartBackdrop.classList.remove("is-open");
+    document.body.style.overflow = "";
+  }
+
+  // ─────────── Modal de cantidad ───────────
+  function openQtyModal(productData) {
+    pendingProduct = productData;
+    pendingQty = 1;
+    qtyModalImg.src = productData.img || "";
+    qtyModalName.textContent = productData.name;
+    qtyModalPrice.textContent = fmt(productData.price);
+    qtyValue.textContent = pendingQty;
+    qtySubtotal.textContent = fmt(productData.price);
+    qtyModal.classList.add("is-open");
+    qtyModal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+  function closeQtyModal() {
+    qtyModal.classList.remove("is-open");
+    qtyModal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+    pendingProduct = null;
+  }
+  function updateQtyModal() {
+    qtyValue.textContent = pendingQty;
+    if (pendingProduct) qtySubtotal.textContent = fmt(pendingProduct.price * pendingQty);
+  }
+  function confirmQty() {
+    if (!pendingProduct) return;
+    addItem(pendingProduct.id, pendingProduct.name, pendingProduct.price, pendingQty);
+    const addedQty = pendingQty;
+    const addedName = pendingProduct.name;
+    const addedSubtotal = pendingProduct.price * pendingQty;
+    closeQtyModal();
+    showNotif(addedName, addedQty, addedSubtotal);
+  }
+
+  // ─────────── Notificación ───────────
+  let notifTimer = null;
+  function showNotif(name, qty, subtotal) {
+    notifTitle.textContent = "Agregado al carrito";
+    notifDetail.textContent = `${qty}× ${name} · ${fmt(subtotal)}`;
+    notifTotal.textContent = fmt(totalPrice());
+    cartNotif.classList.add("is-visible");
+    clearTimeout(notifTimer);
+    notifTimer = setTimeout(hideNotif, 6000);
+  }
+  function hideNotif() {
+    cartNotif.classList.remove("is-visible");
+    clearTimeout(notifTimer);
+  }
+
+  // ─────────── Checkout WhatsApp ───────────
+  function checkout() {
+    if (cart.length === 0) return;
+    const lines = ["Hola JIcrea! Quiero hacer este pedido:", ""];
+    cart.forEach(item => {
+      lines.push(`• ${item.qty}× ${item.name}  —  ${fmt(item.price)} c/u`);
+    });
+    lines.push("");
+    lines.push(`Total estimado: ${fmt(totalPrice())} (${totalQty()} unidad${totalQty() === 1 ? "" : "es"})`);
+    lines.push("");
+    lines.push("¿Cómo coordinamos la entrega y el pago?");
+    const msg = encodeURIComponent(lines.join("\n"));
+    window.open("https://wa.me/" + WA_PHONE + "?text=" + msg, "_blank", "noopener");
+  }
+
+  // ─────────── ISLA FLOTANTE — show/hide en scroll up ───────────
+  function initFloatingIsland() {
+    if (!floatingIsland) return;
+    const links = floatingIsland.querySelectorAll(".floating-island__link");
+    const targets = Array.from(links)
+      .map(l => ({ link: l, el: document.getElementById(l.getAttribute("data-target")) }))
+      .filter(t => t.el);
+
+    let lastScroll = window.scrollY;
+    let ticking = false;
+
+    function update() {
+      const cur = window.scrollY;
+      const goingUp = cur < lastScroll;
+      // Solo mostrar la isla cuando ya scrolleaste un poco abajo (>500px)
+      // y vas hacia arriba. Ocultar cuando vas hacia abajo o estás muy arriba.
+      const shouldShow = goingUp && cur > 500;
+      floatingIsland.classList.toggle("is-visible", shouldShow);
+      lastScroll = cur;
+
+      // Highlight de sección activa
+      const offset = window.innerHeight * 0.35;
+      let active = null;
+      targets.forEach(t => {
+        const top = t.el.getBoundingClientRect().top;
+        if (top - offset <= 0) active = t;
+      });
+      links.forEach(l => l.classList.remove("is-active"));
+      if (active) active.link.classList.add("is-active");
+
+      ticking = false;
+    }
+    window.addEventListener("scroll", () => {
+      if (!ticking) {
+        requestAnimationFrame(update);
+        ticking = true;
+      }
+    }, { passive: true });
+
+    // Click suave en cada link de la isla
+    links.forEach(link => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        const id = link.getAttribute("data-target");
+        const target = document.getElementById(id);
+        if (!target) return;
+        const header = document.getElementById("header");
+        const headerH = header ? header.offsetHeight : 0;
+        const y = window.scrollY + target.getBoundingClientRect().top - headerH - 20;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      });
+    });
+  }
+
+  // ─────────── Event bindings ───────────
+  function bindEvents() {
+    // Productos: click "Agregar al carrito" → abrir modal de cantidad
+    document.querySelectorAll("[data-add]").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const id    = btn.getAttribute("data-id");
+        const name  = btn.getAttribute("data-name");
+        const price = parseFloat(btn.getAttribute("data-price")) || 0;
+        const img   = btn.getAttribute("data-img") || "";
+        if (!id || !name) return;
+        openQtyModal({ id, name, price, img });
+      });
+    });
+
+    // Modal de cantidad
+    qtyMinus.addEventListener("click", () => {
+      pendingQty = Math.max(1, pendingQty - 1);
+      updateQtyModal();
+    });
+    qtyPlus.addEventListener("click", () => {
+      pendingQty++;
+      updateQtyModal();
+    });
+    qtyConfirm.addEventListener("click", confirmQty);
+    qtyModalClose.addEventListener("click", closeQtyModal);
+    qtyModalBack.addEventListener("click", closeQtyModal);
+
+    // Notificación
+    notifKeep.addEventListener("click", hideNotif);
+    notifCheckout.addEventListener("click", () => {
+      hideNotif();
+      openCart();
+    });
+
+    // Carrito drawer
+    cartBtn.addEventListener("click", openCart);
+    cartClose.addEventListener("click", closeCart);
+    cartBackdrop.addEventListener("click", closeCart);
+    cartCheckout.addEventListener("click", checkout);
+
+    // Botones +/- y remove dentro del drawer (delegación)
+    cartList.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-action]");
+      if (!btn) return;
+      const id = btn.getAttribute("data-id");
+      const action = btn.getAttribute("data-action");
+      if (action === "plus") changeQty(id, +1);
+      else if (action === "minus") changeQty(id, -1);
+      else if (action === "remove") removeItem(id);
+    });
+
+    // ESC cierra modal o carrito
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      if (qtyModal.classList.contains("is-open")) closeQtyModal();
+      else if (cartEl.classList.contains("is-open")) closeCart();
+    });
+  }
+
+  // ═══════════════════════════════════════════════════════════════════
+  // MAYORISTA PICKER — selector de compra mayorista (min 10 unidades)
+  // ═══════════════════════════════════════════════════════════════════
+  // Lee los productos directamente del DOM (data-attributes en las
+  // .prod__btn de las secciones de la tienda). Así no duplicamos la base.
+  // Estado independiente del carrito normal — la compra mayorista se
+  // arma y envía por WhatsApp en una sola operación.
+  const MAYORISTA_MIN = 10;
+  let mayoristaCatalog = []; // [{id, name, price, img, cat}]
+  let mayoristaQty = {};     // { id: qty }
+
+  function initMayorista() {
+    const openBtn = document.getElementById("openMayoristaPicker");
+    const modal   = document.getElementById("mayoristaModal");
+    if (!openBtn || !modal) return;
+
+    const backdrop = document.getElementById("mayoristaBackdrop");
+    const closeBtn = document.getElementById("mayoristaClose");
+    const grid     = document.getElementById("mayoristaGrid");
+    const countEl  = document.getElementById("mayoristaCount");
+    const extraEl  = document.getElementById("mayoristaExtra");
+    const totalEl  = document.getElementById("mayoristaTotal");
+    const barEl    = document.getElementById("mayoristaBar");
+    const confirm  = document.getElementById("mayoristaConfirm");
+    const confLbl  = document.getElementById("mayoristaConfirmLabel");
+
+    // Construir catálogo leyendo las secciones de la tienda
+    function buildCatalog() {
+      mayoristaCatalog = [];
+      document.querySelectorAll(".seccion-prod").forEach(sec => {
+        const headEl = sec.querySelector(".seccion-prod__head .manifesto__title");
+        const cat    = headEl ? headEl.textContent.trim() : "";
+        sec.querySelectorAll("[data-add]").forEach(btn => {
+          const id    = btn.getAttribute("data-id");
+          const name  = btn.getAttribute("data-name");
+          const price = parseFloat(btn.getAttribute("data-price")) || 0;
+          const img   = btn.getAttribute("data-img") || "";
+          if (!id || !name) return;
+          mayoristaCatalog.push({ id, name, price, img, cat });
+        });
+      });
+    }
+
+    function renderGrid() {
+      grid.innerHTML = "";
+      mayoristaCatalog.forEach(p => {
+        const q = mayoristaQty[p.id] || 0;
+        const card = document.createElement("article");
+        card.className = "mayo-card" + (q > 0 ? " is-selected" : "");
+        card.innerHTML = `
+          <div class="mayo-card__img"><img src="${escapeHtml(p.img)}" alt="${escapeHtml(p.name)}" loading="lazy"></div>
+          <span class="mayo-card__cat">${escapeHtml(p.cat)}</span>
+          <h3 class="mayo-card__name">${escapeHtml(p.name)}</h3>
+          <p class="mayo-card__price">${fmt(p.price)}</p>
+          <div class="mayo-card__qty">
+            <button class="mayo-card__qty-btn" data-mayo-action="minus" data-id="${p.id}" aria-label="Restar" ${q === 0 ? "disabled" : ""}>−</button>
+            <span class="mayo-card__qty-value">${q}</span>
+            <button class="mayo-card__qty-btn" data-mayo-action="plus" data-id="${p.id}" aria-label="Sumar">+</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function totalUnits() {
+      return Object.values(mayoristaQty).reduce((s, n) => s + n, 0);
+    }
+    function totalAmount() {
+      return mayoristaCatalog.reduce((s, p) => s + (mayoristaQty[p.id] || 0) * p.price, 0);
+    }
+    function updateFooter() {
+      const units = totalUnits();
+      const amount = totalAmount();
+      countEl.textContent = units;
+      totalEl.textContent = fmt(amount);
+      const pct = Math.min(100, (units / MAYORISTA_MIN) * 100);
+      barEl.style.width = pct + "%";
+      const met = units >= MAYORISTA_MIN;
+      barEl.classList.toggle("is-met", met);
+      confirm.disabled = !met;
+      if (met) {
+        const extra = units - MAYORISTA_MIN;
+        extraEl.textContent = extra > 0 ? `· ${extra} extra` : "· mínimo cumplido";
+        confLbl.textContent = "Enviar pedido por WhatsApp";
+      } else {
+        const falt = MAYORISTA_MIN - units;
+        extraEl.textContent = "";
+        confLbl.textContent = `Elegí ${falt} unidad${falt === 1 ? "" : "es"} más`;
+      }
+    }
+    function rerenderItem(id) {
+      // Actualización quirúrgica de UNA card (evita rebuildear todo el grid)
+      const q = mayoristaQty[id] || 0;
+      const card = grid.querySelector(`[data-id="${id}"]`)?.closest(".mayo-card");
+      if (!card) return;
+      card.classList.toggle("is-selected", q > 0);
+      const val = card.querySelector(".mayo-card__qty-value");
+      if (val) val.textContent = q;
+      const minus = card.querySelector('[data-mayo-action="minus"]');
+      if (minus) minus.disabled = q === 0;
+    }
+
+    function open() {
+      buildCatalog();
+      renderGrid();
+      updateFooter();
+      modal.classList.add("is-open");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+    function close() {
+      modal.classList.remove("is-open");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+
+    function sendWhatsApp() {
+      const units = totalUnits();
+      if (units < MAYORISTA_MIN) return;
+      const lines = ["Hola JIcrea! Quiero pedir esta compra MAYORISTA:", ""];
+      mayoristaCatalog.forEach(p => {
+        const q = mayoristaQty[p.id] || 0;
+        if (q > 0) lines.push(`• ${q}× ${p.name}  —  ${fmt(p.price)} c/u`);
+      });
+      lines.push("");
+      lines.push(`Total: ${fmt(totalAmount())} (${units} unidades)`);
+      lines.push("");
+      lines.push("¿Cómo coordinamos el envío y el pago?");
+      const msg = encodeURIComponent(lines.join("\n"));
+      window.open("https://wa.me/" + WA_PHONE + "?text=" + msg, "_blank", "noopener");
+    }
+
+    // Bindings
+    openBtn.addEventListener("click", open);
+    closeBtn.addEventListener("click", close);
+    backdrop.addEventListener("click", close);
+    confirm.addEventListener("click", sendWhatsApp);
+
+    grid.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-mayo-action]");
+      if (!btn) return;
+      const id = btn.getAttribute("data-id");
+      const action = btn.getAttribute("data-mayo-action");
+      mayoristaQty[id] = mayoristaQty[id] || 0;
+      if (action === "plus") mayoristaQty[id]++;
+      else if (action === "minus") mayoristaQty[id] = Math.max(0, mayoristaQty[id] - 1);
+      rerenderItem(id);
+      updateFooter();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.classList.contains("is-open")) close();
+    });
+  }
+
+  // ─────────── Init ───────────
+  document.addEventListener("DOMContentLoaded", () => {
+    if (!cartBtn) return;
+    load();
+    renderCart();
+    bindEvents();
+    initFloatingIsland();
+    initMayorista();
+  });
+})();

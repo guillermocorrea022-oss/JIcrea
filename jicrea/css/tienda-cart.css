@@ -1,0 +1,1741 @@
+/* ════════════════════════════════════════════════════════════════════════
+   TIENDA — Estilos adicionales encima de jicrea-pro.css.
+   USAMOS LAS MISMAS variables y mismas tipografías del index. Solo
+   agregamos lo específico: cards de categorías, grid de productos,
+   isla flotante, carrito, modal de cantidad, notificación.
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════════════
+   TIENDA — RE-DISEÑO ARTESANAL COMPLETO
+   ═══════════════════════════════════════════════════════════════════
+   Concepto: cada producto se siente como una ETIQUETA HECHA A MANO
+   sobre la superficie del taller. Paleta cálida cream parchment +
+   tierra + dorado. Detalles que vienen del oficio:
+     · Borde "cosido" en cards (stitch dashed effect)
+     · Números tipo etiqueta numerada manual
+     · Diamond divider entre secciones (◇)
+     · Price tag con look de papel/cartón colgante
+     · Hover sutil — la card "se levanta" como una etiqueta
+   ─────────────────────────────────────────────────────────────────── */
+
+/* ═══════════════════════════════════════════════════════════════════
+   CARDS DE CATEGORÍAS — POLAROIDS ROTADAS (estilo .cards del index)
+   ═══════════════════════════════════════════════════════════════════
+   Cuatro fotos levemente inclinadas, como polaroids tiradas sobre la
+   mesa. Cada una con su ángulo de rotación propio. Hover: enderezan
+   + scale up + sombra crece. Debajo: numero italico, nombre serif
+   uppercase y descripción Garamond italic.
+
+   Reset crítico previo: .cards__inner del index tenía aspect-ratio
+   580/770 + position:relative que rompía cualquier grid acá. Lo
+   forzamos a static + auto.
+   ─────────────────────────────────────────────────────────────────── */
+
+/* Reset de reglas heredadas del index .cards__inner */
+.cards--tienda .cards__inner.cards__inner--tienda {
+  position: static;
+  width: 100%;
+  aspect-ratio: auto;
+}
+.cards--tienda {
+  display: block;
+  align-items: stretch;
+  padding-top: max(4rem, min(6vw, 8rem));
+  padding-bottom: max(8rem, min(10vw, 14rem));
+}
+.cards__inner--tienda {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(2rem, 2.5vw, 4rem);
+  max-width: 1500px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+@media (max-width: 900px) {
+  .cards__inner--tienda { grid-template-columns: repeat(2, 1fr); gap: 3rem 2rem; }
+}
+@media (max-width: 480px) {
+  .cards__inner--tienda { grid-template-columns: 1fr; }
+}
+
+/* Card individual — link wrapper limpio */
+.tienda-card {
+  position: relative;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+/* Foto polaroid — aspect 580/770 (más vertical, formato polaroid),
+   rounded corners suaves, sombra cálida, rotación propia por card.
+   Hover: rotación neutra (0deg) + scale-up + sombra más pronunciada. */
+.tienda-card__photo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 580 / 770;
+  background-size: cover;
+  background-position: center;
+  background-color: rgba(46, 24, 12, 0.06);
+  border-radius: clamp(12px, 1.4vw, 20px);
+  box-shadow:
+    0 14px 32px -12px rgba(46, 24, 12, 0.30),
+    0 4px 12px -4px rgba(46, 24, 12, 0.20);
+  transform-origin: center center;
+  transition:
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+/* Ángulos de rotación distintos por card — natural "tirada sobre la mesa".
+   El patrón alterna izq/der/izq/der para ritmo visual coherente. */
+.tienda-card--1 .tienda-card__photo { transform: rotate(-5deg); }
+.tienda-card--2 .tienda-card__photo { transform: rotate(4deg); }
+.tienda-card--3 .tienda-card__photo { transform: rotate(-3deg); }
+.tienda-card--4 .tienda-card__photo { transform: rotate(6deg); }
+.tienda-card:hover .tienda-card__photo {
+  transform: rotate(0deg) scale(1.04);
+  box-shadow:
+    0 28px 55px -14px rgba(46, 24, 12, 0.45),
+    0 8px 18px -4px rgba(46, 24, 12, 0.30);
+}
+
+/* Información debajo de la foto — alineada a izquierda con padding,
+   número italic + nombre serif grande + descripción italic */
+.tienda-card__num {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  letter-spacing: 0.18em;
+  color: rgba(107, 68, 35, 0.85);
+  margin: 2.4rem 0 0.6rem;
+}
+.tienda-card__num::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  background: var(--c-brand, #CBA058);
+  transform: rotate(45deg);
+}
+.tienda-card__name {
+  font-family: var(--font-serif);
+  font-size: max(2.4rem, min(2.4vw, 3.4rem));
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 1;
+  letter-spacing: 1.5px;
+  margin: 0 0 0.8rem;
+  color: #2B3A2C;
+}
+/* Línea dorada animada bajo el nombre — aparece en hover */
+.tienda-card__name::after {
+  content: "";
+  display: block;
+  width: 28px;
+  height: 2px;
+  margin-top: 1.2rem;
+  background: var(--c-brand, #CBA058);
+  transition: width 0.5s var(--ease-out);
+}
+.tienda-card:hover .tienda-card__name::after { width: 72px; }
+
+.tienda-card__desc {
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-size: 1.6rem;
+  line-height: 1.5;
+  color: rgba(42, 24, 16, 0.75);
+  margin: 0;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   Seccion-prod — fondos por step (light / leather / dark)
+   ───────────────────────────────────────────────────────────────────── */
+.seccion-prod {
+  position: relative;
+  padding: max(8rem, min(10vw, 14rem)) var(--gutter);
+  overflow: hidden;
+}
+.seccion-prod[data-bg="leather"] {
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(255, 230, 200, 0.10), transparent 55%),
+    radial-gradient(ellipse at 80% 70%, rgba(46, 24, 12, 0.30), transparent 60%),
+    linear-gradient(135deg, #6B4423 0%, #8B5A33 50%, #7A4A28 100%);
+  color: #2A1810;
+}
+.seccion-prod[data-bg="leather"]::before,
+.seccion-prod[data-bg="leather"]::after {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.seccion-prod[data-bg="leather"]::before {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 220px 220px;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+}
+.seccion-prod[data-bg="leather"]::after {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='2.5' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 140px 140px;
+  opacity: 0.3;
+  mix-blend-mode: overlay;
+}
+.seccion-prod > * { position: relative; z-index: 1; }
+/* Light section — beige cream con TEXTURA SUTIL TIPO PAPEL KRAFT,
+   para que tenga personalidad propia y no compita con las cards cream.
+   El grain SVG es muy tenue (opacity 0.25 multiply) — apenas se nota
+   pero le da el toque "papel artesanal" característico. */
+.seccion-prod[data-bg="light"] {
+  background-color: #EFE5D5; /* cream más tostado, kraft-paper feel */
+  color: var(--c-text);
+  position: relative;
+}
+.seccion-prod[data-bg="light"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 160px 160px;
+  opacity: 0.25;
+  mix-blend-mode: multiply;
+}
+.seccion-prod[data-bg="dark"] {
+  background-color: var(--c-dark);
+  color: var(--c-text-alt);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   HEADER de cada sección de productos — diamond divider + título serif
+   grande + subtítulo italic Garamond. Sigue la estética de manifesto
+   pero con un toque más artesanal: pequeño divisor decorativo arriba.
+   ───────────────────────────────────────────────────────────────────── */
+.seccion-prod__head {
+  max-width: 900px;
+  margin: 0 auto 6rem;
+  text-align: center;
+  /* Padding-top extra para que el ◇ tenga aire arriba sin pegarse al
+     borde superior de la sección. */
+  padding-top: 5rem;
+}
+/* Decorative divider arriba del título: ──── ◇ ──── (líneas finas con
+   diamond dorado al medio). Es la firma visual artesanal de cada head. */
+.seccion-prod__head::before {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 1px;
+  background: rgba(107, 68, 35, 0.45);
+  /* Margin-bottom aumentado (era 1.6rem). 4.5rem separa la línea del
+     título lo suficiente para que el ◇ respire y no se sienta pegado. */
+  margin: 0 auto 4.5rem;
+  position: relative;
+}
+.seccion-prod[data-bg="leather"] .seccion-prod__head::before {
+  background: rgba(244, 235, 225, 0.55);
+}
+.seccion-prod__head .manifesto__title {
+  position: relative;
+  display: inline-block;
+}
+/* Diamond dorado SOBRE la línea decorativa. top:-5.5rem (era -3.6rem)
+   para que tenga buena separación del título — pedido del cliente
+   "separar los cositos un poco más de los títulos". */
+.seccion-prod__head .manifesto__title::before {
+  content: "◇";
+  position: absolute;
+  top: -5.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--c-brand);
+  font-size: 1.3rem;
+  background: var(--c-bg);
+  padding: 0 1rem;
+}
+.seccion-prod[data-bg="leather"] .seccion-prod__head .manifesto__title::before {
+  background: linear-gradient(135deg, #6B4423, #8B5A33); /* matchea el leather bg */
+}
+
+/* Override del color del título según fondo — match contra leather */
+.seccion-prod[data-bg="leather"] .seccion-prod__head .manifesto__title {
+  color: #F4EBE1;
+}
+.seccion-prod[data-bg="leather"] .seccion-prod__head .manifesto__text {
+  color: rgba(244, 235, 225, 0.85);
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-size: 1.8rem;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-weight: 400;
+}
+.seccion-prod[data-bg="light"] .seccion-prod__head .manifesto__text {
+  color: rgba(42, 24, 16, 0.78);
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-size: 1.8rem;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-weight: 400;
+}
+
+/* Grid de productos — flexible auto-fit */
+.seccion-prod__grid {
+  max-width: 1500px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: max(2.4rem, min(2.5vw, 3.6rem));
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PROD CARD — ETIQUETA ARTESANAL
+   ═══════════════════════════════════════════════════════════════════
+   Cada producto es una etiqueta sobre el cuero (en secciones leather)
+   o sobre la mesa cream (en secciones light). MISMO look en ambas →
+   visual coherente: parchment cream + texto SIEMPRE dark earth (legible).
+   Detalles que ningún competidor copia:
+     · Stitched border (dashed inner border simulando cuero cosido)
+     · Numbered badge en esquina (etiqueta de inventario)
+     · Gold hairline bajo el nombre
+     · Price con look de tag de papel colgante
+     · Hover lift sutil con sombra "sobre el cuero"
+   ─────────────────────────────────────────────────────────────────── */
+.prod {
+  position: relative;
+  background: #FAF3E8; /* parchment cream cálido — UNIFORME en todas las secciones */
+  color: #2A1810; /* dark earth — SIEMPRE legible sobre el cream */
+  padding: 1.2rem 1.2rem 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 480px;
+  border-radius: 6px;
+  /* Border sutil + sombra elevada (sensación "etiqueta sobre superficie") */
+  box-shadow:
+    0 0 0 1px rgba(107, 68, 35, 0.18),
+    0 2px 8px rgba(46, 24, 12, 0.08);
+  transition:
+    transform 0.55s var(--ease-out),
+    box-shadow 0.45s var(--ease-out);
+}
+/* Stitching dashed sobre la card — costura del cuero artesanal */
+.prod::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px dashed rgba(107, 68, 35, 0.22);
+  border-radius: 3px;
+  pointer-events: none;
+  z-index: 1;
+}
+/* Hover: sutil lift + sombra más pronunciada (simula etiqueta levantándose) */
+.prod:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 0 0 1px rgba(107, 68, 35, 0.35),
+    0 24px 40px -16px rgba(46, 24, 12, 0.30);
+}
+/* En leather la sombra es más oscura — refuerza la sensación "label sobre cuero" */
+.seccion-prod[data-bg="leather"] .prod:hover {
+  box-shadow:
+    0 0 0 1px rgba(107, 68, 35, 0.55),
+    0 28px 50px -16px rgba(10, 5, 0, 0.55);
+}
+
+/* Link wrapper — imagen + nombre + descripción + precio. Click → producto.html */
+.prod__link {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  padding: 0 0 1.2rem 0;
+  flex: 1;
+}
+
+/* Imagen del producto — SIN backdrop por defecto. Las fotos reales
+   (posa mates, materas, yerberos) ya traen su propio fondo de estudio
+   fotográfico, entonces NO necesitan que la card agregue nada — la
+   imagen llena el área completa con su bg natural. */
+.prod__img {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: block;
+  overflow: hidden;
+  margin-bottom: 2.4rem;
+  border-radius: 3px;
+  background: transparent;
+}
+/* Hairline dorado debajo de la imagen — touch de etiqueta premium */
+.prod__img::after {
+  content: "";
+  position: absolute;
+  left: 16%;
+  right: 16%;
+  bottom: -1.2rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(203, 160, 88, 0.6) 50%, transparent 100%);
+}
+.prod__img img {
+  width: 100%;
+  height: 100%;
+  /* cover por defecto — la imagen LLENA el área (las fotos de productos
+     ya son ~cuadradas con bg estudio, no se nota el crop). */
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.7s var(--ease-out);
+}
+.prod:hover .prod__img img {
+  transform: scale(1.06);
+}
+
+/* ─── EXCEPCIÓN: SOLO la sección de MATES ────────────────────────────
+   Los mates son PNG con fondo transparente. SÍ necesitan el backdrop
+   cream para no quedar "flotando en el vacío" sobre el cream de la card.
+   Acá restauramos el bg estudio + object-fit:contain + padding interno. */
+#mates .prod__img {
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 25%, rgba(255, 250, 235, 0.7) 0%, transparent 70%),
+    linear-gradient(180deg, #F0E4CB 0%, #D9C7A4 100%);
+}
+#mates .prod__img img {
+  object-fit: contain;
+  padding: 8%;
+  box-sizing: border-box;
+}
+/* Placeholder cuando no hay foto — patrón rayado tipo papel kraft */
+.prod__img--placeholder {
+  background:
+    repeating-linear-gradient(45deg, rgba(107, 68, 35, 0.05) 0 8px, transparent 8px 16px),
+    #FFFCF7;
+  border: 1px dashed rgba(107, 68, 35, 0.25);
+}
+.prod__img--placeholder span {
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-style: italic;
+  color: rgba(107, 68, 35, 0.6);
+  font-size: 1.4rem;
+  letter-spacing: 0.08em;
+  padding: 0 1.6rem;
+  text-align: center;
+}
+
+/* Nombre del producto — serif uppercase, dark green (matchea titulos),
+   con hairline dorado debajo (decorativo, identidad de la marca). */
+.prod__name {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: max(1.8rem, min(1.7vw, 2.2rem));
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 1.05;
+  margin: 0 1.8rem 0.4rem;
+  color: #2B3A2C; /* dark green — SIEMPRE legible sobre el cream */
+}
+/* Hairline dorado bajo el nombre — touch de etiqueta artesanal */
+.prod__name::after {
+  content: "";
+  display: block;
+  width: 28px;
+  height: 1.5px;
+  margin-top: 0.8rem;
+  background: var(--c-brand, #CBA058);
+  transition: width 0.5s var(--ease-out);
+}
+.prod:hover .prod__name::after {
+  width: 64px;
+}
+
+/* Descripción — italic Garamond, dark earth, 2 líneas clamp para uniformidad */
+.prod__desc {
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-size: 1.5rem;
+  line-height: 1.55;
+  color: rgba(42, 24, 16, 0.75); /* dark earth con opacity — legible */
+  margin: 1.2rem 1.8rem 1.6rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Precio — tag style. Ya no es solo texto, simula un papel/cartón
+   colgante con un punto-perforación a la izquierda y línea-corte
+   simulando la marca de troquelado de una etiqueta artesanal. */
+.prod__price {
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2A1810;
+  margin: auto 1.8rem 0;
+  padding: 1.2rem 0 0 2.4rem;
+  /* Perforación: pequeño círculo gold a la izquierda del precio,
+     simulando el agujero de una etiqueta colgante */
+}
+.prod__price::before {
+  content: "";
+  position: absolute;
+  left: 0.4rem;
+  top: 1.9rem;
+  width: 6px;
+  height: 6px;
+  border: 1.5px solid var(--c-brand, #CBA058);
+  border-radius: 50%;
+}
+/* Línea decorativa que une la perforación con el precio (efecto "cordón") */
+.prod__price::after {
+  content: "";
+  position: absolute;
+  left: 1.4rem;
+  top: 2.05rem;
+  width: 0.8rem;
+  height: 1.5px;
+  background: rgba(203, 160, 88, 0.6);
+}
+
+/* Botón Add to Cart — leather-feel rectangular en la base de la card,
+   con stitching propio. Hover sube sutil y se intensifica el color. */
+.prod__btn {
+  position: relative;
+  z-index: 2;
+  background: #2B3A2C; /* dark green — contrasta sobre el cream */
+  color: #F4EBE1;
+  border: none;
+  padding: 1.6rem 2rem;
+  margin: 1.6rem 1.2rem 1.2rem;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.3rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 3px;
+  transition:
+    background-color 0.35s var(--ease-out),
+    transform 0.35s var(--ease-out),
+    box-shadow 0.35s var(--ease-out);
+  box-shadow: 0 2px 0 rgba(46, 24, 12, 0.2);
+}
+.prod__btn:hover {
+  background: #1d2a1e;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px -2px rgba(46, 24, 12, 0.4);
+}
+.prod__btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 0 rgba(46, 24, 12, 0.2);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   CTA grande dentro de manifesto (mayorista / marca blanca)
+   ───────────────────────────────────────────────────────────────────── */
+.manifesto--banner {
+  padding-bottom: max(8rem, min(10vw, 12rem));
+}
+.manifesto--banner[data-bg="leather"] {
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(255, 230, 200, 0.10), transparent 55%),
+    radial-gradient(ellipse at 80% 70%, rgba(46, 24, 12, 0.30), transparent 60%),
+    linear-gradient(135deg, #6B4423 0%, #8B5A33 50%, #7A4A28 100%);
+  color: var(--c-text-alt);
+  position: relative;
+  overflow: hidden;
+}
+.manifesto--banner[data-bg="leather"]::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 220px 220px;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 0;
+}
+.manifesto--banner > * { position: relative; z-index: 1; }
+.manifesto--dark {
+  background-color: var(--c-dark);
+  color: var(--c-text-alt);
+}
+
+.cta-grande {
+  margin-top: 4rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2rem;
+  background: #25D366;
+  color: #0A0807;
+  text-decoration: none;
+  padding: 1.8rem 3.2rem;
+  font-family: var(--font-sans);
+  font-size: 1.4rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+}
+.cta-grande:hover {
+  background: #1ebe5b;
+  transform: translateY(-3px);
+  box-shadow: 0 7px 0 rgba(0, 0, 0, 0.3);
+}
+.cta-grande--gold {
+  background: var(--c-brand);
+}
+.cta-grande--gold:hover {
+  background: #d8b070;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   INFO-GRID — 4 features en mayorista / marca blanca
+   ───────────────────────────────────────────────────────────────────── */
+.manifesto__inner--info {
+  max-width: 1100px;
+}
+.manifesto__text--intro {
+  margin-bottom: 5rem !important;
+}
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: max(2.5rem, min(3vw, 4rem));
+  margin: 4rem auto 5rem;
+  text-align: left;
+  max-width: 1100px;
+}
+.info-grid__item {
+  padding-top: 2.4rem;
+  border-top: 1px solid rgba(203, 160, 88, 0.35);
+}
+.info-grid__num {
+  display: block;
+  font-family: var(--font-sans);
+  font-style: italic;
+  color: var(--c-brand);
+  font-size: 1.3rem;
+  letter-spacing: 0.22em;
+  margin-bottom: 1.2rem;
+}
+.info-grid__title {
+  font-family: var(--font-serif);
+  font-size: max(1.8rem, min(2vw, 2.4rem));
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 1.1;
+  margin: 0 0 1.2rem 0;
+  color: inherit;
+}
+.info-grid__text {
+  font-family: var(--font-sans);
+  font-size: 1.45rem;
+  line-height: 1.55;
+  color: inherit;
+  opacity: 0.78;
+  margin: 0;
+}
+
+/* ─── INFO-CLIENTES — bloque de "Trabajamos con" + lista horizontal ──
+   Sólo en tienda mayorista. Pequeño label dorado italic + chips de
+   tipos de cliente separados por dot dorado. Centrado, con borde-top
+   sutil que enmarca el bloque como una etiqueta artesanal sobre cuero. */
+.info-clientes {
+  margin: 4rem auto 4.5rem;
+  max-width: 1100px;
+  text-align: center;
+  padding-top: 3rem;
+  border-top: 1px solid rgba(203, 160, 88, 0.3);
+}
+.info-clientes__label {
+  display: block;
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-style: italic;
+  color: var(--c-brand);
+  font-size: 1.4rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 1.6rem;
+}
+.info-clientes__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(1.2rem, 2vw, 2.4rem);
+  align-items: center;
+  font-family: var(--font-serif);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: clamp(1.4rem, 1.5vw, 1.8rem);
+  color: inherit;
+}
+/* Separator entre items: pequeño diamond dorado · ◇ · */
+.info-clientes__list li {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(1.2rem, 2vw, 2.4rem);
+}
+.info-clientes__list li:not(:last-child)::after {
+  content: "◇";
+  color: var(--c-brand);
+  font-size: 0.8em;
+  opacity: 0.7;
+}
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.6rem;
+  justify-content: center;
+  margin-top: 4rem;
+}
+.cta-grande--outline {
+  background: transparent;
+  color: var(--c-text-alt);
+  border: 2px solid var(--c-brand);
+  box-shadow: none;
+}
+.cta-grande--outline:hover {
+  background: rgba(203, 160, 88, 0.12);
+  border-color: #d8b070;
+  color: var(--c-text-alt);
+}
+.manifesto--banner[data-bg="leather"] .cta-grande--outline {
+  border-color: var(--c-text-alt);
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+   ISLA FLOTANTE — barra de navegación cuero, fija abajo
+   ═════════════════════════════════════════════════════════════════════ */
+.floating-island {
+  position: fixed;
+  bottom: 3rem;
+  left: 50%;
+  transform: translate(-50%, calc(100% + 5rem));
+  z-index: 95;
+  display: flex;
+  align-items: center;
+  gap: max(0.8rem, min(1.2vw, 2rem));
+  padding: 1.4rem 2.4rem;
+  border-radius: 5rem;
+  /* Textura CUERO real */
+  background-color: var(--c-earth);
+  background-image:
+    radial-gradient(ellipse at 30% 30%, rgba(255, 230, 200, 0.20), transparent 60%),
+    radial-gradient(ellipse at 70% 80%, rgba(46, 24, 12, 0.35), transparent 65%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.32 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: cover, cover, 180px 180px;
+  background-blend-mode: normal, normal, overlay;
+  border: 1px solid rgba(203, 160, 88, 0.3);
+  box-shadow:
+    0 20px 50px -15px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: transform 0.6s cubic-bezier(0.7, 0, 0.2, 1), opacity 0.4s;
+  opacity: 0;
+  pointer-events: none;
+}
+.floating-island.is-visible {
+  transform: translate(-50%, 0);
+  opacity: 1;
+  pointer-events: auto;
+}
+.floating-island__link {
+  flex-shrink: 0;
+  color: rgba(244, 235, 225, 0.75);
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 3rem;
+  transition: color 0.3s, background-color 0.3s;
+  white-space: nowrap;
+}
+.floating-island__link:hover {
+  color: var(--c-text-alt);
+}
+.floating-island__link.is-active {
+  color: var(--c-text-alt);
+  background-color: rgba(0, 0, 0, 0.25);
+}
+.floating-island__sep {
+  width: 1px;
+  height: 1.8rem;
+  background: rgba(244, 235, 225, 0.25);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   BOTÓN DE CARRITO en el header
+   ───────────────────────────────────────────────────────────────────── */
+.cart-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  color: inherit;
+  margin-left: max(1.5rem, min(2vw, 3rem));
+  transition: opacity 0.3s, transform 0.3s;
+}
+.cart-btn:hover {
+  opacity: 0.7;
+  transform: translateY(-2px);
+}
+.cart-btn__count {
+  position: absolute;
+  top: -0.4rem;
+  right: -0.4rem;
+  background: var(--c-brand);
+  color: var(--c-dark);
+  border-radius: 50%;
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 700;
+  min-width: 1.8rem;
+  height: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.4rem;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+}
+.cart-btn__count.is-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+.cart-btn__count.is-pulse {
+  animation: cart-pulse 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes cart-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   CART DRAWER — panel lateral derecho
+   ───────────────────────────────────────────────────────────────────── */
+.cart-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 8, 7, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s var(--ease-out);
+  z-index: 200;
+  backdrop-filter: blur(2px);
+}
+.cart-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.cart {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(460px, 90vw);
+  height: 100vh;
+  background-color: var(--c-bg);
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.08 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 180px 180px;
+  color: var(--c-text);
+  z-index: 201;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.5s cubic-bezier(0.7, 0, 0.2, 1);
+  box-shadow: -20px 0 60px -20px rgba(0, 0, 0, 0.4);
+}
+.cart.is-open {
+  transform: translateX(0);
+}
+.cart__head {
+  padding: 2.4rem 2.6rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(42, 24, 16, 0.15);
+}
+.cart__title {
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0;
+}
+.cart__close {
+  background: none; border: none; cursor: pointer;
+  color: var(--c-text);
+  padding: 0.4rem;
+  display: flex;
+  transition: opacity 0.3s, transform 0.3s;
+}
+.cart__close:hover { opacity: 0.6; transform: rotate(90deg); }
+.cart__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.6rem 2.6rem;
+}
+.cart__empty {
+  font-family: var(--font-sans);
+  font-style: italic;
+  text-align: center;
+  margin: 6rem 0;
+  color: rgba(26, 26, 26, 0.5);
+  font-size: 1.6rem;
+  line-height: 1.5;
+}
+.cart__empty span {
+  display: block;
+  margin-top: 0.8rem;
+  font-size: 1.3rem;
+}
+.cart__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  padding: 1.4rem 0;
+  border-bottom: 1px solid rgba(42, 24, 16, 0.1);
+}
+.cart-item:last-child { border-bottom: none; }
+
+/* Thumbnail del producto — cuadrado con bg cremita matching las cards
+   de la tienda. object-fit:contain + padding para que el producto se vea
+   entero sin recortes, igual que en las cards. */
+.cart-item__thumb {
+  flex-shrink: 0;
+  width: 7rem;
+  height: 7rem;
+  border-radius: 4px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 25%, rgba(255, 250, 235, 0.7) 0%, transparent 70%),
+    linear-gradient(180deg, #F0E4CB 0%, #D9C7A4 100%);
+  border: 1px solid rgba(107, 68, 35, 0.18);
+}
+.cart-item__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 6%;
+  box-sizing: border-box;
+  display: block;
+}
+
+.cart-item__info {
+  flex: 1;
+  min-width: 0; /* permite que el nombre haga ellipsis si es muy largo */
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.cart-item__name {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
+.cart-item__price {
+  font-family: var(--font-sans);
+  font-size: 1.3rem;
+  color: rgba(26, 26, 26, 0.6);
+}
+.cart-item__qty {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: rgba(42, 24, 16, 0.08);
+  padding: 0.4rem;
+}
+.cart-item__qty-btn {
+  width: 2.6rem; height: 2.6rem;
+  background: none; border: none; cursor: pointer;
+  font-size: 1.6rem; color: var(--c-text);
+  display: flex; align-items: center; justify-content: center;
+  transition: background-color 0.2s;
+}
+.cart-item__qty-btn:hover { background: rgba(42, 24, 16, 0.12); }
+.cart-item__qty-value {
+  min-width: 1.8rem;
+  text-align: center;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+.cart-item__remove {
+  background: none; border: none; cursor: pointer;
+  color: rgba(26, 26, 26, 0.4);
+  padding: 0.4rem;
+  display: flex;
+  transition: color 0.3s, transform 0.3s;
+}
+.cart-item__remove:hover { color: #c0392b; transform: scale(1.15); }
+
+.cart__foot {
+  padding: 1.8rem 2.6rem 2.4rem;
+  border-top: 1px solid rgba(42, 24, 16, 0.15);
+  background: rgba(42, 24, 16, 0.04);
+}
+.cart__total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 1.4rem;
+  font-family: var(--font-serif);
+}
+.cart__total-label {
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: rgba(26, 26, 26, 0.6);
+}
+.cart__total-amount {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--c-text);
+}
+.cart__note {
+  font-family: var(--font-sans);
+  font-style: italic;
+  font-size: 1.2rem;
+  color: rgba(26, 26, 26, 0.6);
+  text-align: center;
+  margin: 0 0 1.4rem;
+}
+.cart__cta {
+  width: 100%;
+  background: #25D366;
+  color: #0A0807;
+  border: none;
+  padding: 1.8rem;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; gap: 1.2rem;
+  transition: background-color 0.3s, transform 0.3s, opacity 0.3s;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
+}
+.cart__cta:not(:disabled):hover {
+  background: #1ebe5b;
+  transform: translateY(-2px);
+}
+.cart__cta:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  background: rgba(42, 24, 16, 0.5);
+  color: rgba(244, 235, 225, 0.8);
+  box-shadow: none;
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+   MODAL DE CANTIDAD — textura cuero, centrado, antes de agregar
+   ═════════════════════════════════════════════════════════════════════ */
+.qty-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s var(--ease-out);
+}
+.qty-modal.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.qty-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 8, 7, 0.7);
+  backdrop-filter: blur(4px);
+}
+.qty-modal__panel {
+  position: relative;
+  width: min(440px, 92vw);
+  padding: 3rem 2.8rem;
+  /* Textura CUERO */
+  background-color: var(--c-earth);
+  background-image:
+    radial-gradient(ellipse at 25% 25%, rgba(255, 230, 200, 0.20), transparent 55%),
+    radial-gradient(ellipse at 75% 75%, rgba(46, 24, 12, 0.40), transparent 60%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: cover, cover, 200px 200px;
+  background-blend-mode: normal, normal, overlay;
+  color: var(--c-text-alt);
+  border: 1px solid rgba(203, 160, 88, 0.35);
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.6);
+  transform: scale(0.92);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.qty-modal.is-open .qty-modal__panel { transform: scale(1); }
+.qty-modal__close {
+  position: absolute;
+  top: 1.4rem;
+  right: 1.4rem;
+  background: none; border: none; cursor: pointer;
+  color: var(--c-text-alt);
+  padding: 0.4rem;
+  opacity: 0.7;
+  transition: opacity 0.3s, transform 0.3s;
+}
+.qty-modal__close:hover { opacity: 1; transform: rotate(90deg); }
+.qty-modal__product {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+  margin-bottom: 2rem;
+}
+.qty-modal__img {
+  width: 7rem; height: 7rem;
+  object-fit: contain;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.6rem;
+  flex-shrink: 0;
+}
+.qty-modal__name {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 0.4rem 0;
+}
+.qty-modal__price {
+  font-family: var(--font-sans);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--c-brand);
+  margin: 0;
+}
+.qty-modal__question {
+  font-family: var(--font-sans);
+  font-style: italic;
+  font-size: 1.5rem;
+  margin: 0 0 1.4rem 0;
+  opacity: 0.85;
+}
+.qty-modal__qty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1.2rem;
+  background: rgba(0, 0, 0, 0.25);
+  margin-bottom: 1.4rem;
+}
+.qty-modal__btn {
+  width: 4rem; height: 4rem;
+  background: rgba(203, 160, 88, 0.18);
+  color: var(--c-text-alt);
+  border: 1px solid rgba(203, 160, 88, 0.4);
+  font-size: 2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.qty-modal__btn:hover { background: rgba(203, 160, 88, 0.32); }
+.qty-modal__value {
+  font-family: var(--font-serif);
+  font-size: 2.6rem;
+  font-weight: 700;
+  min-width: 4rem;
+  text-align: center;
+}
+.qty-modal__subtotal {
+  font-family: var(--font-sans);
+  font-size: 1.4rem;
+  text-align: center;
+  margin: 0 0 1.8rem 0;
+  opacity: 0.85;
+}
+.qty-modal__subtotal span {
+  font-weight: 700;
+  color: var(--c-brand);
+}
+.qty-modal__confirm {
+  width: 100%;
+  background: var(--c-brand);
+  color: var(--c-dark);
+  border: none;
+  padding: 1.6rem;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.3rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+.qty-modal__confirm:hover {
+  background: #d8b070;
+  transform: translateY(-2px);
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+   NOTIFICACIÓN "Se agregó" — textura cuero, arriba-derecha
+   ═════════════════════════════════════════════════════════════════════ */
+.cart-notif {
+  position: fixed;
+  top: 11rem;
+  right: 3rem;
+  width: min(360px, 92vw);
+  padding: 2rem 2.2rem;
+  /* Textura CUERO */
+  background-color: var(--c-earth);
+  background-image:
+    radial-gradient(ellipse at 20% 20%, rgba(255, 230, 200, 0.22), transparent 55%),
+    radial-gradient(ellipse at 80% 80%, rgba(46, 24, 12, 0.40), transparent 60%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: cover, cover, 180px 180px;
+  background-blend-mode: normal, normal, overlay;
+  color: var(--c-text-alt);
+  border: 1px solid rgba(203, 160, 88, 0.4);
+  box-shadow: 0 18px 50px -15px rgba(0, 0, 0, 0.5);
+  z-index: 220;
+  transform: translateX(calc(100% + 5rem));
+  opacity: 0;
+  transition: transform 0.5s cubic-bezier(0.7, 0, 0.2, 1), opacity 0.4s;
+}
+.cart-notif.is-visible {
+  transform: translateX(0);
+  opacity: 1;
+}
+.cart-notif__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.2rem;
+}
+.cart-notif__check {
+  flex-shrink: 0;
+  width: 3.2rem; height: 3.2rem;
+  background: #25D366;
+  color: var(--c-dark);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+.cart-notif__text { flex: 1; }
+.cart-notif__title {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 0.3rem 0;
+}
+.cart-notif__detail {
+  font-family: var(--font-sans);
+  font-style: italic;
+  font-size: 1.35rem;
+  margin: 0;
+  opacity: 0.8;
+}
+.cart-notif__sep {
+  height: 1px;
+  background: rgba(244, 235, 225, 0.18);
+  margin: 1.5rem 0 1.2rem;
+}
+.cart-notif__total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-family: var(--font-sans);
+  font-size: 1.35rem;
+  margin-bottom: 1.4rem;
+}
+.cart-notif__total span { opacity: 0.7; }
+.cart-notif__total strong {
+  font-family: var(--font-serif);
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--c-brand);
+}
+.cart-notif__actions {
+  display: flex;
+  gap: 0.8rem;
+}
+.cart-notif__btn {
+  flex: 1;
+  padding: 1rem 1rem;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s, transform 0.3s;
+}
+.cart-notif__btn--ghost {
+  background: transparent;
+  color: var(--c-text-alt);
+  border: 1px solid rgba(244, 235, 225, 0.4);
+}
+.cart-notif__btn--ghost:hover {
+  background: rgba(244, 235, 225, 0.1);
+}
+.cart-notif__btn--solid {
+  background: #25D366;
+  color: var(--c-dark);
+}
+.cart-notif__btn--solid:hover {
+  background: #1ebe5b;
+  transform: translateY(-2px);
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+   MAYORISTA PICKER — Modal selector compra mayorista (min 10)
+   ═════════════════════════════════════════════════════════════════════
+   Modal full-screen con la MISMA estética que el sitio: textura cuero,
+   título serif uppercase, dorado en acentos. Grid de productos con +/-
+   por unidad. Counter abajo con barra de progreso hasta el mínimo de 10.
+   Cuando se llega o supera, el CTA pasa a verde WhatsApp y habilita el
+   click para finalizar por chat.
+   ─────────────────────────────────────────────────────────────────── */
+.mayorista-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 240;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s var(--ease-out);
+}
+.mayorista-modal.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.mayorista-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 8, 7, 0.78);
+  backdrop-filter: blur(4px);
+}
+.mayorista-modal__panel {
+  position: relative;
+  width: min(1180px, 96vw);
+  max-height: 92vh;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  /* Textura cuero — mismo recipe que el resto de bloques leather */
+  background-color: var(--c-earth);
+  background-image:
+    radial-gradient(ellipse at 20% 25%, rgba(255, 230, 200, 0.18), transparent 55%),
+    radial-gradient(ellipse at 80% 80%, rgba(46, 24, 12, 0.42), transparent 60%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: cover, cover, 200px 200px;
+  background-blend-mode: normal, normal, overlay;
+  color: var(--c-text-alt);
+  border: 1px solid rgba(203, 160, 88, 0.4);
+  box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.7);
+  transform: scale(0.94) translateY(20px);
+  transition: transform 0.45s cubic-bezier(0.34, 1.4, 0.64, 1);
+  overflow: hidden;
+}
+.mayorista-modal.is-open .mayorista-modal__panel {
+  transform: scale(1) translateY(0);
+}
+
+/* Header del modal — título serif + subtítulo italic + close */
+.mayorista-modal__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 2.6rem 3rem 2.2rem;
+  border-bottom: 1px solid rgba(203, 160, 88, 0.28);
+}
+.mayorista-modal__head-text {
+  flex: 1;
+  min-width: 0;
+}
+.mayorista-modal__eyebrow {
+  display: inline-block;
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-style: italic;
+  color: var(--c-brand);
+  font-size: 1.25rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+.mayorista-modal__title {
+  font-family: var(--font-serif);
+  font-size: max(2.2rem, min(2.8vw, 3.4rem));
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  line-height: 1.05;
+  margin: 0 0 0.8rem 0;
+  color: var(--c-text-alt);
+}
+.mayorista-modal__sub {
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-size: 1.55rem;
+  line-height: 1.4;
+  margin: 0;
+  opacity: 0.85;
+}
+.mayorista-modal__sub strong {
+  font-style: normal;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  color: var(--c-brand);
+}
+.mayorista-modal__close {
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(203, 160, 88, 0.35);
+  color: var(--c-text-alt);
+  cursor: pointer;
+  width: 4rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.3s, transform 0.3s;
+}
+.mayorista-modal__close:hover {
+  background: rgba(203, 160, 88, 0.25);
+  transform: rotate(90deg);
+}
+
+/* Grid de productos — scrolleable. Items con look "etiqueta sobre cuero" */
+.mayorista-modal__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2.4rem 3rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.8rem;
+}
+.mayorista-modal__body::-webkit-scrollbar { width: 8px; }
+.mayorista-modal__body::-webkit-scrollbar-thumb {
+  background: rgba(203, 160, 88, 0.4);
+  border-radius: 4px;
+}
+.mayorista-modal__body::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* Card individual dentro del picker — parchment cream coherente con el resto */
+.mayo-card {
+  background: #FAF3E8;
+  color: #2A1810;
+  border-radius: 6px;
+  padding: 1.4rem 1.2rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  position: relative;
+  box-shadow:
+    0 0 0 1px rgba(107, 68, 35, 0.18),
+    0 6px 16px -6px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+}
+.mayo-card.is-selected {
+  box-shadow:
+    0 0 0 2px var(--c-brand),
+    0 10px 24px -6px rgba(0, 0, 0, 0.55);
+  transform: translateY(-3px);
+}
+.mayo-card__img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 25%, rgba(255, 250, 235, 0.7) 0%, transparent 70%),
+    linear-gradient(180deg, #F0E4CB 0%, #D9C7A4 100%);
+}
+.mayo-card__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 6%;
+  box-sizing: border-box;
+  display: block;
+}
+.mayo-card__cat {
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(107, 68, 35, 0.78);
+  margin-top: 0.4rem;
+}
+.mayo-card__name {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.1;
+  margin: 0;
+  color: #2B3A2C;
+}
+.mayo-card__price {
+  font-family: var(--font-sans);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #2A1810;
+  margin: 0;
+}
+.mayo-card__qty {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding-top: 0.8rem;
+  border-top: 1px dashed rgba(107, 68, 35, 0.22);
+}
+.mayo-card__qty-btn {
+  width: 3.2rem;
+  height: 3.2rem;
+  background: #2B3A2C;
+  color: #F4EBE1;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.25s, transform 0.2s;
+}
+.mayo-card__qty-btn:hover {
+  background: #1d2a1e;
+  transform: translateY(-1px);
+}
+.mayo-card__qty-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+}
+.mayo-card__qty-value {
+  font-family: var(--font-serif);
+  font-size: 1.7rem;
+  font-weight: 700;
+  min-width: 2.4rem;
+  text-align: center;
+  color: #2A1810;
+}
+
+/* Footer — counter + barra de progreso + total + CTA */
+.mayorista-modal__foot {
+  border-top: 1px solid rgba(203, 160, 88, 0.28);
+  padding: 1.8rem 3rem 2rem;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr auto;
+  gap: 2.4rem;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.18);
+}
+.mayorista-modal__counter {
+  min-width: 0;
+}
+.mayorista-modal__counter-bar {
+  position: relative;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 0.8rem;
+}
+.mayorista-modal__counter-fill {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--c-brand) 0%, #d8b070 100%);
+  border-radius: 3px;
+  transition: width 0.45s var(--ease-out), background-color 0.3s;
+}
+.mayorista-modal__counter-fill.is-met {
+  background: linear-gradient(90deg, #25D366 0%, #1ebe5b 100%);
+}
+.mayorista-modal__counter-text {
+  font-family: var(--font-sans);
+  font-size: 1.35rem;
+  margin: 0;
+  letter-spacing: 0.04em;
+  color: var(--c-text-alt);
+}
+.mayorista-modal__counter-text strong {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--c-brand);
+  margin-right: 0.4rem;
+}
+.mayorista-modal__counter-extra {
+  display: inline-block;
+  margin-left: 0.6rem;
+  font-style: italic;
+  color: rgba(244, 235, 225, 0.7);
+  font-size: 1.2rem;
+}
+.mayorista-modal__total {
+  text-align: right;
+  font-family: var(--font-serif);
+}
+.mayorista-modal__total-label {
+  display: block;
+  font-size: 1.15rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(244, 235, 225, 0.7);
+  margin-bottom: 0.3rem;
+}
+.mayorista-modal__total-amount {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--c-brand);
+}
+.mayorista-modal__confirm {
+  background: #25D366;
+  color: #0A0807;
+  border: none;
+  padding: 1.6rem 2.4rem;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.3rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  transition: background-color 0.3s, transform 0.3s, opacity 0.3s;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.3);
+  min-width: 24rem;
+}
+.mayorista-modal__confirm:not(:disabled):hover {
+  background: #1ebe5b;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.35);
+}
+.mayorista-modal__confirm:disabled {
+  background: rgba(244, 235, 225, 0.18);
+  color: rgba(244, 235, 225, 0.6);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Responsive — el footer pasa a layout vertical en mobile */
+@media (max-width: 800px) {
+  .mayorista-modal__head { padding: 1.8rem 1.8rem 1.4rem; }
+  .mayorista-modal__body { padding: 1.6rem; grid-template-columns: repeat(2, 1fr); }
+  .mayorista-modal__foot {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+    padding: 1.6rem 1.8rem 1.8rem;
+    text-align: center;
+  }
+  .mayorista-modal__total { text-align: center; }
+  .mayorista-modal__confirm { width: 100%; min-width: 0; }
+}
+@media (max-width: 420px) {
+  .mayorista-modal__body { grid-template-columns: 1fr; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   Marcar el link activo en navbar
+   ───────────────────────────────────────────────────────────────────── */
+.header__nav a.is-current {
+  color: var(--c-brand);
+}
+.header.is-scrolled .header__nav a.is-current,
+.header.is-scrolled.is-dark-bg .header__nav a.is-current,
+.header.is-scrolled.is-leather-bg .header__nav a.is-current {
+  color: var(--c-brand) !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   Hero media para tienda
+   ───────────────────────────────────────────────────────────────────── */
+.hero__media--tienda {
+  background-image:
+    linear-gradient(180deg, rgba(10, 8, 7, 0.55) 0%, rgba(10, 8, 7, 0.7) 100%),
+    url("../img/momento2.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .seccion-prod__grid {
+    grid-template-columns: 1fr;
+  }
+  .cart {
+    width: 100vw;
+  }
+  .cart-notif {
+    right: 1.5rem;
+    left: 1.5rem;
+    width: auto;
+    top: 9rem;
+  }
+  .floating-island {
+    bottom: 1.5rem;
+    padding: 1rem 1.4rem;
+    gap: 0.4rem;
+    overflow-x: auto;
+    max-width: calc(100vw - 3rem);
+  }
+  .floating-island__link {
+    font-size: 1.05rem;
+    padding: 0.5rem 0.8rem;
+  }
+  .cta-row {
+    flex-direction: column;
+    align-items: center;
+  }
+}
