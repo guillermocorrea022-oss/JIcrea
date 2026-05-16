@@ -8,6 +8,12 @@
 
   <link rel="icon" type="image/png" href="img/favicon.png">
 
+  <!-- PRELOAD assets críticos — logo curtain + hero tienda + fuentes. -->
+  <link rel="preload" as="image" href="img/logotipo-blanco.png" fetchpriority="high">
+  <link rel="preload" as="image" href="img/momento2.jpg" fetchpriority="high">
+  <link rel="preload" as="font" type="font/woff2" href="fonts/super-med.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="fonts/super-reg.woff2" crossorigin>
+
   <meta property="og:type" content="website">
   <meta property="og:title" content="JIcrea — Tienda">
   <meta property="og:description" content="Mates, posa mates, materas y yerberos uruguayos hechos a mano.">
@@ -141,7 +147,7 @@
       <div class="seccion-prod__grid">
         <article class="prod" data-reveal>
           <a class="prod__link" href="producto.html?id=mate-porongo">
-            <div class="prod__img"><img src="img/mate-porongo.png" alt="Mate Porongo"></div>
+            <div class="prod__img"><img loading="lazy" decoding="async" src="img/mate-porongo.png" alt="Mate Porongo"></div>
             <h3 class="prod__name">Mate Porongo</h3>
             <p class="prod__desc">Calabaza curada de manera tradicional.</p>
             <span class="prod__price">$1.500</span>
@@ -150,7 +156,7 @@
         </article>
         <article class="prod" data-reveal data-delay="1">
           <a class="prod__link" href="producto.html?id=mate-porongo-cuero">
-            <div class="prod__img"><img src="img/mate-porongo-concuero.png" alt="Mate Porongo con cuero"></div>
+            <div class="prod__img"><img loading="lazy" decoding="async" src="img/mate-porongo-concuero.png" alt="Mate Porongo con cuero"></div>
             <h3 class="prod__name">Porongo c/Cuero</h3>
             <p class="prod__desc">Porongo forrado en cuero, virola engarzada.</p>
             <span class="prod__price">$2.200</span>
@@ -159,7 +165,7 @@
         </article>
         <article class="prod" data-reveal data-delay="2">
           <a class="prod__link" href="producto.html?id=mate-algarrobo">
-            <div class="prod__img"><img src="img/mate-algarrobo.png" alt="Mate de Algarrobo"></div>
+            <div class="prod__img"><img loading="lazy" decoding="async" src="img/mate-algarrobo.png" alt="Mate de Algarrobo"></div>
             <h3 class="prod__name">Mate Algarrobo</h3>
             <p class="prod__desc">Madera maciza torneada a mano.</p>
             <span class="prod__price">$1.800</span>
@@ -168,7 +174,7 @@
         </article>
         <article class="prod" data-reveal data-delay="3">
           <a class="prod__link" href="producto.html?id=mate-imperial">
-            <div class="prod__img"><img src="img/mate-imperial.png" alt="Mate Imperial"></div>
+            <div class="prod__img"><img loading="lazy" decoding="async" src="img/mate-imperial.png" alt="Mate Imperial"></div>
             <h3 class="prod__name">Mate Imperial</h3>
             <p class="prod__desc">Cerámica artesanal con detalles en cuero.</p>
             <span class="prod__price">$2.500</span>
@@ -187,7 +193,7 @@
       <div class="seccion-prod__grid">
         <article class="prod" data-reveal>
           <a class="prod__link" href="producto.html?id=posa-cuero-clasico">
-            <div class="prod__img"><img src="img/productos/posamate1.png" alt="Cuero Clásico"></div>
+            <div class="prod__img"><img loading="lazy" decoding="async" src="img/productos/posamate1.png" alt="Cuero Clásico"></div>
             <h3 class="prod__name">Cuero Clásico</h3>
             <p class="prod__desc">Cuero curtido natural, diseño liso.</p>
             <span class="prod__price">$800</span>
@@ -196,7 +202,7 @@
         </article>
         <article class="prod" data-reveal data-delay="1">
           <a class="prod__link" href="producto.html?id=posa-cuero-trenzado">
-            <div class="prod__img"><img src="img/productos/posamate2.png" alt="Cuero Trenzado"></div>
+            <div class="prod__img"><img loading="lazy" decoding="async" src="img/productos/posamate2.png" alt="Cuero Trenzado"></div>
             <h3 class="prod__name">Cuero Trenzado</h3>
             <p class="prod__desc">Borde superior trenzado a mano.</p>
             <span class="prod__price">$1.100</span>
@@ -205,7 +211,7 @@
         </article>
         <article class="prod" data-reveal data-delay="2">
           <a class="prod__link" href="producto.html?id=posa-cuero-premium">
-            <div class="prod__img"><img src="img/productos/posamate3.png" alt="Cuero Premium"></div>
+            <div class="prod__img"><img loading="lazy" decoding="async" src="img/productos/posamate3.png" alt="Cuero Premium"></div>
             <h3 class="prod__name">Cuero Premium</h3>
             <p class="prod__desc">Cuero doble vuelta, virola dorada.</p>
             <span class="prod__price">$1.500</span>
@@ -224,7 +230,7 @@
       <div class="seccion-prod__grid">
         <article class="prod" data-reveal>
           <a class="prod__link" href="producto.html?id=matera-basica">
-            <div class="prod__img"><img src="img/productos/matera-basica.png" alt="Matera Básica"></div>
+            <div class="prod__img"><img loading="lazy" decoding="async" src="img/productos/matera-basica.png" alt="Matera Básica"></div>
             <h3 class="prod__name">Matera Básica</h3>
             <p class="prod__desc">Lona reforzada, formato esencial.</p>
             <span class="prod__price">$3.200</span>
@@ -233,7 +239,7 @@
         </article>
         <article class="prod" data-reveal data-delay="1">
           <a class="prod__link" href="producto.html?id=matera-cuerina">
-            <div class="prod__img"><img src="img/productos/matera-cuerina.png" alt="Matera Cuerina"></div>
+            <div class="prod__img"><img loading="lazy" decoding="async" src="img/productos/matera-cuerina.png" alt="Matera Cuerina"></div>
             <h3 class="prod__name">Matera Cuerina</h3>
             <p class="prod__desc">Cuerina resistente, formato día a día.</p>
             <span class="prod__price">$3.800</span>
@@ -242,7 +248,7 @@
         </article>
         <article class="prod" data-reveal data-delay="2">
           <a class="prod__link" href="producto.html?id=matera-cuero">
-            <div class="prod__img"><img src="img/productos/matera-cuero.png" alt="Matera Cuero"></div>
+            <div class="prod__img"><img loading="lazy" decoding="async" src="img/productos/matera-cuero.png" alt="Matera Cuero"></div>
             <h3 class="prod__name">Matera Cuero</h3>
             <p class="prod__desc">Cuero curtido, compartimentos a medida.</p>
             <span class="prod__price">$4.500</span>
@@ -251,7 +257,7 @@
         </article>
         <article class="prod" data-reveal data-delay="3">
           <a class="prod__link" href="producto.html?id=matera-cuero-premium">
-            <div class="prod__img"><img src="img/productos/matera-cuero-premium.png" alt="Matera Cuero Premium"></div>
+            <div class="prod__img"><img loading="lazy" decoding="async" src="img/productos/matera-cuero-premium.png" alt="Matera Cuero Premium"></div>
             <h3 class="prod__name">Cuero Premium</h3>
             <p class="prod__desc">Cuero pelo, trenzado y refuerzos de bronce.</p>
             <span class="prod__price">$6.200</span>
@@ -270,7 +276,7 @@
       <div class="seccion-prod__grid">
         <article class="prod" data-reveal>
           <a class="prod__link" href="producto.html?id=yerbero-marron">
-            <div class="prod__img"><img src="img/productos/yerbero-marron.png" alt="Yerbero Marrón"></div>
+            <div class="prod__img"><img loading="lazy" decoding="async" src="img/productos/yerbero-marron.png" alt="Yerbero Marrón"></div>
             <h3 class="prod__name">Marrón</h3>
             <p class="prod__desc">Cuero curtido en tono tierra, sello JI bordado.</p>
             <span class="prod__price">$1.400</span>
@@ -279,7 +285,7 @@
         </article>
         <article class="prod" data-reveal data-delay="1">
           <a class="prod__link" href="producto.html?id=yerbero-verde">
-            <div class="prod__img"><img src="img/productos/yerbero-verde.png" alt="Yerbero Verde"></div>
+            <div class="prod__img"><img loading="lazy" decoding="async" src="img/productos/yerbero-verde.png" alt="Yerbero Verde"></div>
             <h3 class="prod__name">Verde</h3>
             <p class="prod__desc">Cuero curtido en verde campo, cierre reforzado.</p>
             <span class="prod__price">$1.400</span>
@@ -288,7 +294,7 @@
         </article>
         <article class="prod" data-reveal data-delay="2">
           <a class="prod__link" href="producto.html?id=yerbero-gris">
-            <div class="prod__img"><img src="img/productos/yerbero-gris.png" alt="Yerbero Gris"></div>
+            <div class="prod__img"><img loading="lazy" decoding="async" src="img/productos/yerbero-gris.png" alt="Yerbero Gris"></div>
             <h3 class="prod__name">Gris</h3>
             <p class="prod__desc">Cuero curtido en gris piedra, tono neutro.</p>
             <span class="prod__price">$1.400</span>
@@ -366,7 +372,7 @@
   <footer class="footer" id="contacto" data-bg="leather">
     <div class="footer__inner">
       <div class="footer__brand">
-        <img class="footer__logo" src="img/logotipo.png" alt="JIcrea">
+        <img class="footer__logo" loading="lazy" decoding="async" src="img/logotipo.png" alt="JIcrea">
         <p class="footer__slogan">Del campo a tus manos.</p>
       </div>
 

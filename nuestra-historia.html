@@ -8,6 +8,12 @@
 
   <link rel="icon" type="image/png" href="img/favicon.png">
 
+  <!-- PRELOAD assets críticos — logo curtain + hero historia + fuentes. -->
+  <link rel="preload" as="image" href="img/logotipo-blanco.png" fetchpriority="high">
+  <link rel="preload" as="image" href="img/momento1.jpg" fetchpriority="high">
+  <link rel="preload" as="font" type="font/woff2" href="fonts/super-med.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="fonts/super-reg.woff2" crossorigin>
+
   <meta property="og:type" content="website">
   <meta property="og:title" content="JIcrea — Nuestra Historia">
   <meta property="og:description" content="Productores uruguayos de mates desde 2015. Del campo a tus manos.">
@@ -109,8 +115,8 @@
           <span class="hist-stats__label">Clientes mayoristas</span>
         </div>
         <div class="hist-stats__item">
-          <span class="hist-stats__num">Paysandú</span>
-          <span class="hist-stats__label">Galpón propio</span>
+          <span class="hist-stats__num">PDÚ</span>
+          <span class="hist-stats__label">Paysandú, Uruguay</span>
         </div>
       </div>
     </section>
@@ -263,7 +269,7 @@
   <footer class="footer" id="contacto" data-bg="leather">
     <div class="footer__inner">
       <div class="footer__brand">
-        <img class="footer__logo" src="img/logotipo.png" alt="JIcrea">
+        <img class="footer__logo" loading="lazy" decoding="async" src="img/logotipo.png" alt="JIcrea">
         <p class="footer__slogan">Del campo a tus manos.</p>
       </div>
 

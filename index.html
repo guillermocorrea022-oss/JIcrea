@@ -8,6 +8,14 @@
 
   <link rel="icon" type="image/png" href="img/favicon.png">
 
+  <!-- PRELOAD de assets críticos (LCP / curtain) — bajan en paralelo con
+       el HTML/CSS, así el primer paint no espera el round-trip. Reduce
+       el tiempo perceptual de aparición del logo y del hero. -->
+  <link rel="preload" as="image" href="img/logotipo-blanco.png" fetchpriority="high">
+  <link rel="preload" as="image" href="img/hero1.jpg" fetchpriority="high">
+  <link rel="preload" as="font" type="font/woff2" href="fonts/super-med.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="fonts/super-reg.woff2" crossorigin>
+
   <meta property="og:type" content="website">
   <meta property="og:title" content="JIcrea — Mates uruguayos">
   <meta property="og:description" content="Mates uruguayos hechos a mano en Paysandú. Del campo a tus manos.">
@@ -88,12 +96,12 @@
             <h3 class="origen-museo__title">Cultivo del porongo</h3>
             <p>El mate nace del cultivo del porongo, una calabaza natural que crece durante meses al sol hasta desarrollar su forma y resistencia.</p>
           </div>
-          <img class="origen-museo__icon" src="img/proceso-ilustracion1.png" alt="Cultivo del porongo">
+          <img class="origen-museo__icon" loading="lazy" decoding="async" src="img/proceso-ilustracion1.png" alt="Cultivo del porongo">
         </div>
 
         <!-- Esquina 2: Abajo Izquierda (Ahora es TR) -->
         <div class="origen-museo__corner origen-museo__corner--tr" data-reveal>
-          <img class="origen-museo__icon" src="img/proceso-ilustracion2.png" alt="Maduración natural">
+          <img class="origen-museo__icon" loading="lazy" decoding="async" src="img/proceso-ilustracion2.png" alt="Maduración natural">
           <div class="origen-museo__content">
             <h3 class="origen-museo__title">Maduración natural</h3>
             <p>El fruto permanece en la planta hasta madurar completamente, endureciendo su cáscara de manera natural.</p>
@@ -102,7 +110,7 @@
 
         <!-- Centro: Porongo Fijo (más chico) -->
         <div class="origen-museo__center" data-reveal>
-          <img class="origen-museo__img" src="img/porongo-bruto.png" alt="Porongo en bruto">
+          <img class="origen-museo__img" loading="lazy" decoding="async" src="img/porongo-bruto.png" alt="Porongo en bruto">
         </div>
 
         <!-- Esquina 3: Arriba Derecha (Ahora es BL) -->
@@ -111,12 +119,12 @@
             <h3 class="origen-museo__title">Cosecha y secado</h3>
             <p>Una vez listo, el porongo se cosecha y atraviesa un proceso de secado lento que permite conservar su durabilidad y carácter único.</p>
           </div>
-          <img class="origen-museo__icon" src="img/proceso-ilustracion3.png" alt="Cosecha y secado">
+          <img class="origen-museo__icon" loading="lazy" decoding="async" src="img/proceso-ilustracion3.png" alt="Cosecha y secado">
         </div>
 
         <!-- Esquina 4: Abajo Derecha -->
         <div class="origen-museo__corner origen-museo__corner--br" data-reveal>
-          <img class="origen-museo__icon" src="img/proceso-ilustracion4.png" alt="Origen del mate">
+          <img class="origen-museo__icon" loading="lazy" decoding="async" src="img/proceso-ilustracion4.png" alt="Origen del mate">
           <div class="origen-museo__content">
             <h3 class="origen-museo__title">Origen del mate</h3>
             <p>Tras el secado, la calabaza queda preparada para convertirse en la base del mate tradicional, manteniendo intacta su esencia natural.</p>
@@ -138,9 +146,13 @@
         <!-- Video cinemático. autoplay+loop+muted permiten el play sin
              interacción. playsinline evita el fullscreen en iOS. preload
              auto descarga el video apenas cargue la página. -->
+        <!-- preload=metadata para no bajar los 2MB del video en el load
+             inicial. El IntersectionObserver más abajo dispara el play
+             cuando la sección entra en viewport — para entonces el video
+             ya empezó a streamear. -->
         <video class="proceso-3d__video" id="procesoVideo"
                src="img/proceso-video.mp4"
-               autoplay loop muted playsinline preload="auto"
+               autoplay loop muted playsinline preload="metadata"
                aria-hidden="true"></video>
 
         <!-- Vignette: oscurece bordes para foco cinematográfico al centro
@@ -282,19 +294,19 @@
       <div class="cards__inner">
         <a class="card card--left" href="#productos" aria-label="El despertar">
           <div class="card__media">
-            <img src="img/momento1.jpg" alt="Mate al amanecer">
+            <img loading="lazy" decoding="async" src="img/momento1.jpg" alt="Mate al amanecer">
           </div>
         </a>
 
         <a class="card card--center" href="#productos" aria-label="El encuentro">
           <div class="card__media">
-            <img src="img/momento2.jpg" alt="Ronda de mate compartida">
+            <img loading="lazy" decoding="async" src="img/momento2.jpg" alt="Ronda de mate compartida">
           </div>
         </a>
 
         <a class="card card--right" href="#productos" aria-label="La sobremesa">
           <div class="card__media">
-            <img src="img/momento3.jpg" alt="Mate después de comer">
+            <img loading="lazy" decoding="async" src="img/momento3.jpg" alt="Mate después de comer">
           </div>
         </a>
       </div>
@@ -325,7 +337,7 @@
         <span class="eyebrow productos__eyebrow" data-reveal>Calidad en lo sencillo</span>
 
         <div class="productos__stage" data-reveal data-delay="1">
-          <img class="productos__mate" id="productosMate" src="img/mate-porongo.png" alt="Mate de porongo">
+          <img class="productos__mate" id="productosMate" loading="lazy" decoding="async" src="img/mate-porongo.png" alt="Mate de porongo">
         </div>
 
         <div class="productos__tabs" role="tablist" data-reveal data-delay="2">
@@ -389,7 +401,7 @@
   <footer class="footer" id="contacto" data-bg="leather">
     <div class="footer__inner">
       <div class="footer__brand">
-        <img class="footer__logo" src="img/logotipo.png" alt="JIcrea">
+        <img class="footer__logo" loading="lazy" decoding="async" src="img/logotipo.png" alt="JIcrea">
         <p class="footer__slogan">Del campo a tus manos.</p>
       </div>
 
