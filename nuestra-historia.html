@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="JIcrea — Nuestra historia. Productores uruguayos de mates desde 2015, en Paysandú. Del campo a tus manos.">
+  <title>JIcrea — Nuestra Historia</title>
+
+  <link rel="icon" type="image/png" href="img/favicon.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="JIcrea — Nuestra Historia">
+  <meta property="og:description" content="Productores uruguayos de mates desde 2015. Del campo a tus manos.">
+  <meta property="og:locale" content="es_UY">
+
+  <link rel="stylesheet" href="css/jicrea-pro.css?v=73">
+  <link rel="stylesheet" href="css/historia.css?v=1">
+</head>
+<body class="page-historia">
+
+  <!-- PAGE CURTAIN — mismo overlay cuero del resto del sitio para que la
+       entrada sea coherente. -->
+  <div class="page-curtain" id="pageCurtain" aria-hidden="true">
+    <img class="page-curtain__logo" src="img/logotipo-blanco.png" alt="">
+  </div>
+
+  <!-- HEADER — mismo que tienda/producto, arrancando ya scrolleado y con
+       el link a Nuestra Historia marcado como current. -->
+  <header class="header is-scrolled" id="header">
+    <nav class="header__nav header__nav--left" aria-label="Navegación izquierda">
+      <a href="index.html">Inicio</a>
+      <a href="tienda.html">Tienda</a>
+    </nav>
+
+    <div class="header__center">
+      <a href="index.html" class="header__logo" aria-label="Inicio JIcrea">
+        <div class="header__logo--open">
+          <div class="header__side-text">
+            <span>DESDE</span>
+            <span>2015</span>
+          </div>
+          <img src="img/logotipo-blanco.png" alt="JIcrea">
+          <div class="header__side-text">
+            <span>HECHOS</span>
+            <span>A MANO</span>
+          </div>
+        </div>
+        <img class="header__logo--closed" src="img/JI-CON-MATE-BLANCO.png" alt="JI">
+      </a>
+    </div>
+
+    <nav class="header__nav header__nav--right" aria-label="Navegación derecha">
+      <a href="index.html#manos">Proceso</a>
+      <a href="nuestra-historia.html" class="is-current">Nuestra Historia</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- HERO — pantalla completa con título grande tipo el hero del index.
+         Foto de fondo: momento1.jpg (mate cinematográfico). -->
+    <section class="hero historia-hero" data-bg="dark">
+      <div class="hero__media historia-hero__media" aria-hidden="true"></div>
+      <div class="hero__inner">
+        <span class="historia-hero__eyebrow">Nuestra historia</span>
+        <h1 class="hero__title" aria-label="Del campo a tus manos">
+          <span class="line" data-text="DEL CAMPO"></span>
+          <span class="line" data-text="A TUS MANOS"></span>
+        </h1>
+        <p class="hero__subtitle">Productores uruguayos desde 2015. Hecho a mano en Paysandú.</p>
+      </div>
+    </section>
+
+    <!-- BLOQUE 1 — EL ORIGEN. Leather con título serif XL + 3 párrafos
+         narrando la historia: arranque (2015), formalización (2017),
+         escala actual (1.000–1.500 mates/mes, 100+ mayoristas). -->
+    <section class="hist-block hist-block--leather" data-bg="leather">
+      <div class="hist-block__inner" data-reveal>
+        <div class="hist-diamond" aria-hidden="true">◇</div>
+        <span class="hist-eyebrow">El origen</span>
+        <h2 class="hist-title">De 50 mates<br>a más de 100 clientes.</h2>
+
+        <div class="hist-body">
+          <p class="hist-lead">JIcrea es una empresa uruguaya productora y fabricante de mates, fundada formalmente en 2017 a partir de un emprendimiento personal iniciado en 2015–2016.</p>
+
+          <p>Lo que comenzó con <strong>50 mates, una tabla y una lija</strong>, se transformó en una empresa con galpón propio en Paysandú, equipo de producción y más de <strong>100 clientes mayoristas</strong> en todo Uruguay.</p>
+
+          <p>Hoy producimos entre 1.000 y 1.500 mates mensuales, controlando cada etapa del proceso: desde la calabaza en el campo hasta el mate terminado. Nuestro fuerte es la <em>calabaza natural</em>, pero también trabajamos con cerámica, algarrobo y una amplia gama de accesorios.</p>
+
+          <p class="hist-sign">JIcrea no es solo una marca.<br>Es la historia de construir algo real, con las manos, desde cero.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS STRIP — números clave de la marca. Light bg para romper el
+         ritmo cromático entre dos bloques leather. -->
+    <section class="hist-stats" data-bg="light">
+      <div class="hist-stats__inner" data-reveal>
+        <div class="hist-stats__item">
+          <span class="hist-stats__num">2015</span>
+          <span class="hist-stats__label">Año de inicio</span>
+        </div>
+        <div class="hist-stats__item">
+          <span class="hist-stats__num">1.500</span>
+          <span class="hist-stats__label">Mates por mes</span>
+        </div>
+        <div class="hist-stats__item">
+          <span class="hist-stats__num">100+</span>
+          <span class="hist-stats__label">Clientes mayoristas</span>
+        </div>
+        <div class="hist-stats__item">
+          <span class="hist-stats__num">Paysandú</span>
+          <span class="hist-stats__label">Galpón propio</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLOGAN CALLOUT — dark con la frase oficial. Single statement,
+         enorme, sin distracciones. -->
+    <section class="hist-callout" data-bg="dark">
+      <div class="hist-callout__inner" data-reveal>
+        <span class="hist-eyebrow hist-eyebrow--gold">Slogan oficial</span>
+        <p class="hist-callout__text">"Del campo<br>a tus manos."</p>
+      </div>
+    </section>
+
+    <!-- NARRATIVA — la frase larga de marca sobre las manos. Light bg con
+         el quote en italic Garamond y un par de comillas decorativas. -->
+    <section class="hist-block hist-block--light" data-bg="light">
+      <div class="hist-block__inner" data-reveal>
+        <div class="hist-diamond" aria-hidden="true">◇</div>
+        <span class="hist-eyebrow">La frase de la marca</span>
+        <h2 class="hist-title hist-title--dark">La marca, en una sola frase.</h2>
+        <blockquote class="hist-quote">
+          <span class="hist-quote__mark" aria-hidden="true">“</span>
+          Se siembra con las manos, se cosecha con las manos, se procesa con las manos, se lava con las manos, se pule con las manos, se toma con las manos y se trasciende de generación en generación en una ronda de mates.
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- FILOSOFÍA — Calidad en lo sencillo. Leather, bloque corto. -->
+    <section class="hist-block hist-block--leather" data-bg="leather">
+      <div class="hist-block__inner" data-reveal>
+        <div class="hist-diamond" aria-hidden="true">◇</div>
+        <span class="hist-eyebrow">Filosofía</span>
+        <h2 class="hist-title">Calidad<br>en lo sencillo.</h2>
+        <p class="hist-lead hist-lead--center">No buscamos lo complejo ni lo artificioso. La calidad está en la materia prima, en el proceso honesto, en el producto que habla por sí solo.</p>
+      </div>
+    </section>
+
+    <!-- 4 PILARES — light, grid de 2x2 con número grande y descripción.
+         Estética "etiqueta numerada" coherente con el resto del sitio. -->
+    <section class="hist-pillars" data-bg="light">
+      <div class="hist-pillars__inner">
+        <div class="hist-pillars__head" data-reveal>
+          <div class="hist-diamond" aria-hidden="true">◇</div>
+          <span class="hist-eyebrow">Identidad</span>
+          <h2 class="hist-title hist-title--dark">Cuatro pilares.</h2>
+        </div>
+        <div class="hist-pillars__grid">
+          <div class="hist-pillar" data-reveal>
+            <span class="hist-pillar__num">01</span>
+            <h3 class="hist-pillar__name">Las manos</h3>
+            <p class="hist-pillar__desc">El hilo conductor de todo lo que hacemos y comunicamos.</p>
+          </div>
+          <div class="hist-pillar" data-reveal data-delay="1">
+            <span class="hist-pillar__num">02</span>
+            <h3 class="hist-pillar__name">El origen</h3>
+            <p class="hist-pillar__desc">Uruguayo, del campo, con raíz cultural profunda.</p>
+          </div>
+          <div class="hist-pillar" data-reveal data-delay="2">
+            <span class="hist-pillar__num">03</span>
+            <h3 class="hist-pillar__name">Productores y fabricantes</h3>
+            <p class="hist-pillar__desc">No somos revendedores, somos la fuente.</p>
+          </div>
+          <div class="hist-pillar" data-reveal data-delay="3">
+            <span class="hist-pillar__num">04</span>
+            <h3 class="hist-pillar__name">Calidad en lo sencillo</h3>
+            <p class="hist-pillar__desc">Sin artificios, con verdad.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TONO DE VOZ — dos columnas: cómo habla / lo que nunca diría.
+         Leather. La segunda columna usa tipografía tachada para resaltar
+         lo que NO va con la marca. -->
+    <section class="hist-tono" data-bg="leather">
+      <div class="hist-tono__inner">
+        <div class="hist-tono__head" data-reveal>
+          <div class="hist-diamond" aria-hidden="true">◇</div>
+          <span class="hist-eyebrow">Tono de voz</span>
+          <h2 class="hist-title">Cómo hablamos.</h2>
+          <p class="hist-tono__intro">El tono de voz le da coherencia a toda nuestra comunicación — posts, stories, respuestas, WhatsApp, catálogo. Es lo que mantiene a JIcrea siendo JIcrea.</p>
+        </div>
+
+        <div class="hist-tono__cols">
+          <div class="hist-tono__col" data-reveal>
+            <span class="hist-tono__col-label">Cómo habla JIcrea</span>
+            <ul class="hist-tono__list">
+              <li><strong>Simple y directo.</strong> Sin palabras rebuscadas. Como el producto mismo.</li>
+              <li><strong>Cercano pero no informal.</strong> No gritamos ofertas ni abusamos de emojis.</li>
+              <li><strong>Con raíz.</strong> Referencias al campo, a las manos, al proceso. El lenguaje tiene textura y tierra.</li>
+              <li><strong>Evocador.</strong> No describimos el producto: evocamos una sensación, un momento, una memoria.</li>
+            </ul>
+          </div>
+          <div class="hist-tono__col hist-tono__col--negativo" data-reveal data-delay="1">
+            <span class="hist-tono__col-label hist-tono__col-label--warn">Lo que nunca diríamos</span>
+            <ul class="hist-tono__list hist-tono__list--strike">
+              <li>"¡Aprovechá la promo!"</li>
+              <li>"¡El mejor mate del mercado!"</li>
+              <li>"¡No te lo pierdas!"</li>
+            </ul>
+            <p class="hist-tono__nota">JIcrea no necesita gritar.<br><em>La calidad habla sola.</em></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VISIÓN — 3 metas a futuro. Light. -->
+    <section class="hist-vision" data-bg="light">
+      <div class="hist-vision__inner">
+        <div class="hist-vision__head" data-reveal>
+          <div class="hist-diamond" aria-hidden="true">◇</div>
+          <span class="hist-eyebrow">Visión</span>
+          <h2 class="hist-title hist-title--dark">A dónde vamos.</h2>
+        </div>
+        <div class="hist-vision__grid">
+          <div class="hist-vision__item" data-reveal>
+            <h3>Marca premium de referencia</h3>
+            <p>Consolidarnos como la marca premium de referencia en mates uruguayos.</p>
+          </div>
+          <div class="hist-vision__item" data-reveal data-delay="1">
+            <h3>Proveedor mayorista líder</h3>
+            <p>Ser el proveedor mayorista más completo y confiable del mercado local.</p>
+          </div>
+          <div class="hist-vision__item" data-reveal data-delay="2">
+            <h3>Internacionalizar la cultura</h3>
+            <p>Llevar la historia, el proceso y la identidad uruguaya al mundo entero.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MISIÓN FINAL — cierre dark con la misión y el slogan extendido.
+         Es el último mensaje de la página: el cierre emocional. -->
+    <section class="hist-mision" data-bg="dark">
+      <div class="hist-mision__inner" data-reveal>
+        <span class="hist-eyebrow hist-eyebrow--gold">Nuestra misión</span>
+        <p class="hist-mision__text">Llevar la cultura del mate uruguayo<br>al mundo entero.</p>
+        <div class="hist-mision__sep" aria-hidden="true"></div>
+        <p class="hist-mision__slogan">
+          <span>Del campo a tus manos.</span>
+          <span class="hist-mision__slogan-extra">De tus manos al mundo entero.</span>
+        </p>
+        <a class="hist-mision__cta" href="tienda.html">Conocé los mates →</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER — mismo del resto del sitio (textura cuero) -->
+  <footer class="footer" id="contacto" data-bg="leather">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <img class="footer__logo" src="img/logotipo.png" alt="JIcrea">
+        <p class="footer__slogan">Del campo a tus manos.</p>
+      </div>
+
+      <div class="footer__cols">
+        <div class="footer__col">
+          <h4>Contacto</h4>
+          <a href="https://wa.me/59898507241" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          <a href="https://www.instagram.com/jicrea/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        </div>
+        <div class="footer__col">
+          <h4>Menu</h4>
+          <a href="index.html">Inicio</a>
+          <a href="tienda.html">Tienda</a>
+          <a href="nuestra-historia.html">Nuestra Historia</a>
+        </div>
+        <div class="footer__col">
+          <h4>Dónde estamos</h4>
+          <p>Paysandú, Uruguay</p>
+          <p>Productores y fabricantes desde 2015</p>
+        </div>
+      </div>
+
+      <div class="footer__base">
+        <p>© 2026 JIcrea — Mates uruguayos hechos a mano</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- WhatsApp FAB -->
+  <a class="wa-fab" href="https://wa.me/59898507241" target="_blank" rel="noopener noreferrer" aria-label="Escribinos por WhatsApp">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M19.05 4.91A10 10 0 0 0 12 2c-5.5 0-10 4.5-10 10 0 1.76.46 3.48 1.34 5L2 22l5.13-1.34A10 10 0 0 0 12 22c5.5 0 10-4.5 10-10 0-2.66-1.05-5.18-2.95-7.09zM12 20.13c-1.6 0-3.18-.43-4.55-1.24l-.32-.19-3.04.79.81-2.96-.21-.34A8.13 8.13 0 1 1 20.14 12 8.14 8.14 0 0 1 12 20.13z"/></svg>
+  </a>
+
+  <!-- Mismo stack del resto del sitio (sin tienda-cart) -->
+  <script src="https://unpkg.com/lenis@1.0.42/dist/lenis.min.js" onerror="console.info('[JIcrea] Lenis CDN no disponible')"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="js/jicrea-pro.js?v=68"></script>
+</body>
+</html>
