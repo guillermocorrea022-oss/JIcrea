@@ -40,7 +40,6 @@
 .hist-callout,
 .hist-stats,
 .hist-pillars,
-.hist-tono,
 .hist-vision,
 .hist-mision {
   position: relative;
@@ -49,8 +48,7 @@
 }
 
 /* LEATHER: el mismo recipe que las secciones leather del resto del sitio */
-.hist-block--leather,
-.hist-tono {
+.hist-block--leather {
   background:
     radial-gradient(ellipse at 20% 30%, rgba(255, 230, 200, 0.10), transparent 55%),
     radial-gradient(ellipse at 80% 70%, rgba(46, 24, 12, 0.32), transparent 60%),
@@ -58,30 +56,25 @@
   color: var(--c-text-alt);
 }
 .hist-block--leather::before,
-.hist-block--leather::after,
-.hist-tono::before,
-.hist-tono::after {
+.hist-block--leather::after {
   content: "";
   position: absolute; inset: 0;
   pointer-events: none;
   z-index: 0;
 }
-.hist-block--leather::before,
-.hist-tono::before {
+.hist-block--leather::before {
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   background-size: 220px 220px;
   opacity: 0.5;
   mix-blend-mode: multiply;
 }
-.hist-block--leather::after,
-.hist-tono::after {
+.hist-block--leather::after {
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='2.5' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   background-size: 140px 140px;
   opacity: 0.3;
   mix-blend-mode: overlay;
 }
-.hist-block--leather > *,
-.hist-tono > * { position: relative; z-index: 1; }
+.hist-block--leather > * { position: relative; z-index: 1; }
 
 /* LIGHT: cream parchment con grain sutil */
 .hist-block--light,
@@ -122,7 +115,6 @@
    Diamond, eyebrow, title, lead, sign — usados en varios bloques. */
 .hist-block__inner,
 .hist-pillars__head,
-.hist-tono__head,
 .hist-vision__head,
 .hist-mision__inner,
 .hist-callout__inner {
@@ -192,7 +184,13 @@
   margin: 0 0 2.4rem !important;
   letter-spacing: 0.01em;
 }
-.hist-lead--center { max-width: 720px; margin-left: auto; margin-right: auto; }
+/* margin-left/right con !important — el .hist-lead usa `margin: ... !important`
+   en shorthand, lo cual aplasta los auto del centrado. Esto los recupera. */
+.hist-lead--center {
+  max-width: 720px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
 
 .hist-sign {
   font-family: var(--font-serif) !important;
@@ -245,28 +243,72 @@
 }
 
 /* ─── CALLOUT (slogan oficial) ───────────────────────────────────────
-   Frase enorme, una sola línea, fondo casi negro. */
+   Frase enorme en UNA SOLA LÍNEA, fondo casi negro con foto de campo
+   muy difuminada detrás para anclar el slogan al concepto "del campo". */
 .hist-callout {
   padding: max(9rem, min(11vw, 14rem)) var(--gutter);
 }
+.hist-callout__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    /* Overlay heavy para que la foto sea sólo "atmósfera", no compita */
+    linear-gradient(180deg, rgba(10, 8, 7, 0.85) 0%, rgba(10, 8, 7, 0.92) 100%),
+    url("../img/proceso-fondo1.png");
+  background-size: cover;
+  background-position: center;
+}
+.hist-callout__inner { position: relative; z-index: 1; }
 .hist-callout__text {
   font-family: var(--font-serif);
-  font-size: max(3.4rem, min(6vw, 7.4rem));
+  /* Auto-fit del tamaño para que entre en UNA SOLA línea: clamp con
+     vw como driver — en pantallas chicas baja a 3rem, en grandes sube
+     a 6rem. white-space:nowrap fuerza la línea única. */
+  font-size: clamp(2.4rem, 6vw, 6.2rem);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 2px;
-  line-height: 1.02;
+  line-height: 1.05;
   color: var(--c-text-alt);
   margin: 0;
+  white-space: nowrap;
   /* Pequeño glow dorado detrás del texto — refuerza la sensación callout */
   text-shadow: 0 0 40px rgba(203, 160, 88, 0.25);
 }
+/* En mobile dejamos que el slogan pueda partir en 2 líneas si no entra
+   (white-space:normal) — texto legible > una sola línea a toda costa. */
+@media (max-width: 540px) {
+  .hist-callout__text {
+    white-space: normal;
+    line-height: 1.08;
+  }
+}
 
 /* ─── BLOCKQUOTE NARRATIVO ───────────────────────────────────────────
-   La frase larga de la marca. Italic Garamond grande con comillas
-   decorativas. */
+   La frase larga de la marca. Italic Garamond grande. Reemplazamos las
+   comillas (el font super-med renderizaba el glifo extraño) por un
+   separador dorado con diamante centrado — match con el resto del sitio. */
+.hist-quote-sep {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  max-width: 320px;
+  margin: 0 auto 2.6rem;
+}
+.hist-quote-sep__line {
+  display: block;
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(203, 160, 88, 0.6) 50%, transparent 100%);
+}
+.hist-quote-sep__diamond {
+  font-size: 1.4rem;
+  color: var(--c-brand);
+  line-height: 1;
+}
 .hist-quote {
-  position: relative;
   max-width: 820px;
   margin: 0 auto;
   padding: 0 4rem;
@@ -277,20 +319,8 @@
   color: rgba(42, 24, 16, 0.86);
   text-align: center;
 }
-.hist-quote__mark {
-  position: absolute;
-  top: -3.6rem;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: var(--font-serif);
-  font-size: 8rem;
-  line-height: 1;
-  color: var(--c-brand);
-  opacity: 0.6;
-}
 @media (max-width: 640px) {
   .hist-quote { padding: 0 1rem; }
-  .hist-quote__mark { font-size: 6rem; top: -2.6rem; }
 }
 
 /* ─── 4 PILARES ──────────────────────────────────────────────────────
@@ -341,98 +371,6 @@
   .hist-pillars__grid { grid-template-columns: 1fr; gap: 3rem; }
 }
 
-/* ─── TONO DE VOZ ────────────────────────────────────────────────────
-   Cabezal centrado + dos columnas. La columna derecha (lo que JIcrea
-   nunca diría) tiene los items tachados para refuerzo visual. */
-.hist-tono__inner { max-width: 1100px; margin: 0 auto; }
-.hist-tono__head { margin-bottom: 4rem; }
-.hist-tono__intro {
-  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
-  font-style: italic;
-  font-size: 1.65rem;
-  line-height: 1.55;
-  color: rgba(244, 235, 225, 0.82);
-  max-width: 720px;
-  margin: 0 auto;
-}
-.hist-tono__cols {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: max(2.4rem, min(3.6vw, 5rem));
-}
-.hist-tono__col {
-  background: rgba(0, 0, 0, 0.22);
-  border: 1px solid rgba(203, 160, 88, 0.28);
-  padding: 2.4rem 2.6rem;
-  text-align: left;
-}
-.hist-tono__col-label {
-  display: block;
-  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
-  font-style: italic;
-  font-size: 1.3rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--c-brand);
-  margin-bottom: 1.8rem;
-  padding-bottom: 1.2rem;
-  border-bottom: 1px solid rgba(203, 160, 88, 0.32);
-}
-.hist-tono__col-label--warn {
-  color: #e08e7a; /* terracota pálido — señal "atención" sin chillar */
-  border-bottom-color: rgba(224, 142, 122, 0.35);
-}
-.hist-tono__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
-  font-size: 1.6rem;
-  line-height: 1.55;
-  color: rgba(244, 235, 225, 0.92);
-}
-.hist-tono__list li {
-  padding: 1rem 0;
-  border-bottom: 1px dashed rgba(244, 235, 225, 0.18);
-  font-style: italic;
-}
-.hist-tono__list li:last-child { border-bottom: none; }
-.hist-tono__list li strong {
-  display: inline-block;
-  font-family: var(--font-sans);
-  font-style: normal;
-  font-weight: 700;
-  color: var(--c-text-alt);
-  letter-spacing: 0.04em;
-  margin-right: 0.3em;
-}
-.hist-tono__list--strike li {
-  text-decoration: line-through;
-  text-decoration-color: rgba(224, 142, 122, 0.55);
-  text-decoration-thickness: 1.5px;
-  color: rgba(244, 235, 225, 0.55);
-}
-.hist-tono__nota {
-  margin: 1.8rem 0 0;
-  font-family: var(--font-serif);
-  font-size: 1.4rem;
-  line-height: 1.5;
-  color: var(--c-text-alt);
-  letter-spacing: 0.04em;
-}
-.hist-tono__nota em {
-  display: block;
-  margin-top: 0.4rem;
-  color: var(--c-brand);
-  font-style: italic;
-  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
-  font-size: 1.55rem;
-}
-@media (max-width: 760px) {
-  .hist-tono__cols { grid-template-columns: 1fr; }
-  .hist-tono__col { padding: 2rem 1.8rem; }
-}
-
 /* ─── VISIÓN ─────────────────────────────────────────────────────────
    3 items horizontales con título serif + texto Garamond. Light bg. */
 .hist-vision__inner { max-width: 1100px; margin: 0 auto; }
@@ -471,10 +409,22 @@
 
 /* ─── MISIÓN / CIERRE ────────────────────────────────────────────────
    Dark final. Frase grande, separador dorado y un slogan en dos partes
-   ("Del campo a tus manos / De tus manos al mundo entero"). */
+   ("Del campo a tus manos / De tus manos al mundo entero"). Detrás:
+   foto del campo (hero1) muy atenuada para grounding emocional. */
 .hist-mision {
   padding: max(8rem, min(11vw, 14rem)) var(--gutter);
 }
+.hist-mision__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(180deg, rgba(10, 8, 7, 0.88) 0%, rgba(10, 8, 7, 0.95) 100%),
+    url("../img/hero1.jpg");
+  background-size: cover;
+  background-position: center;
+}
+.hist-mision__inner { position: relative; z-index: 1; }
 .hist-mision__text {
   font-family: var(--font-serif);
   font-size: max(2.6rem, min(4vw, 4.4rem));

@@ -20,7 +20,7 @@
   <meta property="og:locale" content="es_UY">
 
   <link rel="stylesheet" href="css/jicrea-pro.css?v=73">
-  <link rel="stylesheet" href="css/historia.css?v=1">
+  <link rel="stylesheet" href="css/historia.css?v=2">
 </head>
 <body class="page-historia">
 
@@ -121,12 +121,15 @@
       </div>
     </section>
 
-    <!-- SLOGAN CALLOUT — dark con la frase oficial. Single statement,
-         enorme, sin distracciones. -->
+    <!-- SLOGAN CALLOUT — dark con la frase oficial en UNA SOLA LÍNEA.
+         Sin <br>: el texto fluye horizontal, single statement masivo.
+         Detrás: foto del campo (proceso-fondo1.png) con overlay oscuro
+         para grounding visual del slogan. -->
     <section class="hist-callout" data-bg="dark">
+      <div class="hist-callout__bg" aria-hidden="true"></div>
       <div class="hist-callout__inner" data-reveal>
         <span class="hist-eyebrow hist-eyebrow--gold">Slogan oficial</span>
-        <p class="hist-callout__text">"Del campo<br>a tus manos."</p>
+        <p class="hist-callout__text">"Del campo a tus manos."</p>
       </div>
     </section>
 
@@ -137,8 +140,14 @@
         <div class="hist-diamond" aria-hidden="true">◇</div>
         <span class="hist-eyebrow">La frase de la marca</span>
         <h2 class="hist-title hist-title--dark">La marca, en una sola frase.</h2>
+        <!-- Separador dorado con diamante en el medio — reemplaza el
+             carácter de comillas que el font super-med renderiza raro. -->
+        <div class="hist-quote-sep" aria-hidden="true">
+          <span class="hist-quote-sep__line"></span>
+          <span class="hist-quote-sep__diamond">◇</span>
+          <span class="hist-quote-sep__line"></span>
+        </div>
         <blockquote class="hist-quote">
-          <span class="hist-quote__mark" aria-hidden="true">“</span>
           Se siembra con las manos, se cosecha con las manos, se procesa con las manos, se lava con las manos, se pule con las manos, se toma con las manos y se trasciende de generación en generación en una ronda de mates.
         </blockquote>
       </div>
@@ -188,41 +197,6 @@
       </div>
     </section>
 
-    <!-- TONO DE VOZ — dos columnas: cómo habla / lo que nunca diría.
-         Leather. La segunda columna usa tipografía tachada para resaltar
-         lo que NO va con la marca. -->
-    <section class="hist-tono" data-bg="leather">
-      <div class="hist-tono__inner">
-        <div class="hist-tono__head" data-reveal>
-          <div class="hist-diamond" aria-hidden="true">◇</div>
-          <span class="hist-eyebrow">Tono de voz</span>
-          <h2 class="hist-title">Cómo hablamos.</h2>
-          <p class="hist-tono__intro">El tono de voz le da coherencia a toda nuestra comunicación — posts, stories, respuestas, WhatsApp, catálogo. Es lo que mantiene a JIcrea siendo JIcrea.</p>
-        </div>
-
-        <div class="hist-tono__cols">
-          <div class="hist-tono__col" data-reveal>
-            <span class="hist-tono__col-label">Cómo habla JIcrea</span>
-            <ul class="hist-tono__list">
-              <li><strong>Simple y directo.</strong> Sin palabras rebuscadas. Como el producto mismo.</li>
-              <li><strong>Cercano pero no informal.</strong> No gritamos ofertas ni abusamos de emojis.</li>
-              <li><strong>Con raíz.</strong> Referencias al campo, a las manos, al proceso. El lenguaje tiene textura y tierra.</li>
-              <li><strong>Evocador.</strong> No describimos el producto: evocamos una sensación, un momento, una memoria.</li>
-            </ul>
-          </div>
-          <div class="hist-tono__col hist-tono__col--negativo" data-reveal data-delay="1">
-            <span class="hist-tono__col-label hist-tono__col-label--warn">Lo que nunca diríamos</span>
-            <ul class="hist-tono__list hist-tono__list--strike">
-              <li>"¡Aprovechá la promo!"</li>
-              <li>"¡El mejor mate del mercado!"</li>
-              <li>"¡No te lo pierdas!"</li>
-            </ul>
-            <p class="hist-tono__nota">JIcrea no necesita gritar.<br><em>La calidad habla sola.</em></p>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- VISIÓN — 3 metas a futuro. Light. -->
     <section class="hist-vision" data-bg="light">
       <div class="hist-vision__inner">
@@ -249,8 +223,10 @@
     </section>
 
     <!-- MISIÓN FINAL — cierre dark con la misión y el slogan extendido.
-         Es el último mensaje de la página: el cierre emocional. -->
+         Es el último mensaje de la página: el cierre emocional.
+         Foto de campo (hero1) detrás con overlay heavy para grounding. -->
     <section class="hist-mision" data-bg="dark">
+      <div class="hist-mision__bg" aria-hidden="true"></div>
       <div class="hist-mision__inner" data-reveal>
         <span class="hist-eyebrow hist-eyebrow--gold">Nuestra misión</span>
         <p class="hist-mision__text">Llevar la cultura del mate uruguayo<br>al mundo entero.</p>
