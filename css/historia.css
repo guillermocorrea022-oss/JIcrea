@@ -154,6 +154,16 @@
   color: var(--c-text-alt);
 }
 .hist-title--dark { color: #2B3A2C; }
+/* Modificador "una sola línea" — clamp del font-size por vw + nowrap
+   para que el título no se parta. En mobile (≤540px) permitimos wrap
+   normal porque "Calidad en lo sencillo." a 2.4rem no entra entero. */
+.hist-title--oneline {
+  white-space: nowrap;
+  font-size: clamp(2.2rem, 4.5vw, 5.2rem);
+}
+@media (max-width: 540px) {
+  .hist-title--oneline { white-space: normal; }
+}
 
 .hist-body {
   max-width: 720px;
