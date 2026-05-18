@@ -1739,3 +1739,215 @@
     align-items: center;
   }
 }
+
+/* ════════════════════════════════════════════════════════════════════════
+   TIENDA MOBILE — overrides para teléfonos (≤640px)
+   ════════════════════════════════════════════════════════════════════════
+   El móvil es el canal principal. Acá optimizamos:
+     · Cards de categorías polaroid: stack vertical limpio, sin rotación
+     · Grid de productos: 2 columnas (no 1) para mostrar más en menos scroll
+     · CTAs grandes con tap-target generoso
+     · Mayorista picker full-screen con grid 2 col
+     · Carrito drawer full-width con padding ajustado
+     · Notificación full-width
+   ════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  /* ─── HERO DE LA TIENDA ──────────────────────────────────────────────
+     Hereda del block global del jicrea-pro.css mobile, pero la foto
+     bg necesita un overlay un poco más oscuro acá para que el "LA TIENDA"
+     se lea sobre los matices brown de la foto. */
+  .hero__media--tienda {
+    background-image:
+      linear-gradient(180deg, rgba(10, 8, 7, 0.65) 0%, rgba(10, 8, 7, 0.82) 100%),
+      url("../img/momento2.jpg");
+  }
+
+  /* ─── CARDS DE CATEGORÍAS — polaroid grid ────────────────────────────
+     De 4 columnas en desktop a stack vertical en mobile. Sin rotación,
+     sólo translateY hover-like permanente. */
+  .cards--tienda {
+    padding-top: 3rem !important;
+    padding-bottom: 5rem !important;
+  }
+  .cards__inner--tienda {
+    grid-template-columns: 1fr !important;
+    gap: 2.4rem !important;
+    padding: 0 1.4rem !important;
+  }
+  .tienda-card__photo {
+    aspect-ratio: 16 / 11 !important;
+    transform: none !important; /* Sin rotación en mobile */
+  }
+  .tienda-card__name { font-size: 2.4rem !important; letter-spacing: 0.5px; }
+  .tienda-card__desc { font-size: 1.4rem !important; }
+  .tienda-card__num { font-size: 1.2rem !important; margin-top: 1.6rem !important; }
+
+  /* ─── MANIFESTO INTRO DE LA TIENDA ───────────────────────────────── */
+  .manifesto__title { font-size: 2.4rem !important; line-height: 1.1; }
+  .manifesto__text  { font-size: 1.35rem !important; }
+
+  /* ─── SECCIÓN DE PRODUCTOS POR CATEGORÍA ─────────────────────────────
+     2 columnas en mobile para que se vean varios productos a la vez,
+     en vez de scrollear infinitamente con 1 por fila. */
+  .seccion-prod {
+    padding: 5rem 1.2rem !important;
+  }
+  .seccion-prod__head { margin-bottom: 3.2rem !important; padding-top: 2rem !important; }
+  .seccion-prod__head .manifesto__title { font-size: 2.6rem !important; }
+  .seccion-prod__grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.4rem !important;
+  }
+  .prod {
+    min-height: 0 !important;
+    padding: 0.8rem 0.8rem 0 !important;
+  }
+  .prod::before { inset: 5px; }
+  .prod__name { font-size: 1.4rem !important; margin: 0 0.8rem 0.3rem !important; letter-spacing: 0.5px; }
+  .prod__desc {
+    font-size: 1.15rem !important;
+    margin: 0.6rem 0.8rem 1rem !important;
+    -webkit-line-clamp: 2;
+  }
+  .prod__price { font-size: 1.5rem !important; margin: auto 0.8rem 0; padding-left: 1.8rem; }
+  .prod__price::before { left: 0.2rem; top: 1.3rem; width: 5px; height: 5px; }
+  .prod__price::after { left: 1.0rem; top: 1.45rem; }
+  .prod__btn {
+    margin: 1.2rem 0.6rem 0.6rem !important;
+    padding: 1.2rem 1rem !important;
+    font-size: 1.05rem !important;
+    letter-spacing: 0.12em;
+  }
+  .prod__img { margin-bottom: 1.4rem !important; }
+
+  /* ─── SECCIÓN MAYORISTA / B2B ────────────────────────────────────────
+     El manifesto banner se compacta. CTAs en columna full-width. */
+  .manifesto--banner { padding: 5rem 1.4rem !important; }
+  .manifesto__inner--info { max-width: 100%; }
+  .manifesto__inner--info .manifesto__title { font-size: 2.6rem !important; line-height: 1.1; }
+  .manifesto__text--intro { font-size: 1.4rem !important; margin-bottom: 3rem !important; }
+  .info-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2.4rem !important;
+    margin: 3rem auto !important;
+  }
+  .info-grid__title { font-size: 1.7rem !important; }
+  .info-grid__text  { font-size: 1.3rem !important; }
+  .info-clientes { margin: 3rem auto 3.2rem !important; padding-top: 2.4rem !important; }
+  .info-clientes__list {
+    flex-direction: column;
+    gap: 1rem !important;
+    font-size: 1.4rem !important;
+  }
+  .info-clientes__list li:not(:last-child)::after { display: none; }
+  .cta-grande {
+    width: 100%;
+    justify-content: center;
+    padding: 1.4rem 1.6rem !important;
+    font-size: 1.2rem !important;
+  }
+
+  /* ─── ISLA FLOTANTE (anchor scroll dentro de la tienda) ─────────────
+     Ya tenía overrides en el @800px. Acá refinamos para 640px y abajo
+     con tap-targets más grandes. */
+  .floating-island {
+    bottom: 1.2rem !important;
+    padding: 0.8rem 1rem !important;
+    gap: 0.3rem !important;
+    max-width: calc(100vw - 2.4rem) !important;
+    border-radius: 4rem !important;
+  }
+  .floating-island__link {
+    font-size: 1rem !important;
+    padding: 0.5rem 0.75rem !important;
+    letter-spacing: 0.08em !important;
+  }
+  .floating-island__sep { display: none; } /* No hay espacio para el separador */
+
+  /* ─── CART DRAWER ────────────────────────────────────────────────────
+     Full-width ya está. Refinamos el padding interno + thumbs + qty UI
+     para que sea cómodo de manejar con el dedo. */
+  .cart { width: 100vw !important; }
+  .cart__head { padding: 1.8rem 1.6rem 1.4rem !important; }
+  .cart__title { font-size: 1.8rem !important; }
+  .cart__body { padding: 1.2rem 1.6rem !important; }
+  .cart-item { gap: 1rem !important; padding: 1.2rem 0 !important; }
+  .cart-item__thumb { width: 6rem; height: 6rem; }
+  .cart-item__name  { font-size: 1.35rem !important; }
+  .cart-item__price { font-size: 1.2rem !important; }
+  .cart-item__qty-btn { width: 3rem; height: 3rem; font-size: 1.8rem; }
+  .cart-item__qty-value { min-width: 2rem; font-size: 1.4rem; }
+  .cart__foot { padding: 1.4rem 1.6rem 1.8rem !important; }
+  .cart__total-amount { font-size: 2rem !important; }
+  .cart__cta {
+    padding: 1.6rem !important;
+    font-size: 1.25rem !important;
+    letter-spacing: 0.1em !important;
+  }
+
+  /* ─── MODAL DE CANTIDAD ────────────────────────────────────────────── */
+  .qty-modal__panel { padding: 2.4rem 2rem !important; width: min(420px, 92vw) !important; }
+  .qty-modal__name { font-size: 1.6rem !important; }
+  .qty-modal__price { font-size: 1.3rem !important; }
+  .qty-modal__qty { gap: 1.6rem !important; padding: 1rem !important; }
+  .qty-modal__btn { width: 3.6rem; height: 3.6rem; font-size: 1.8rem; }
+  .qty-modal__value { font-size: 2.2rem; min-width: 3.6rem; }
+
+  /* ─── MAYORISTA PICKER ──────────────────────────────────────────────
+     Modal full-screen en mobile. Grid de 2 columnas. Footer en stack
+     vertical (counter / total / CTA) para que cada bloque respire. */
+  .mayorista-modal__panel {
+    width: 100vw !important;
+    max-height: 100vh !important;
+    height: 100vh;
+    border-radius: 0;
+  }
+  .mayorista-modal__head {
+    padding: 1.6rem 1.4rem 1.2rem !important;
+    gap: 1rem !important;
+  }
+  .mayorista-modal__eyebrow { font-size: 1.1rem !important; letter-spacing: 0.18em; margin-bottom: 0.4rem; }
+  .mayorista-modal__title { font-size: 2rem !important; line-height: 1.1; margin: 0 0 0.5rem !important; }
+  .mayorista-modal__sub   { font-size: 1.3rem !important; line-height: 1.4; }
+  .mayorista-modal__close { width: 3.4rem; height: 3.4rem; flex-shrink: 0; }
+  .mayorista-modal__body {
+    padding: 1.4rem !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1rem !important;
+  }
+  .mayo-card { padding: 1rem 0.8rem 0.8rem !important; }
+  .mayo-card__name { font-size: 1.25rem !important; line-height: 1.15; }
+  .mayo-card__price { font-size: 1.2rem !important; }
+  .mayo-card__cat   { font-size: 0.95rem !important; }
+  .mayo-card__qty   { padding-top: 0.6rem !important; }
+  .mayo-card__qty-btn { width: 2.8rem; height: 2.8rem; font-size: 1.6rem; }
+  .mayo-card__qty-value { font-size: 1.5rem; min-width: 2rem; }
+  /* Footer del picker en stack vertical compacto */
+  .mayorista-modal__foot {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+    padding: 1.2rem 1.4rem 1.4rem !important;
+  }
+  .mayorista-modal__counter-text { font-size: 1.2rem !important; }
+  .mayorista-modal__counter-text strong { font-size: 1.6rem; }
+  .mayorista-modal__total-label { font-size: 1rem !important; }
+  .mayorista-modal__total-amount { font-size: 1.9rem !important; }
+  .mayorista-modal__total { text-align: left; display: flex; align-items: baseline; justify-content: space-between; }
+  .mayorista-modal__confirm {
+    width: 100%;
+    min-width: 0;
+    padding: 1.4rem !important;
+    font-size: 1.2rem !important;
+  }
+
+  /* ─── NOTIFICACIÓN (top right) ─────────────────────────────────────── */
+  .cart-notif { top: 8rem !important; padding: 1.4rem 1.6rem !important; }
+  .cart-notif__title { font-size: 1.3rem !important; }
+  .cart-notif__detail { font-size: 1.2rem !important; }
+}
+
+/* ─── MAYORISTA en pantallas extra chicas (≤420px) ──────────────────── */
+@media (max-width: 420px) {
+  .mayorista-modal__body { grid-template-columns: 1fr !important; }
+  .mayorista-modal__title { font-size: 1.8rem !important; }
+}

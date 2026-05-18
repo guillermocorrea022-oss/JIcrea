@@ -802,6 +802,17 @@ em {
   /* Pre-paint negro para evitar flash blanco mientras el video carga */
   background: #0A0807;
   display: block;
+  /* GRADE CINEMATOGRÁFICO (CSS, sin re-encode):
+       · saturate(1.18)  — colores más jugosos sin caer en chillón
+       · contrast(1.06)  — negros más profundos, look de cine
+       · brightness(0.96)— una pizca abajo para sumar densidad
+     El vignette (.proceso-3d__vignette) sigue encima y termina de
+     encerrar el ojo en el centro. Mismo recipe sirve para el video
+     de desktop y el de mobile — ambos pasan por este filtro. */
+  filter: saturate(1.18) contrast(1.06) brightness(0.96);
+  /* will-change para que el browser ponga el video en su propia capa
+     GPU — el filtro corre en compositor sin re-pintar el resto */
+  will-change: filter;
 }
 
 /* Vignette radial + gradient TOP — el radial vignettea bordes para foco
@@ -1832,3 +1843,274 @@ em {
   transition: transform 0.35s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1));
 }
 .b2b__card-cta:hover svg { transform: translateX(4px); }
+
+/* ════════════════════════════════════════════════════════════════════════
+   MOBILE — overrides para celular (≤640px y ≤480px)
+   ════════════════════════════════════════════════════════════════════════
+   El sitio se diseñó desktop-first. Acá compactamos todo para que en un
+   iPhone SE / 12 / Android estándar (320–414px de ancho) se vea pulido:
+     · Header slim siempre (modo "scrolled" forzado) + sin side-texts
+     · Hero tipografía escalada para no overflow
+     · Manifesto / amargor / productos: padding + font reducidos
+     · Origen museo: layout vertical en cuadrícula simple
+     · B2B / footer: stack vertical limpio
+   Las páginas tienda/producto/historia tienen su propio bloque en sus CSS
+   respectivos. Estos overrides son SOLO para index.html y las clases
+   compartidas (.header, .footer, .hero, .manifesto, etc).
+   ════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  :root {
+    --header-h: 6.4rem; /* Header SIEMPRE slim en mobile (vs 10rem desktop) */
+    --gutter: 1.6rem;   /* Gutters más chicos para aprovechar el ancho */
+  }
+
+  /* ─── HEADER ─────────────────────────────────────────────────────────
+     · Logo en modo "cerrado" siempre (sólo la marquita JI)
+     · Sin side-texts (DESDE 2015 / HECHOS A MANO no entran)
+     · Nav links chicos y juntos */
+  .header {
+    height: var(--header-h);
+    padding: 0 1.4rem;
+  }
+  .header__logo {
+    width: 5.4rem !important;
+    height: 5.4rem !important;
+    border-radius: 6px;
+  }
+  .header.is-scrolled .header__logo,
+  .header.is-scrolled .header__logo:hover {
+    width: 5.4rem !important;
+    height: 5.4rem !important;
+  }
+  /* Esconder el logo abierto (con frases laterales) — no hay espacio */
+  .header__logo--open,
+  .header__side-text { display: none !important; }
+  /* Mostrar siempre el cerrado, sin transición */
+  .header__logo--closed {
+    opacity: 1 !important;
+    transform: translate(-50%, -50%) scale(1) !important;
+    width: 70%;
+  }
+  /* Nav: tipografía + gap reducidos para que entre */
+  .header__nav {
+    gap: 1rem;
+    font-size: 1.05rem;
+    letter-spacing: 0.06em;
+  }
+  .header__nav a {
+    padding-bottom: 1px;
+  }
+  /* En index el hero es dark — el nav arranca cream sobre dark. Ya está. */
+
+  /* ─── HERO ───────────────────────────────────────────────────────────
+     Título escalable, subtítulo legible, padding generoso */
+  .hero {
+    height: 100vh;
+    min-height: 560px;
+    padding: 0 1.6rem;
+  }
+  .hero__title {
+    font-size: clamp(3.2rem, 13vw, 6rem) !important;
+    line-height: 1.0;
+    letter-spacing: 1px;
+  }
+  .hero__subtitle {
+    font-size: 1.35rem !important;
+    line-height: 1.55;
+    margin-top: 1.6rem;
+    max-width: 92%;
+  }
+
+  /* ─── MANIFESTO ──────────────────────────────────────────────────────
+     "La importancia del mate" y similares — encajados con menos padding */
+  .manifesto {
+    padding: 6rem 1.6rem 1.6rem !important;
+  }
+  .manifesto__title {
+    font-size: 2.8rem !important;
+    letter-spacing: 1px;
+    line-height: 1.08;
+  }
+  .manifesto__text {
+    font-size: 1.4rem !important;
+    line-height: 1.5;
+  }
+  .manifesto__icon {
+    width: 1.4rem;
+    height: 1.4rem;
+    margin-bottom: 1rem;
+  }
+
+  /* ─── ORIGEN MUSEO ───────────────────────────────────────────────────
+     Las 4 esquinas + el porongo central — en mobile pasa a stack vertical.
+     Cada corner se muestra como una card simple, el porongo del centro
+     se intercala como pieza visual. */
+  .origen-museo {
+    padding: 5rem 1.4rem !important;
+  }
+  .origen-museo__main-title {
+    font-size: 2.4rem !important;
+    letter-spacing: 0.5px;
+    line-height: 1.1;
+  }
+  .origen-museo__grid {
+    display: flex !important;
+    flex-direction: column;
+    gap: 2.4rem;
+    grid-template-columns: none !important;
+    grid-template-rows: none !important;
+  }
+  .origen-museo__corner {
+    flex-direction: row !important;
+    gap: 1.4rem;
+    text-align: left !important;
+    padding: 0 !important;
+  }
+  .origen-museo__icon {
+    width: 7rem !important;
+    height: 7rem !important;
+    flex-shrink: 0;
+  }
+  .origen-museo__title {
+    font-size: 1.6rem !important;
+  }
+  .origen-museo__corner p {
+    font-size: 1.35rem !important;
+    line-height: 1.5;
+  }
+  /* Porongo central — se mueve a su propio bloque arriba/abajo, más chico */
+  .origen-museo__center {
+    order: -1;
+    margin: 0 auto 1rem;
+    max-width: 18rem;
+  }
+  .origen-museo__img {
+    width: 100%;
+    height: auto;
+  }
+
+  /* ─── PROCESO VIDEO ──────────────────────────────────────────────────
+     El title overlay tiene que ser más chico para no chocar con bordes */
+  .proceso-3d__title-text {
+    font-size: clamp(2.8rem, 10vw, 4.8rem) !important;
+    line-height: 1.05;
+    letter-spacing: 0.5px;
+  }
+  .proceso-3d__title-eyebrow {
+    font-size: 1.05rem;
+    letter-spacing: 0.22em;
+    margin-bottom: 1.4rem;
+  }
+
+  /* ─── CARDS DE MOMENTOS (index) ──────────────────────────────────────
+     Las 3 polaroids barajadas — pasan a stack vertical, sin rotación
+     extrema para no romper el layout chico. */
+  .cards {
+    padding: 4rem 1.4rem !important;
+  }
+  .cards__inner {
+    width: 100% !important;
+    aspect-ratio: auto !important;
+  }
+  .card {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 4 / 3;
+    margin-bottom: 1.6rem;
+    transform: none !important;
+  }
+  .card__media img { object-fit: cover; width: 100%; height: 100%; }
+
+  /* ─── AMARGOR (es amargo / es lento / es nuestro) ──────────────────── */
+  .amargor {
+    padding: 5rem 1.4rem !important;
+  }
+  .amargor__giant {
+    font-size: 3.6rem !important;
+    line-height: 1.05;
+  }
+  .amargor__text {
+    font-size: 1.5rem !important;
+    margin-top: 2rem;
+    line-height: 1.5;
+  }
+
+  /* ─── PRODUCTOS SELECTOR (index — Porongo/Algarrobo/etc) ─────────────
+     Stack vertical: mate grande arriba, tabs abajo, texto debajo. */
+  .productos {
+    padding: 5rem 1.4rem !important;
+  }
+  .productos__giant { font-size: 5rem !important; line-height: 1; }
+  .productos__inner { padding: 2rem 0 !important; }
+  .productos__stage {
+    width: 100% !important;
+    height: 28rem !important;
+  }
+  .productos__mate {
+    width: 80%;
+    max-width: 22rem;
+  }
+  .productos__tabs {
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    justify-content: center;
+  }
+  .productos__tab {
+    font-size: 1.1rem !important;
+    padding: 0.8rem 1.2rem !important;
+  }
+  .productos__desc {
+    font-size: 1.4rem !important;
+    line-height: 1.5;
+    margin-top: 1.6rem;
+  }
+
+  /* ─── B2B (Para tu negocio) ─────────────────────────────────────────── */
+  .b2b {
+    padding: 5rem 1.4rem !important;
+  }
+  .b2b__title { font-size: 2.6rem !important; line-height: 1.1; }
+  .b2b__lead  { font-size: 1.4rem !important; line-height: 1.5; }
+  .b2b__features { gap: 2.4rem !important; }
+  .b2b__feature-title { font-size: 1.7rem !important; }
+  .b2b__feature-desc  { font-size: 1.35rem !important; }
+  .b2b__cta-grande {
+    padding: 1.4rem 2rem !important;
+    font-size: 1.2rem !important;
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* ─── FOOTER ────────────────────────────────────────────────────────── */
+  .footer {
+    padding: 4rem 1.6rem 2rem !important;
+  }
+  .footer__cols {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 2.4rem 1.6rem !important;
+  }
+  .footer__col h4 { font-size: 1.3rem !important; }
+  .footer__col a, .footer__col p { font-size: 1.25rem !important; }
+  .footer__base { font-size: 1.1rem !important; padding-top: 2rem; }
+
+  /* ─── WHATSAPP FAB ───────────────────────────────────────────────────
+     Más chico y posicionado para no chocar con la isla flotante. */
+  .wa-fab {
+    bottom: 1.4rem !important;
+    right: 1.4rem !important;
+    width: 5rem;
+    height: 5rem;
+  }
+}
+
+/* ─── MOBILE SUPER CHICO (iPhone SE / 320–360px) ─────────────────────── */
+@media (max-width: 380px) {
+  :root { --gutter: 1.2rem; }
+  .header__nav { gap: 0.7rem; font-size: 0.95rem; }
+  .hero__title { font-size: clamp(2.8rem, 12vw, 5rem) !important; }
+  .manifesto__title { font-size: 2.4rem !important; }
+  .amargor__giant { font-size: 3rem !important; }
+}

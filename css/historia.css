@@ -498,3 +498,115 @@
 .page-historia .header__nav a.is-current {
   color: var(--c-brand) !important;
 }
+
+/* ════════════════════════════════════════════════════════════════════════
+   HISTORIA MOBILE — overrides para teléfonos (≤640px)
+   ════════════════════════════════════════════════════════════════════════
+   Página larga con muchos bloques alternando leather/light/dark. En mobile
+   compactamos los padding generales, reducimos tipografías y forzamos
+   stack vertical donde había grids 2/3/4 columnas.
+   ════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  /* Padding general de los bloques — sin overflow horizontal */
+  .hist-block,
+  .hist-callout,
+  .hist-stats,
+  .hist-pillars,
+  .hist-vision,
+  .hist-mision {
+    padding: 5rem 1.4rem !important;
+  }
+
+  /* Hero historia — eyebrow + título escalable */
+  .historia-hero__eyebrow {
+    font-size: 1.2rem !important;
+    margin-bottom: 1.4rem !important;
+  }
+  .historia-hero .hero__title {
+    font-size: clamp(3.2rem, 14vw, 6rem) !important;
+    line-height: 1;
+  }
+  .historia-hero .hero__subtitle {
+    font-size: 1.3rem !important;
+    max-width: 95%;
+    margin-top: 1.4rem;
+  }
+
+  /* Diamond + eyebrow + título compartidos */
+  .hist-diamond { font-size: 1.1rem; margin-bottom: 1.2rem; }
+  .hist-eyebrow {
+    font-size: 1.15rem !important;
+    letter-spacing: 0.2em !important;
+    margin-bottom: 1.4rem !important;
+  }
+  .hist-title {
+    font-size: 2.4rem !important;
+    line-height: 1.1 !important;
+    letter-spacing: 1px !important;
+    margin: 0 0 2.4rem !important;
+  }
+  .hist-title--oneline {
+    /* Permitimos que se parta en mobile — "Calidad en lo sencillo." no entra en 1 línea a 375px */
+    white-space: normal !important;
+    font-size: 2.4rem !important;
+  }
+
+  /* Body lead + párrafos */
+  .hist-body p { font-size: 1.4rem !important; line-height: 1.55; margin-bottom: 1.4rem; }
+  .hist-lead   { font-size: 1.6rem !important; line-height: 1.4 !important; }
+  .hist-sign   { font-size: 1.4rem !important; margin-top: 2rem !important; }
+
+  /* Stats: 2x2 en mobile (en vez de 4 en línea) */
+  .hist-stats__inner {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 2.2rem 1.4rem !important;
+  }
+  .hist-stats__item { border-left: none; padding: 0; }
+  .hist-stats__num   { font-size: 2.4rem !important; }
+  .hist-stats__label { font-size: 1.15rem !important; }
+
+  /* Callout — slogan oficial en una sola línea (mobile permite wrap si no entra) */
+  .hist-callout__text {
+    font-size: clamp(2.4rem, 9vw, 4rem) !important;
+    white-space: normal !important;
+    line-height: 1.08 !important;
+  }
+
+  /* Blockquote narrativo (la frase larga de la marca) */
+  .hist-quote { padding: 0 !important; font-size: 1.55rem !important; line-height: 1.5; }
+  .hist-quote-sep { max-width: 220px; margin-bottom: 2rem !important; }
+
+  /* 4 pilares — 1 columna en mobile */
+  .hist-pillars__grid {
+    grid-template-columns: 1fr !important;
+    gap: 2.4rem !important;
+  }
+  .hist-pillars__head { margin-bottom: 3rem !important; }
+  .hist-pillar__name { font-size: 1.7rem !important; }
+  .hist-pillar__desc { font-size: 1.4rem !important; }
+
+  /* Visión — 1 columna */
+  .hist-vision__grid {
+    grid-template-columns: 1fr !important;
+    gap: 2.4rem !important;
+  }
+  .hist-vision__head { margin-bottom: 3rem !important; }
+  .hist-vision__item h3 { font-size: 1.55rem !important; }
+  .hist-vision__item p  { font-size: 1.35rem !important; }
+
+  /* Misión final */
+  .hist-mision { padding: 6rem 1.4rem !important; }
+  .hist-mision__text {
+    font-size: 2.4rem !important;
+    line-height: 1.1 !important;
+    margin: 0 0 2.4rem !important;
+  }
+  .hist-mision__sep { margin: 0 auto 2.4rem !important; }
+  .hist-mision__slogan { font-size: 1.5rem !important; margin: 0 0 2.4rem !important; }
+  .hist-mision__cta {
+    width: 100%;
+    justify-content: center;
+    padding: 1.4rem 1.6rem;
+    font-size: 1.2rem;
+  }
+}

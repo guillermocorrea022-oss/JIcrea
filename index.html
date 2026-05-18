@@ -22,7 +22,7 @@
   <meta property="og:locale" content="es_UY">
 
   <!-- Fuentes locales de la marca -->
-  <link rel="stylesheet" href="css/jicrea-pro.css?v=72">
+  <link rel="stylesheet" href="css/jicrea-pro.css?v=74">
 </head>
 <body>
   <!-- PAGE CURTAIN — overlay con textura cuero que cubre la página al
@@ -146,14 +146,17 @@
         <!-- Video cinemático. autoplay+loop+muted permiten el play sin
              interacción. playsinline evita el fullscreen en iOS. preload
              auto descarga el video apenas cargue la página. -->
-        <!-- preload=metadata para no bajar los 2MB del video en el load
-             inicial. El IntersectionObserver más abajo dispara el play
-             cuando la sección entra en viewport — para entonces el video
-             ya empezó a streamear. -->
+        <!-- preload=metadata para no bajar el video entero en el load
+             inicial. <source media> hace que el navegador elija UNO solo:
+             mobile (≤768px) → proceso.mp4 (versión específica móvil),
+             resto → proceso-video.mp4. El filter CSS más abajo le aplica
+             grade cinematográfico a cualquiera de los dos. -->
         <video class="proceso-3d__video" id="procesoVideo"
-               src="img/proceso-video.mp4"
                autoplay loop muted playsinline preload="metadata"
-               aria-hidden="true"></video>
+               aria-hidden="true">
+          <source media="(max-width: 768px)" src="img/proceso.mp4" type="video/mp4">
+          <source src="img/proceso-video.mp4" type="video/mp4">
+        </video>
 
         <!-- Vignette: oscurece bordes para foco cinematográfico al centro
              y para que el título overlay tenga contraste sobre el video. -->

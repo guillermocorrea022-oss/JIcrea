@@ -184,3 +184,49 @@
     gap: 4rem;
   }
 }
+
+/* ════════════════════════════════════════════════════════════════════════
+   PRODUCTO MOBILE — overrides para celular (≤640px)
+   ════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  /* Breadcrumb más compacto, debajo del header slim */
+  .breadcrumb {
+    padding: 8rem 1.4rem 2rem !important;
+    font-size: 1.1rem;
+    letter-spacing: 0.08em;
+  }
+
+  /* Hero del producto — stack vertical, padding reducido */
+  .producto-hero {
+    padding: 1rem 1.4rem 5rem !important;
+    gap: 2.4rem !important;
+  }
+  .producto-hero__main { aspect-ratio: 1 / 1; }
+  .producto-hero__thumbs { gap: 0.8rem; flex-wrap: wrap; }
+  .producto-hero__thumb { width: 6rem; height: 6rem; }
+  .producto-hero__info { padding-top: 0.4rem; }
+  .producto-hero__info .eyebrow { font-size: 1.05rem; margin-bottom: 1.8rem; }
+  .producto-hero__title { font-size: 3.2rem !important; line-height: 1.05; margin-bottom: 1.4rem; }
+  .producto-hero__price { font-size: 2.4rem; margin-bottom: 1.8rem; }
+  .producto-hero__short { font-size: 1.4rem !important; line-height: 1.55; margin-bottom: 2.4rem; }
+  .producto-hero__btn {
+    width: 100%;
+    padding: 1.6rem !important;
+    font-size: 1.2rem !important;
+  }
+  .producto-hero__note { font-size: 1.2rem; }
+
+  /* Historia del producto — fondo cuero, pasos en 1 columna */
+  .producto-historia { padding: 5rem 1.4rem !important; }
+  .producto-historia .manifesto__title { font-size: 2.4rem !important; line-height: 1.1; }
+  .producto-historia .manifesto__text  { font-size: 1.4rem !important; line-height: 1.55; }
+  .producto-historia__steps {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+    margin-top: 3.2rem !important;
+  }
+
+  /* Sección "Productos parecidos" — 2 columnas */
+  .producto-similares { padding: 5rem 1.2rem !important; }
+  .producto-similares .seccion-prod__head { margin-bottom: 3rem !important; padding-top: 1.4rem !important; }
+}
