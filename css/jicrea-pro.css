@@ -523,8 +523,11 @@ a {
 }
 .amargor__giant {
   font-family: var(--font-serif);
-  font-size: max(8rem, min(15vw, 30rem));
-  line-height: 85%;
+  /* Reducido del original (max 30rem → 18rem). El cliente comentó
+     que se sentía demasiado grande. 18rem como techo da presencia
+     sin abrumar, y mantiene el clamp para desktop / tablet. */
+  font-size: max(5.6rem, min(10vw, 18rem));
+  line-height: 88%;
   text-transform: uppercase;
   display: flex;
   flex-direction: column;
