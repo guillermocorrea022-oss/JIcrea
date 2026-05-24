@@ -246,10 +246,13 @@ a {
     linear-gradient(135deg, #7a5635 0%, #5b3f24 42%, #3a2814 100%);
   background-size: cover, cover, 220px 220px, cover;
   background-blend-mode: normal, normal, overlay, normal;
-  /* Placa más amplia para que el logo circular + los side-texts respiren
-     bien. Antes: 32-45rem ancho, 16-22rem alto → ahora: 36-52rem × 18-26rem. */
-  width: max(36rem, min(40vw, 52rem));
-  height: max(18rem, min(22vw, 26rem));
+  /* Placa proporcional al viewport — nunca más ancha que el 50vw para
+     dejar espacio cómodo al nav izquierda/derecha del header. Y nunca
+     más alta que el 18% del viewport para que no domine sobre la imagen
+     hero ni se desborde en pantallas chicas. */
+  width: clamp(26rem, 32vw, 42rem);
+  height: clamp(13rem, 16vw, 19rem);
+  max-width: 50vw;
   border-radius: 8px;
   transform-origin: top center;
   transition: width 0.4s var(--ease-out), height 0.4s var(--ease-out);
@@ -340,8 +343,9 @@ a {
   background-color: var(--c-earth);
 }
 .header.is-scrolled .header__logo:hover {
-  height: max(18rem, min(22vw, 26rem));
-  width: max(36rem, min(40vw, 52rem));
+  height: clamp(13rem, 16vw, 19rem);
+  width: clamp(26rem, 32vw, 42rem);
+  max-width: 50vw;
   background-color: var(--c-earth);
 }
 
@@ -373,15 +377,15 @@ a {
   top: 50%;
   left: 50%;
   width: auto;
-  /* Altura del bloque CONTENT (logo + side-texts) — el logo redondo
-     ocupa ~85% de la altura interna de la placa para que se LEA bien. */
-  height: max(13rem, min(15vw, 18rem));
+  /* Altura del bloque CONTENT (logo + side-texts) ~ 70% del alto de
+     la placa. Si la placa mide 16vw alto, el contenido es ~11vw. */
+  height: clamp(9rem, 11vw, 13rem);
   transform: translate(-50%, -50%);
   opacity: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: max(2rem, min(3vw, 4rem));
+  gap: clamp(1.6rem, 2.4vw, 3.2rem);
   transition: opacity 0.5s var(--ease-out), transform 1.2s cubic-bezier(0.8, 0, 0.2, 1);
   /* z-index > ::before/::after para que el contenido quede sobre el
      trenzado decorativo y la costura punteada. */
@@ -520,16 +524,20 @@ a {
 .hero--cinema .hero__title {
   /* Cormorant Garamond — serif elegante y delicado. Reemplaza al
      super-med (heavy display) para darle al título un aire premium
-     editorial en vez de bold publicitario. Pesos 500 para que tenga
-     presencia sin ser pesado. Fallbacks tipográficos clásicos.
-     letter-spacing un pelito ajustado para que las palabras se vean
-     compactas y la tipografía respire en su anatomía propia. */
+     editorial en vez de bold publicitario. Tamaños MODERADOS para no
+     comer todo el hero (Cormorant renderiza más alto que super-med por
+     sus ascenders largos, así que el clamp baja a 5.5rem máx en vw). */
   font-family: "Cormorant Garamond", "EB Garamond", "Times New Roman", Georgia, serif !important;
   font-weight: 500 !important;
-  font-size: clamp(5rem, 9.2vw, 14rem) !important;
-  line-height: 0.98 !important;
+  font-size: clamp(3.6rem, 5.5vw, 7.8rem) !important;
+  line-height: 1.0 !important;
   letter-spacing: 0.005em;
   text-shadow: 0 6px 20px rgba(0,0,0,0.55);
+}
+/* Cada .line del hero cinema NO debe wrappear — la pieza "DEL CAMPO"
+   tiene que quedar en una sola línea aunque haya espacio. */
+.hero--cinema .line {
+  white-space: nowrap;
 }
 
 /* Línea dorada decorativa entre título y subtítulo — separador artesanal */
