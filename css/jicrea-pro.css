@@ -332,12 +332,11 @@ a {
   transition: transform 1.2s cubic-bezier(0.8, 0, 0.2, 1);
 }
 
-/* Scrolled state — placa más amplia y un poco más alta para que el
-   texto JIcrea respire bien adentro. El IMG queda grande, el aire
-   sale del crecimiento del contenedor (no de achicar el texto). */
+/* Scrolled state — placa cerrada. Más alta y menos ancha para que el
+   texto JIcrea ocupe mejor el espacio, sin tanto vacío a los costados. */
 .header.is-scrolled .header__logo {
-  height: max(7rem, min(7vw, 9.5rem));
-  width: max(22rem, min(23vw, 30rem));
+  height: max(8rem, min(8vw, 11rem));
+  width: max(20rem, min(20vw, 26rem));
   background-color: var(--c-earth);
 }
 .header.is-scrolled .header__logo:hover {
@@ -348,17 +347,18 @@ a {
 
 /* LOGO ELEMENTS
    Closed = scrolled. Texto "JIcrea" horizontal (PNG 02_jlcrea_texto).
-   El PNG es cuadrado con padding transparente vertical — el texto
-   visible ocupa ~1/3 del alto. Le damos width 75% (texto grande) y
-   max-height 100% — el aire viene del crecimiento del contenedor
-   padre (.header__logo más amplio) y de la costura inset:10px. */
+   El PNG es cuadrado con padding transparente vertical alrededor del
+   texto. Para AGRANDAR el texto y dejar MENOS vacío a los costados:
+     · width 92%  — ocupa casi todo el ancho útil
+     · height 100% — y también todo el alto
+   Como object-fit:contain mantiene aspect-ratio, el browser elige la
+   dimensión limitante; al llenar ambas, el texto crece al máximo. */
 .header__logo--closed {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 75%;
-  max-height: 100%;
-  height: auto;
+  width: 92%;
+  height: 100%;
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.8);
   transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
