@@ -254,6 +254,7 @@ a {
   height: clamp(13rem, 16vw, 19rem);
   max-width: 50vw;
   border-radius: 8px;
+  overflow: hidden; /* Para que object-fit:cover del logo cerrado clippe */
   transform-origin: top center;
   transition: width 0.4s var(--ease-out), height 0.4s var(--ease-out);
   /* Sombras: drop shadow grande hacia abajo + inset highlight top + inset
@@ -351,22 +352,22 @@ a {
 
 /* LOGO ELEMENTS
    Closed = scrolled. Texto "JIcrea" horizontal (PNG 02_jlcrea_texto).
-   El PNG es cuadrado con padding transparente vertical alrededor del
-   texto. Para AGRANDAR el texto y dejar MENOS vacío a los costados:
-     · width 92%  — ocupa casi todo el ancho útil
-     · height 100% — y también todo el alto
-   Como object-fit:contain mantiene aspect-ratio, el browser elige la
-   dimensión limitante; al llenar ambas, el texto crece al máximo. */
+   El PNG es cuadrado con MUCHO padding transparente arriba y abajo del
+   texto — con object-fit:contain el texto visible quedaba minúsculo
+   porque la imagen entraba entera (incluyendo el aire transparente).
+   AHORA: object-fit:cover + overflow:hidden en el padre — la imagen
+   se escala para llenar el contenedor, croppeando el aire transparente
+   vertical. Resultado: el texto visible es ~2x más grande. */
 .header__logo--closed {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 92%;
-  height: 100%;
+  width: 96%;
+  height: 96%;
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.8);
   transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   z-index: 2; /* Sobre el trenzado/costura */
   filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.45));
@@ -609,12 +610,14 @@ a {
   font-weight: 400;
   opacity: 0;
 }
-/* En el hero--cinema el subtítulo es más chico y con más line-height
-   para que se sienta más "poesía" que "copy publicitario". */
+/* En el hero--cinema el subtítulo es más chico y va en UNA sola línea.
+   max-width amplio + white-space:nowrap para forzar la línea única.
+   En mobile (override más abajo) se permite wrap natural. */
 .hero--cinema .hero__subtitle {
-  font-size: clamp(1.4rem, 1.35vw, 1.95rem) !important;
-  line-height: 1.45 !important;
-  max-width: 540px;
+  font-size: clamp(1.3rem, 1.25vw, 1.85rem) !important;
+  line-height: 1.4 !important;
+  max-width: none;
+  white-space: nowrap;
   margin-top: 0; /* Ya hay separación del .hero__rule arriba */
   color: rgba(244, 238, 227, 0.92);
 }
@@ -2154,6 +2157,9 @@ em {
     font-size: 1.25rem !important;
     line-height: 1.45 !important;
     max-width: 100%;
+    /* En mobile permitimos wrap — la frase entera en 1 línea no entra
+       en 360-414px y queda recortada por white-space:nowrap. */
+    white-space: normal !important;
   }
   .hero__rule { width: 54px; margin: 2rem 0 1.6rem; }
   .hero__cta {
