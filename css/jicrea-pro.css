@@ -263,10 +263,9 @@ a {
     inset 0 0 0 1px rgba(0, 0, 0, 0.40);
 }
 
-/* ::before — TRENZADO DORADO EXTERIOR
-   Repeating-linear-gradient simula una cuerda/trenza de cuero alrededor
-   del borde. El pattern alterna dorado claro + dorado oscuro + sombra
-   en diagonal — efecto visual de hilos entrelazados. */
+/* ::before — DESHABILITADO (el trenzado dorado exterior).
+   El cliente prefirió quedarse sólo con la costura finita del ::after.
+   Se mantiene el bloque comentado para volver atrás si hace falta.
 .header__logo::before {
   content: "";
   position: absolute;
@@ -281,27 +280,28 @@ a {
       rgba(101, 65, 28, 0.85) 4px 7px,
       rgba(180, 140, 70, 0.65) 7px 11px,
       rgba(64, 38, 14, 0.85) 11px 14px);
-  /* Mask: que sólo se vea el borde, no el centro */
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
           mask-composite: exclude;
 }
+*/
 
 /* ::after — COSTURA INTERIOR PUNTEADA
-   Doble línea dashed dorada por dentro del trenzado, simulando el hilo
-   que cose la placa al campo de cuero. */
+   Única línea decorativa que rodea la placa. Dashed dorada — simula
+   el hilo cosido a mano. Inset ajustado (10px) para que respire más
+   ahora que no está el trenzado exterior. */
 .header__logo::after {
   content: "";
   position: absolute;
-  inset: 14px;
+  inset: 10px;
   pointer-events: none;
   z-index: 0;
-  border-radius: 3px;
-  border: 1.5px dashed rgba(213, 175, 105, 0.55);
+  border-radius: 4px;
+  border: 1.5px dashed rgba(213, 175, 105, 0.6);
   box-shadow:
-    inset 0 0 0 1px rgba(0, 0, 0, 0.30);
+    inset 0 0 0 1px rgba(0, 0, 0, 0.25);
 }
 
 .header.is-transitioning {
@@ -1986,8 +1986,9 @@ em {
     height: 5.4rem !important;
     border-radius: 6px;
   }
-  .header__logo::before { inset: 3px !important; padding: 2px !important; border-radius: 4px !important; }
-  .header__logo::after  { inset: 7px !important; border-radius: 2px !important; }
+  /* Trenzado externo deshabilitado, sólo queda la costura punteada
+     pegada al borde para que se siga viendo en placa chica. */
+  .header__logo::after { inset: 5px !important; border-radius: 3px !important; }
   .header.is-scrolled .header__logo,
   .header.is-scrolled .header__logo:hover {
     width: 5.4rem !important;
