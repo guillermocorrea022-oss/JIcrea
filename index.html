@@ -11,7 +11,7 @@
   <!-- PRELOAD de assets críticos (LCP / curtain) — bajan en paralelo con
        el HTML/CSS, así el primer paint no espera el round-trip. Reduce
        el tiempo perceptual de aparición del logo y del hero. -->
-  <link rel="preload" as="image" href="img/logotipo-blanco.png" fetchpriority="high">
+  <link rel="preload" as="image" href="img/logos_jlcrea_sin_fondo/08_logo_completo_blanco.png" fetchpriority="high">
   <link rel="preload" as="image" href="img/hero1.jpg" fetchpriority="high">
   <link rel="preload" as="font" type="font/woff2" href="fonts/super-med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="fonts/super-reg.woff2" crossorigin>
@@ -22,7 +22,7 @@
   <meta property="og:locale" content="es_UY">
 
   <!-- Fuentes locales de la marca -->
-  <link rel="stylesheet" href="css/jicrea-pro.css?v=75">
+  <link rel="stylesheet" href="css/jicrea-pro.css?v=76">
 </head>
 <body>
   <!-- PAGE CURTAIN — overlay con textura cuero que cubre la página al
@@ -30,7 +30,7 @@
        Ver: .page-curtain en jicrea-pro.css. Está en el HTML directamente
        (no via JS) para que aparezca SIN FLASH al cargar. -->
   <div class="page-curtain" id="pageCurtain" aria-hidden="true">
-    <img class="page-curtain__logo" src="img/logotipo-blanco.png" alt="">
+    <img class="page-curtain__logo" src="img/logos_jlcrea_sin_fondo/08_logo_completo_blanco.png" alt="">
   </div>
 
   <!-- HEADER — 3 ZONAS: nav-left + LOGO CENTRAL morphing + nav-right -->
@@ -43,21 +43,22 @@
     <div class="header__center">
       <a href="#" class="header__logo" aria-label="Inicio JIcrea">
         
-        <!-- Logo abierto con las frases del costado -->
+        <!-- Logo abierto — placa cuero premium con costura, side-texts
+             dorados y el logo circular trenzado nuevo en el centro. -->
         <div class="header__logo--open">
           <div class="header__side-text">
             <span>DESDE</span>
-            <span>2015</span>
+            <strong>2015</strong>
           </div>
-          <img src="img/logotipo-blanco.png" alt="JIcrea">
+          <img src="img/logos_jlcrea_sin_fondo/03_logo_completo_dorado.png" alt="JIcrea">
           <div class="header__side-text">
             <span>HECHOS</span>
-            <span>A MANO</span>
+            <strong>A MANO</strong>
           </div>
         </div>
 
-        <!-- Logo cerrado -->
-        <img class="header__logo--closed" src="img/JI-CON-MATE-BLANCO.png" alt="JI">
+        <!-- Logo cerrado — sólo el mate dorado cuando el header colapsa. -->
+        <img class="header__logo--closed" src="img/logos_jlcrea_sin_fondo/01_mate_dorado.png" alt="JI">
       </a>
     </div>
 
@@ -73,8 +74,7 @@
       <div class="hero__media" aria-hidden="true"></div>
       <div class="hero__inner">
         <h1 class="hero__title" aria-label="Del campo a tus manos">
-          <span class="line" data-text="DEL"></span>
-          <span class="line" data-text="CAMPO"></span>
+          <span class="line" data-text="DEL CAMPO"></span>
           <span class="line" data-text="A TUS MANOS"></span>
         </h1>
         <p class="hero__subtitle">Productores y fabricantes desde 2015. Controlamos cada etapa del proceso, sin artificios y con verdad.</p>
@@ -404,7 +404,7 @@
   <footer class="footer" id="contacto" data-bg="leather">
     <div class="footer__inner">
       <div class="footer__brand">
-        <img class="footer__logo" loading="lazy" decoding="async" src="img/logotipo.png" alt="JIcrea">
+        <img class="footer__logo" loading="lazy" decoding="async" src="img/logos_jlcrea_sin_fondo/03_logo_completo_dorado.png" alt="JIcrea">
         <p class="footer__slogan">Del campo a tus manos.</p>
       </div>
 
