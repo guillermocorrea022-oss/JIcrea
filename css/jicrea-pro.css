@@ -362,8 +362,9 @@ a {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 96%;
-  height: 96%;
+  /* 82% = 96% × 0.85 → 15% más chico que la versión anterior. */
+  width: 82%;
+  height: 82%;
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.8);
   transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
