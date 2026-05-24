@@ -518,9 +518,17 @@ a {
   width: min(820px, 80vw);
 }
 .hero--cinema .hero__title {
-  font-size: clamp(5rem, 8.6vw, 13rem) !important;
-  line-height: 0.92 !important;
-  letter-spacing: -0.005em;
+  /* Cormorant Garamond — serif elegante y delicado. Reemplaza al
+     super-med (heavy display) para darle al título un aire premium
+     editorial en vez de bold publicitario. Pesos 500 para que tenga
+     presencia sin ser pesado. Fallbacks tipográficos clásicos.
+     letter-spacing un pelito ajustado para que las palabras se vean
+     compactas y la tipografía respire en su anatomía propia. */
+  font-family: "Cormorant Garamond", "EB Garamond", "Times New Roman", Georgia, serif !important;
+  font-weight: 500 !important;
+  font-size: clamp(5rem, 9.2vw, 14rem) !important;
+  line-height: 0.98 !important;
+  letter-spacing: 0.005em;
   text-shadow: 0 6px 20px rgba(0,0,0,0.55);
 }
 
@@ -2128,7 +2136,11 @@ em {
     width: 100%;
   }
   .hero--cinema .hero__title {
-    font-size: clamp(3.6rem, 13vw, 6.4rem) !important;
+    /* En mobile el Cormorant respira más con un letter-spacing 0
+       y un tamaño un poco mayor proporcionalmente. */
+    font-size: clamp(4.2rem, 14vw, 7.2rem) !important;
+    line-height: 1.0 !important;
+    letter-spacing: 0 !important;
   }
   .hero--cinema .hero__subtitle {
     font-size: 1.25rem !important;
