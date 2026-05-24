@@ -295,7 +295,7 @@ a {
 .header__logo::after {
   content: "";
   position: absolute;
-  inset: 10px;
+  inset: 14px;
   pointer-events: none;
   z-index: 0;
   border-radius: 4px;
@@ -332,31 +332,32 @@ a {
   transition: transform 1.2s cubic-bezier(0.8, 0, 0.2, 1);
 }
 
-/* Scrolled state — placa más chica con el texto "JIcrea" horizontal.
-   Ratio ~3.5:1 para que el texto JIcrea quepa cómodo sin recortarse. */
+/* Scrolled state — placa más amplia y un poco más alta para que el
+   texto JIcrea respire bien adentro. El IMG queda grande, el aire
+   sale del crecimiento del contenedor (no de achicar el texto). */
 .header.is-scrolled .header__logo {
-  height: max(5.4rem, min(5.5vw, 7.5rem));
-  width: max(18rem, min(20vw, 26rem));
+  height: max(7rem, min(7vw, 9.5rem));
+  width: max(22rem, min(23vw, 30rem));
   background-color: var(--c-earth);
 }
 .header.is-scrolled .header__logo:hover {
-  height: max(16rem, min(18vw, 22rem));
-  width: max(32rem, min(35vw, 45rem));
+  height: max(18rem, min(22vw, 26rem));
+  width: max(36rem, min(40vw, 52rem));
   background-color: var(--c-earth);
 }
 
 /* LOGO ELEMENTS
    Closed = scrolled. Texto "JIcrea" horizontal (PNG 02_jlcrea_texto).
    El PNG es cuadrado con padding transparente vertical — el texto
-   visible ocupa ~1/3 del alto. Para darle aire al texto frente a la
-   costura interior, achicamos el ancho del IMG container (~60%) y
-   limitamos su altura al 90% de la placa. */
+   visible ocupa ~1/3 del alto. Le damos width 75% (texto grande) y
+   max-height 100% — el aire viene del crecimiento del contenedor
+   padre (.header__logo más amplio) y de la costura inset:10px. */
 .header__logo--closed {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 60%;
-  max-height: 90%;
+  width: 75%;
+  max-height: 100%;
   height: auto;
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.8);
@@ -485,7 +486,13 @@ a {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.4);
+  /* Vignette + degradado izq→der para que la imagen respire del lado
+     derecho y el texto pegado a la izquierda quede legible sin tapar
+     toda la foto. Más oscuro abajo, transparente arriba para que la
+     placa de cuero del header se vea limpia. */
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 22%, transparent 40%, rgba(0,0,0,0.50) 90%),
+    linear-gradient(90deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.18) 45%, transparent 100%);
 }
 .hero__inner {
   position: relative;
@@ -493,6 +500,74 @@ a {
   text-align: center;
   padding-top: max(10rem, min(12vw, 18rem)); /* Added space so banner doesn't cover text */
 }
+
+/* HERO CINEMA — variante con imagen protagonista y texto a la izquierda
+   abajo. La placa del header sigue centrada arriba. Layout inspirado
+   en el mockup del cliente: foto domina, texto al pie izquierdo, ritmo
+   título → linea dorada → subtítulo poético → CTA al proceso. */
+.hero--cinema {
+  align-items: flex-end;
+  justify-content: flex-start;
+  text-align: left;
+}
+.hero__inner--left {
+  text-align: left;
+  padding-top: 0;
+  padding-bottom: max(6rem, min(7vw, 11rem));
+  padding-left: max(2.4rem, min(6vw, 10rem));
+  width: min(820px, 80vw);
+}
+.hero--cinema .hero__title {
+  font-size: clamp(5rem, 8.6vw, 13rem) !important;
+  line-height: 0.92 !important;
+  letter-spacing: -0.005em;
+  text-shadow: 0 6px 20px rgba(0,0,0,0.55);
+}
+
+/* Línea dorada decorativa entre título y subtítulo — separador artesanal */
+.hero__rule {
+  width: 72px;
+  height: 2px;
+  margin: 2.4rem 0 2rem;
+  background: linear-gradient(90deg, var(--c-brand) 0%, rgba(203,160,88,0.2) 100%);
+  opacity: 0;
+  transform: scaleX(0.4);
+  transform-origin: left center;
+  animation: heroRule 1.2s 1.6s var(--ease-out) forwards;
+}
+@keyframes heroRule {
+  to { opacity: 1; transform: scaleX(1); }
+}
+
+/* CTA "Conocé el proceso →" — pequeño, dorado, con flecha que se desliza
+   en hover. Bajo perfil para no robarle protagonismo a la imagen. */
+.hero__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-top: 2.6rem;
+  padding: 0;
+  background: none;
+  border: none;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: clamp(1.15rem, 1vw, 1.4rem);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--c-brand);
+  text-decoration: none;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: heroCta 1.2s 1.9s var(--ease-out) forwards;
+  transition: gap 0.3s var(--ease-out), color 0.3s var(--ease-out);
+}
+.hero__cta:hover { gap: 1.8rem; color: #d8b070; }
+.hero__cta svg { transition: transform 0.3s var(--ease-out); }
+.hero__cta:hover svg { transform: translateX(4px); }
+@keyframes heroCta {
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .hero__title {
   font-family: var(--font-serif);
   font-size: max(10rem, min(10vw, 24rem));
@@ -517,6 +592,15 @@ a {
   font-size: max(2rem, min(2vw, 3.5rem));
   font-weight: 400;
   opacity: 0;
+}
+/* En el hero--cinema el subtítulo es más chico y con más line-height
+   para que se sienta más "poesía" que "copy publicitario". */
+.hero--cinema .hero__subtitle {
+  font-size: clamp(1.4rem, 1.35vw, 1.95rem) !important;
+  line-height: 1.45 !important;
+  max-width: 540px;
+  margin-top: 0; /* Ya hay separación del .hero__rule arriba */
+  color: rgba(244, 238, 227, 0.92);
 }
 .hero__scroll {
   position: absolute;
@@ -2035,6 +2119,27 @@ em {
     line-height: 1.55;
     margin-top: 1.6rem;
     max-width: 92%;
+  }
+  /* Hero cinema en mobile — padding-left más chico, todo más compacto.
+     El título mantiene su escala pero permitimos <br> wrap natural. */
+  .hero--cinema .hero__inner--left {
+    padding: 0 1.4rem;
+    padding-bottom: 6rem;
+    width: 100%;
+  }
+  .hero--cinema .hero__title {
+    font-size: clamp(3.6rem, 13vw, 6.4rem) !important;
+  }
+  .hero--cinema .hero__subtitle {
+    font-size: 1.25rem !important;
+    line-height: 1.45 !important;
+    max-width: 100%;
+  }
+  .hero__rule { width: 54px; margin: 2rem 0 1.6rem; }
+  .hero__cta {
+    font-size: 1.05rem !important;
+    letter-spacing: 0.22em;
+    margin-top: 2rem;
   }
 
   /* ─── MANIFESTO ──────────────────────────────────────────────────────

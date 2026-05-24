@@ -22,7 +22,7 @@
   <meta property="og:locale" content="es_UY">
 
   <!-- Fuentes locales de la marca -->
-  <link rel="stylesheet" href="css/jicrea-pro.css?v=79">
+  <link rel="stylesheet" href="css/jicrea-pro.css?v=80">
 </head>
 <body>
   <!-- PAGE CURTAIN — overlay con textura cuero que cubre la página al
@@ -70,14 +70,22 @@
 
   <main>
 
-    <section class="hero" data-bg="dark">
+    <!-- HERO — imagen protagonista. Título alineado a la izquierda
+         abajo, texto mínimo. Subtítulo corto y un CTA al proceso para
+         dar contexto a quien recién llega (la foto sola no alcanza). -->
+    <section class="hero hero--cinema" data-bg="dark">
       <div class="hero__media" aria-hidden="true"></div>
-      <div class="hero__inner">
+      <div class="hero__inner hero__inner--left">
         <h1 class="hero__title" aria-label="Del campo a tus manos">
           <span class="line" data-text="DEL CAMPO"></span>
           <span class="line" data-text="A TUS MANOS"></span>
         </h1>
-        <p class="hero__subtitle">Productores y fabricantes desde 2015. Controlamos cada etapa del proceso, sin artificios y con verdad.</p>
+        <div class="hero__rule" aria-hidden="true"></div>
+        <p class="hero__subtitle">Del porongo natural al mate terminado.<br>Una pieza hecha con tiempo, oficio y origen.</p>
+        <a class="hero__cta" href="#manos">
+          <span>Conocé el proceso</span>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
+        </a>
       </div>
     </section>
 
