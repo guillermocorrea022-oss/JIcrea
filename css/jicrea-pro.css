@@ -246,8 +246,10 @@ a {
     linear-gradient(135deg, #7a5635 0%, #5b3f24 42%, #3a2814 100%);
   background-size: cover, cover, 220px 220px, cover;
   background-blend-mode: normal, normal, overlay, normal;
-  width: max(32rem, min(35vw, 45rem));
-  height: max(16rem, min(18vw, 22rem));
+  /* Placa más amplia para que el logo circular + los side-texts respiren
+     bien. Antes: 32-45rem ancho, 16-22rem alto → ahora: 36-52rem × 18-26rem. */
+  width: max(36rem, min(40vw, 52rem));
+  height: max(18rem, min(22vw, 26rem));
   border-radius: 8px;
   transform-origin: top center;
   transition: width 0.4s var(--ease-out), height 0.4s var(--ease-out);
@@ -330,24 +332,29 @@ a {
   transition: transform 1.2s cubic-bezier(0.8, 0, 0.2, 1);
 }
 
+/* Scrolled state — placa más chica con el texto "JIcrea" horizontal.
+   Ratio ~3.5:1 para que el texto JIcrea quepa cómodo sin recortarse. */
 .header.is-scrolled .header__logo {
-  height: max(6rem, min(6vw, 10rem));
-  width: max(8rem, min(8vw, 12rem));
-  background-color: var(--c-earth); /* Retains the colored background! */
+  height: max(5.4rem, min(5.5vw, 7.5rem));
+  width: max(18rem, min(20vw, 26rem));
+  background-color: var(--c-earth);
 }
-
 .header.is-scrolled .header__logo:hover {
-  height: max(18rem, min(20vw, 25rem));
+  height: max(16rem, min(18vw, 22rem));
   width: max(32rem, min(35vw, 45rem));
   background-color: var(--c-earth);
 }
 
-/* LOGO ELEMENTS */
+/* LOGO ELEMENTS
+   Closed = scrolled. Texto "JIcrea" horizontal (PNG 02_jlcrea_texto).
+   Width 78% para que el texto se vea grande dentro de la placa rect.
+   Height auto, mantiene aspect-ratio del PNG (~4:1). */
 .header__logo--closed {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 55%;
+  width: 78%;
+  height: auto;
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.8);
   transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
@@ -361,7 +368,9 @@ a {
   top: 50%;
   left: 50%;
   width: auto;
-  height: max(10rem, min(12vw, 14rem));
+  /* Altura del bloque CONTENT (logo + side-texts) — el logo redondo
+     ocupa ~85% de la altura interna de la placa para que se LEA bien. */
+  height: max(13rem, min(15vw, 18rem));
   transform: translate(-50%, -50%);
   opacity: 1;
   display: flex;
