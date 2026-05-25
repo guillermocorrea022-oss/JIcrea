@@ -2090,7 +2090,11 @@ em {
 }
 
 /* Logo v2 — sin placa cuero, sin trenzado, sin nada de la versión 1.
-   Sólo mate dorado arriba + texto JIcrea abajo, apilados. */
+   Sólo mate dorado arriba + texto JIcrea abajo, apilados.
+   Los 2 PNGs tienen MUCHO padding transparente (mate ocupa ~50% del
+   alto, texto ocupa ~30% del alto). Usamos margin-bottom negativo en
+   el mate + margin-top negativo en el texto para que las partes
+   visibles se acerquen y parezcan un solo bloque cohesivo. */
 .page-index-v2 .header__logo--v2 {
   background: none !important;
   background-image: none !important;
@@ -2103,22 +2107,30 @@ em {
   display: flex !important;
   flex-direction: column;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0;
   padding: 0;
   text-decoration: none;
+  line-height: 0; /* Sin line-height heredado que infle el bloque */
 }
 .page-index-v2 .header__logo--v2::before,
 .page-index-v2 .header__logo--v2::after { display: none !important; }
 .page-index-v2 .header__v2-mate {
-  width: clamp(2.6rem, 3vw, 4rem);
+  width: clamp(3.2rem, 3.6vw, 4.8rem);
   height: auto;
   display: block;
+  /* Tira el mate hacia abajo (compensa el transparent vertical bajo el
+     mate dentro del PNG). Mantiene el icono visualmente cerca del texto. */
+  margin-bottom: clamp(-1.6rem, -1.5vw, -1.1rem);
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
 }
 .page-index-v2 .header__v2-text {
-  width: clamp(8rem, 9vw, 12rem);
+  width: clamp(9rem, 10vw, 13rem);
   height: auto;
   display: block;
+  /* Tira el texto hacia arriba (compensa el transparent vertical sobre
+     el texto dentro del PNG). Junto con el margin-bottom del mate, las
+     dos partes visibles quedan a ~0.4rem una de la otra. */
+  margin-top: clamp(-3rem, -2.6vw, -1.8rem);
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
 }
 
