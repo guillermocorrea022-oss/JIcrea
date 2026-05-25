@@ -19,7 +19,7 @@
   <meta property="og:description" content="Mates, posa mates, materas y yerberos uruguayos hechos a mano.">
   <meta property="og:locale" content="es_UY">
 
-  <link rel="stylesheet" href="css/jicrea-pro.css?v=97">
+  <link rel="stylesheet" href="css/jicrea-pro.css?v=98">
   <link rel="stylesheet" href="css/tienda-cart.css?v=13">
 </head>
 <body class="page-tienda page-index-v2">
@@ -72,17 +72,24 @@
 
   <main>
 
-    <!-- HERO TIENDA — usa exactamente las mismas clases que el hero del
-         index (.hero / .hero__title / .line / .hero__subtitle). Mismo
-         char-mask reveal, misma tipografía, mismo tamaño gigante. -->
-    <section class="hero" data-bg="dark">
+    <!-- HERO TIENDA — variante cinema (igual que el index). Imagen
+         protagonista al fondo, texto pegado abajo-izquierda en Cormorant
+         Garamond, separator dorado, subtítulo poético y CTA al primer
+         producto. La foto sigue siendo momento2.jpg vía
+         .hero__media--tienda. -->
+    <section class="hero hero--cinema" data-bg="dark">
       <div class="hero__media hero__media--tienda" aria-hidden="true"></div>
-      <div class="hero__inner">
-        <h1 class="hero__title" aria-label="Tienda JIcrea">
-          <span class="line" data-text="LA"></span>
-          <span class="line" data-text="TIENDA"></span>
+      <div class="hero__inner hero__inner--left">
+        <h1 class="hero__title" aria-label="Piezas hechas a mano">
+          <span class="line" data-text="PIEZAS"></span>
+          <span class="line" data-text="HECHAS A MANO"></span>
         </h1>
-        <p class="hero__subtitle">Hecho a mano en Paysandú. Por mayor y por menor.</p>
+        <div class="hero__rule" aria-hidden="true"></div>
+        <p class="hero__subtitle">Mates, posa mates, materas y yerberos. Una pieza para cada momento.</p>
+        <a class="hero__cta" href="#mates">
+          <span>Ver los productos</span>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
+        </a>
       </div>
     </section>
 
