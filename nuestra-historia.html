@@ -19,10 +19,10 @@
   <meta property="og:description" content="Productores uruguayos de mates desde 2015. Del campo a tus manos.">
   <meta property="og:locale" content="es_UY">
 
-  <link rel="stylesheet" href="css/jicrea-pro.css?v=92">
+  <link rel="stylesheet" href="css/jicrea-pro.css?v=97">
   <link rel="stylesheet" href="css/historia.css?v=4">
 </head>
-<body class="page-historia">
+<body class="page-historia page-index-v2">
 
   <!-- PAGE CURTAIN — mismo overlay cuero del resto del sitio para que la
        entrada sea coherente. -->
@@ -30,34 +30,30 @@
     <img class="page-curtain__logo" src="img/logos_jlcrea_sin_fondo/08_logo_completo_blanco.png" alt="">
   </div>
 
-  <!-- HEADER — mismo que tienda/producto, arrancando ya scrolleado y con
-       el link a Nuestra Historia marcado como current. -->
-  <header class="header is-scrolled" id="header">
+  <!-- HEADER V2 — logo apilado centrado, sin placa cuero. -->
+  <header class="header header--v2" id="header">
     <nav class="header__nav header__nav--left" aria-label="Navegación izquierda">
       <a href="index.html">Inicio</a>
       <a href="tienda.html">Tienda</a>
     </nav>
 
     <div class="header__center">
-      <a href="index.html" class="header__logo" aria-label="Inicio JIcrea">
-        <div class="header__logo--open">
-          <div class="header__side-text">
-            <span>DESDE</span>
-            <strong>2015</strong>
-          </div>
-          <img src="img/logos_jlcrea_sin_fondo/03_logo_completo_dorado.png" alt="JIcrea">
-          <div class="header__side-text">
-            <span>HECHOS</span>
-            <strong>A MANO</strong>
-          </div>
-        </div>
-        <img class="header__logo--closed" src="img/logos_jlcrea_sin_fondo/02_jlcrea_texto.png" alt="JIcrea">
+      <a href="index.html" class="header__logo header__logo--v2" aria-label="Inicio JIcrea">
+        <img class="header__v2-mate" src="img/logos_jlcrea_sin_fondo/01_mate_dorado.png" alt="" aria-hidden="true">
+        <img class="header__v2-text" src="img/logos_jlcrea_sin_fondo/02_jlcrea_texto.png" alt="JIcrea">
       </a>
     </div>
 
     <nav class="header__nav header__nav--right" aria-label="Navegación derecha">
       <a href="index.html#manos">Proceso</a>
       <a href="nuestra-historia.html" class="is-current">Nuestra Historia</a>
+      <a href="tienda.html" class="header__v2-bag" aria-label="Tienda">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+      </a>
     </nav>
   </header>
 

@@ -2175,13 +2175,20 @@ em {
 .page-index-v2 .header--v2 .header__nav a.is-current { color: var(--c-brand); }
 .page-index-v2 .header--v2 .header__nav a::after { display: none; }
 
-/* Icono bag al final del nav derecho */
+/* Icono bag al final del nav derecho.
+   Cuando es un <button> (cart-btn en tienda/producto) reseteamos
+   background/border para que se vea igual que el <a> del index. */
 .page-index-v2 .header__v2-bag {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
   color: rgba(244, 235, 225, 0.92);
   padding: 0.4rem;
+  position: relative;
+  margin-left: 0; /* override del cart-btn original */
   transition: color 0.3s var(--ease-out), transform 0.3s var(--ease-out);
 }
 .page-index-v2 .header__v2-bag:hover { color: var(--c-brand); transform: translateY(-2px); }
@@ -2263,12 +2270,47 @@ em {
 .page-index-v2 .amargor__text,
 .page-index-v2 .productos__desc,
 .page-index-v2 .b2b__lead,
-.page-index-v2 .origen-museo__corner p {
+.page-index-v2 .origen-museo__corner p,
+.page-index-v2 .producto-hero__short,
+.page-index-v2 .producto-hero__title,
+.page-index-v2 .seccion-prod__head .manifesto__title,
+.page-index-v2 .seccion-prod__head .manifesto__text,
+.page-index-v2 .tienda-card__name,
+.page-index-v2 .tienda-card__desc,
+.page-index-v2 .prod__name,
+.page-index-v2 .prod__desc,
+.page-index-v2 .hist-title,
+.page-index-v2 .hist-lead,
+.page-index-v2 .hist-body p {
   font-family: "Cormorant Garamond", "EB Garamond", "Times New Roman", Georgia, serif !important;
   font-weight: 400 !important;
   font-style: normal;
-  text-transform: none !important;
+  letter-spacing: 0.005em !important;
+}
+/* Títulos: weight 500 para presencia (los cuerpos quedan en 400). */
+.page-index-v2 .producto-hero__title,
+.page-index-v2 .seccion-prod__head .manifesto__title,
+.page-index-v2 .tienda-card__name,
+.page-index-v2 .prod__name,
+.page-index-v2 .hist-title {
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
   letter-spacing: 0.01em !important;
+  line-height: 1.08 !important;
+}
+/* Headers de sección un poco más calmos en mayúsculas pero NO con
+   tracking 2px del super-med — Cormorant respira mejor con menos. */
+.page-index-v2 .seccion-prod__head .manifesto__title {
+  font-size: clamp(2.8rem, 4vw, 5rem) !important;
+  letter-spacing: 0.005em !important;
+}
+/* Lead/desc en italic Garamond cuando aplica para acentuar */
+.page-index-v2 .producto-hero__short,
+.page-index-v2 .seccion-prod__head .manifesto__text,
+.page-index-v2 .tienda-card__desc,
+.page-index-v2 .prod__desc,
+.page-index-v2 .hist-body p {
+  font-style: italic !important;
 }
 .page-index-v2 .manifesto__text {
   font-size: clamp(1.6rem, 1.5vw, 2.2rem) !important;
@@ -2529,59 +2571,6 @@ em {
   }
 }
 
-/* ════════════════════════════════════════════════════════════════════════
-   TOGGLE V1 ↔ V2 — pill flotante para comparar las dos versiones.
-   ════════════════════════════════════════════════════════════════════════
-   Se muestra abajo-izquierda. Sólo en index/index2. Para borrar cuando
-   el dueño decida, eliminar el <a class="version-toggle"> de los HTMLs
-   y este bloque de CSS. */
-.version-toggle {
-  position: fixed;
-  left: 1.6rem;
-  bottom: 1.6rem;
-  z-index: 80;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.2rem;
-  padding: 0.9rem 1.2rem;
-  background-color: rgba(20, 12, 6, 0.85);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(203, 160, 88, 0.45);
-  border-radius: 999px;
-  color: var(--c-text-alt);
-  text-decoration: none;
-  font-family: var(--font-sans);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
-  transition: transform 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
-}
-.version-toggle:hover {
-  transform: translateY(-3px);
-  border-color: var(--c-brand);
-}
-.version-toggle__label {
-  font-size: 1.05rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--c-brand);
-}
-.version-toggle__badge {
-  font-size: 0.95rem;
-  font-style: italic;
-  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
-  color: rgba(244, 235, 225, 0.75);
-}
-@media (max-width: 640px) {
-  .version-toggle {
-    bottom: 8rem; /* sobre el WhatsApp FAB en mobile */
-    left: 1rem;
-    padding: 0.7rem 1rem;
-  }
-  .version-toggle__label { font-size: 0.95rem; }
-  .version-toggle__badge { font-size: 0.85rem; }
-}
 
 /* ════════════════════════════════════════════════════════════════════════
    MOBILE — overrides para celular (≤640px y ≤480px)
