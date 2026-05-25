@@ -2298,7 +2298,9 @@ em {
 .page-index-v2 .prod__desc,
 .page-index-v2 .hist-title,
 .page-index-v2 .hist-lead,
-.page-index-v2 .hist-body p {
+.page-index-v2 .hist-body p,
+.page-index-v2 .hist-mision__text,
+.page-index-v2 .hist-callout__text {
   font-family: "Cormorant Garamond", "EB Garamond", "Times New Roman", Georgia, serif !important;
   font-weight: 400 !important;
   font-style: normal;
@@ -2309,7 +2311,9 @@ em {
 .page-index-v2 .seccion-prod__head .manifesto__title,
 .page-index-v2 .tienda-card__name,
 .page-index-v2 .prod__name,
-.page-index-v2 .hist-title {
+.page-index-v2 .hist-title,
+.page-index-v2 .hist-mision__text,
+.page-index-v2 .hist-callout__text {
   font-weight: 500 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.01em !important;
