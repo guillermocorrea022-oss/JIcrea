@@ -1647,8 +1647,13 @@ em {
   text-align: center;
 }
 .footer__logo {
-  width: 120px;
-  margin-bottom: 2rem;
+  /* Antes 120px — el cliente lo quería con más presencia. Ahora ~240px
+     pero responsive: en mobile baja a 160-180. */
+  width: clamp(160px, 18vw, 260px);
+  height: auto;
+  margin-bottom: 2.4rem;
+  /* Drop shadow sutil para "asentar" el logo sobre el cuero del footer */
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.35));
 }
 .footer__slogan {
   font-family: var(--font-serif);
@@ -2160,6 +2165,324 @@ em {
      amontone con el logo central. Queda el bag + Proceso. */
   .page-index-v2 .header--v2 .header__nav--right a:not(.header__v2-bag):nth-of-type(2) {
     display: none;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   INDEX V2 — TIPOGRAFÍA DELICADA (Cormorant Garamond en TODOS los títulos)
+   ════════════════════════════════════════════════════════════════════════
+   El dueño pidió "más delicado, cálido y sencillo — no tanta letra grande
+   y bold". Reemplazamos super-med (heavy display) por Cormorant Garamond
+   en todos los headers principales de la página. Pesos 400-500 para
+   suavidad. Italic en acentos para sensación editorial.
+   Scopeado a body.page-index-v2 — index original mantiene super-med.
+   ════════════════════════════════════════════════════════════════════════ */
+.page-index-v2 .manifesto__title,
+.page-index-v2 .productos__giant,
+.page-index-v2 .amargor__giant,
+.page-index-v2 .b2b__title,
+.page-index-v2 .origen-museo__main-title,
+.page-index-v2 .origen-museo__title,
+.page-index-v2 .proceso-3d__title-text {
+  font-family: "Cormorant Garamond", "EB Garamond", "Times New Roman", Georgia, serif !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.005em;
+}
+
+/* Tamaños recalibrados — Cormorant a la misma px nominal se ve más alto
+   que super-med, así que bajamos los clamps para no abrumar. */
+.page-index-v2 .manifesto__title {
+  font-size: clamp(2.6rem, 4vw, 5rem) !important;
+  line-height: 1.08 !important;
+}
+.page-index-v2 .amargor__giant {
+  font-size: clamp(4rem, 8vw, 12rem) !important;
+  font-weight: 500 !important;
+  line-height: 1.0 !important;
+}
+.page-index-v2 .productos__giant {
+  font-size: clamp(5rem, 10vw, 18rem) !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.005em;
+}
+.page-index-v2 .origen-museo__main-title {
+  font-size: clamp(2.6rem, 4.2vw, 5.4rem) !important;
+  font-weight: 500 !important;
+  line-height: 1.1 !important;
+}
+.page-index-v2 .origen-museo__title {
+  font-size: clamp(1.6rem, 1.9vw, 2.3rem) !important;
+  font-weight: 600 !important;
+}
+
+/* Textos de cuerpo en serif también — más cálido que sans-serif geométrico */
+.page-index-v2 .manifesto__text,
+.page-index-v2 .amargor__text,
+.page-index-v2 .productos__desc,
+.page-index-v2 .b2b__lead,
+.page-index-v2 .origen-museo__corner p {
+  font-family: "Cormorant Garamond", "EB Garamond", "Times New Roman", Georgia, serif !important;
+  font-weight: 400 !important;
+  font-style: normal;
+  text-transform: none !important;
+  letter-spacing: 0.01em !important;
+}
+.page-index-v2 .manifesto__text {
+  font-size: clamp(1.6rem, 1.5vw, 2.2rem) !important;
+  line-height: 1.55 !important;
+}
+.page-index-v2 .amargor__text {
+  font-size: clamp(1.5rem, 1.4vw, 2rem) !important;
+  font-style: italic !important;
+  line-height: 1.5 !important;
+}
+
+/* Eyebrows tipo Garamond italic — "PARA DISTRIBUIDORES", etc */
+.page-index-v2 .eyebrow,
+.page-index-v2 .b2b__eyebrow {
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif !important;
+  font-style: italic !important;
+  letter-spacing: 0.32em !important;
+  font-weight: 600 !important;
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   STATS V2 — 4 estadísticas (+100 clientes, 100%, +50 productos, UY)
+   ════════════════════════════════════════════════════════════════════════
+   Fondo dark-leather (cuero oscuro tipo verde-musgo). Grid 4 col / 2x2
+   en mobile. Números enormes Cormorant en dorado, labels italic Garamond.
+   Va antes de la sección mayorista — refuerza confianza con datos. */
+.stats-v2 {
+  position: relative;
+  padding: clamp(5rem, 8vw, 11rem) var(--gutter);
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(203, 160, 88, 0.06), transparent 60%),
+    linear-gradient(135deg, #2b3a2c 0%, #1f2b1f 50%, #15201a 100%);
+  color: var(--c-text-alt);
+  overflow: hidden;
+}
+.stats-v2::before {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.18 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 180px 180px;
+  opacity: 0.5;
+  mix-blend-mode: overlay;
+}
+.stats-v2 > * { position: relative; z-index: 1; }
+.stats-v2__inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  text-align: center;
+}
+.stats-v2__eyebrow {
+  display: block;
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-size: 1.3rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--c-brand);
+  margin-bottom: 4rem;
+}
+.stats-v2__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  align-items: center;
+}
+.stats-v2__item {
+  position: relative;
+  padding: 0 1rem;
+}
+.stats-v2__item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: -1rem;
+  top: 18%;
+  bottom: 18%;
+  width: 1px;
+  background: linear-gradient(180deg, transparent 0%, rgba(203, 160, 88, 0.32) 50%, transparent 100%);
+}
+.stats-v2__num {
+  display: block;
+  font-family: "Cormorant Garamond", "EB Garamond", "Times New Roman", Georgia, serif;
+  font-size: clamp(4.2rem, 6.5vw, 9rem);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--c-brand);
+  letter-spacing: -0.01em;
+  margin-bottom: 1.4rem;
+}
+.stats-v2__label {
+  display: block;
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(1.3rem, 1.2vw, 1.7rem);
+  letter-spacing: 0.06em;
+  color: rgba(244, 235, 225, 0.82);
+}
+@media (max-width: 720px) {
+  .stats-v2 { padding: 4rem 1.4rem !important; }
+  .stats-v2__grid { grid-template-columns: repeat(2, 1fr); gap: 3rem 1.6rem; }
+  .stats-v2__item:nth-child(2n)::after,
+  .stats-v2__item:nth-child(3)::after { display: none; }
+  .stats-v2__eyebrow { margin-bottom: 3rem; font-size: 1.1rem; }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   B2B V2 — Mayorista rediseñada según mockup del dueño
+   ════════════════════════════════════════════════════════════════════════
+   Fondo verde profundo (dark-leaf). Eyebrow con guión "— PARA DISTRIBUIDORES".
+   Título serif "¿Querés vender JIcrea?" con "JIcrea" en italic más grande.
+   Lista de 3 items con flechita → en cuadrito a la izquierda. CTA verde
+   WhatsApp grande. Todo en Cormorant Garamond — cálido, editorial.
+   ════════════════════════════════════════════════════════════════════════ */
+.b2b-v2 {
+  position: relative;
+  padding: clamp(6rem, 10vw, 14rem) var(--gutter);
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(203, 160, 88, 0.05), transparent 60%),
+    linear-gradient(135deg, #1f2b1f 0%, #15201a 60%, #0d1410 100%);
+  color: var(--c-text-alt);
+  overflow: hidden;
+}
+.b2b-v2::before {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.20 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 180px 180px;
+  opacity: 0.45;
+  mix-blend-mode: overlay;
+}
+.b2b-v2 > * { position: relative; z-index: 1; }
+.b2b-v2__inner {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.b2b-v2__eyebrow {
+  display: inline-block;
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-size: 1.35rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--c-brand);
+  margin-bottom: 2rem;
+}
+.b2b-v2__title {
+  font-family: "Cormorant Garamond", "EB Garamond", "Times New Roman", Georgia, serif;
+  font-size: clamp(4rem, 7vw, 9rem);
+  font-weight: 500;
+  line-height: 1.0;
+  color: var(--c-text-alt);
+  margin: 0 0 2.4rem;
+  letter-spacing: -0.005em;
+}
+.b2b-v2__title em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--c-brand);
+  /* "JIcrea" un toque más grande para que destaque */
+  font-size: 1.04em;
+}
+.b2b-v2__lead {
+  max-width: 720px;
+  font-family: "Cormorant Garamond", "EB Garamond", "Times New Roman", Georgia, serif;
+  font-size: clamp(1.5rem, 1.4vw, 2rem);
+  line-height: 1.55;
+  color: rgba(244, 235, 225, 0.85);
+  margin: 0 0 5rem;
+}
+
+/* Lista features con flechita en cuadrito a la izquierda + título/desc */
+.b2b-v2__features {
+  list-style: none;
+  margin: 0 0 4rem;
+  padding: 0;
+}
+.b2b-v2__feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.6rem;
+  padding: 2rem 0;
+  border-bottom: 1px solid rgba(203, 160, 88, 0.18);
+}
+.b2b-v2__feature:first-child { border-top: 1px solid rgba(203, 160, 88, 0.18); }
+.b2b-v2__arrow {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.2rem;
+  height: 4.2rem;
+  border: 1px solid rgba(203, 160, 88, 0.45);
+  color: var(--c-brand);
+  border-radius: 4px;
+  transition: background-color 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+}
+.b2b-v2__feature:hover .b2b-v2__arrow {
+  background: rgba(203, 160, 88, 0.12);
+  transform: translateX(4px);
+}
+.b2b-v2__feature-text h3 {
+  font-family: "Cormorant Garamond", "EB Garamond", "Times New Roman", Georgia, serif;
+  font-size: clamp(1.8rem, 1.8vw, 2.4rem);
+  font-weight: 600;
+  margin: 0 0 0.4rem;
+  color: var(--c-text-alt);
+}
+.b2b-v2__feature-text p {
+  font-family: "Cormorant Garamond", "EB Garamond", "Times New Roman", Georgia, serif;
+  font-size: clamp(1.4rem, 1.25vw, 1.8rem);
+  line-height: 1.45;
+  margin: 0;
+  color: rgba(244, 235, 225, 0.7);
+}
+
+/* CTA verde WhatsApp grande */
+.b2b-v2__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2rem;
+  width: auto;
+  max-width: 100%;
+  padding: 1.8rem 3.6rem;
+  background: #25D366;
+  color: #0A0807;
+  text-decoration: none;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: clamp(1.2rem, 1.05vw, 1.4rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.30);
+  transition: background-color 0.3s var(--ease-out), transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+}
+.b2b-v2__cta:hover {
+  background: #1ebe5b;
+  transform: translateY(-3px);
+  box-shadow: 0 9px 0 rgba(0, 0, 0, 0.35);
+}
+
+@media (max-width: 720px) {
+  .b2b-v2 { padding: 5rem 1.4rem !important; }
+  .b2b-v2__title { font-size: clamp(3.2rem, 9vw, 5.4rem); }
+  .b2b-v2__lead { margin-bottom: 3rem; font-size: 1.55rem; }
+  .b2b-v2__feature { padding: 1.6rem 0; gap: 1.2rem; }
+  .b2b-v2__arrow { width: 3.4rem; height: 3.4rem; }
+  .b2b-v2__feature-text h3 { font-size: 1.7rem; }
+  .b2b-v2__feature-text p { font-size: 1.4rem; }
+  .b2b-v2__cta {
+    width: 100%;
+    justify-content: center;
+    padding: 1.6rem 1.4rem;
+    font-size: 1.15rem;
+    letter-spacing: 0.14em;
   }
 }
 
