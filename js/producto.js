@@ -84,17 +84,40 @@
       stepsEl.appendChild(item);
     });
 
-    // Similares
+    // Relacionados — siempre 4 cards.
+    // 1) Usamos los que vienen en prod.similares (en orden).
+    // 2) Si quedan menos de 4, completamos con otros productos del
+    //    catálogo (cualquier id que no sea el actual ni ya esté en
+    //    la lista). Así nunca queda con 2 o 3 cards huérfanas.
+    const RELACIONADOS_N = 4;
+    const ids = [];
+    (prod.similares || []).forEach(simId => {
+      if (PRODUCTOS[simId] && simId !== prod.id && !ids.includes(simId)) {
+        ids.push(simId);
+      }
+    });
+    // Fallback: rellenar con resto del catálogo si faltan
+    if (ids.length < RELACIONADOS_N) {
+      Object.keys(PRODUCTOS).forEach(otherId => {
+        if (ids.length >= RELACIONADOS_N) return;
+        if (otherId === prod.id || ids.includes(otherId)) return;
+        ids.push(otherId);
+      });
+    }
+
     const similaresEl = document.getElementById("similaresGrid");
     similaresEl.innerHTML = "";
-    (prod.similares || []).forEach(simId => {
+    ids.slice(0, RELACIONADOS_N).forEach(simId => {
       const sim = PRODUCTOS[simId];
       if (!sim) return;
       const card = document.createElement("article");
       card.className = "prod";
+      // Misma estructura que las cards de la tienda (.prod__link >
+      // .prod__img > h3 + p + price + .prod__btn). El loading="lazy"
+      // está en el img porque la sección está below-the-fold.
       card.innerHTML = `
         <a class="prod__link" href="producto.html?id=${escapeHtml(sim.id)}">
-          <div class="prod__img"><img src="${escapeHtml(sim.img)}" alt="${escapeHtml(sim.name)}"></div>
+          <div class="prod__img"><img loading="lazy" decoding="async" src="${escapeHtml(sim.img)}" alt="${escapeHtml(sim.name)}"></div>
           <h3 class="prod__name">${escapeHtml(sim.name)}</h3>
           <p class="prod__desc">${escapeHtml(sim.short.substring(0, 80))}${sim.short.length > 80 ? '…' : ''}</p>
           <span class="prod__price">${fmt(sim.price)}</span>
