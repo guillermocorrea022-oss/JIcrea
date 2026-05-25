@@ -20,10 +20,10 @@
   font-family: "EB Garamond", "Times New Roman", Georgia, serif;
   font-style: italic;
   color: var(--c-brand);
-  font-size: 1.5rem;
+  font-size: clamp(1.2rem, 1.1vw, 1.55rem);
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  margin-bottom: 2.2rem;
+  margin-bottom: 1.4rem;
   /* GSAP no anima este span — usamos fade-in propio para que aparezca
      un poquito después del título (que ya viene con su stagger). */
   opacity: 0;
@@ -55,6 +55,29 @@
     linear-gradient(135deg, #6B4423 0%, #8B5A33 50%, #7A4A28 100%);
   color: var(--c-text-alt);
 }
+/* LEAF: variante verde profundo (misma paleta del .b2b-v2 del index).
+   Se usa en la sección Filosofía para integrar el verde de la marca
+   y romper el ritmo brown. */
+.hist-block--leaf {
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(203, 160, 88, 0.06), transparent 60%),
+    linear-gradient(135deg, #2b3a2c 0%, #1f2b1f 55%, #15201a 100%);
+  color: var(--c-text-alt);
+}
+.hist-block--leaf::before,
+.hist-block--leaf::after {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.hist-block--leaf::before {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.20 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 180px 180px;
+  opacity: 0.45;
+  mix-blend-mode: overlay;
+}
+.hist-block--leaf > * { position: relative; z-index: 1; }
 .hist-block--leather::before,
 .hist-block--leather::after {
   content: "";

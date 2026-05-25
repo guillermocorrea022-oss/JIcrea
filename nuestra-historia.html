@@ -19,8 +19,8 @@
   <meta property="og:description" content="Productores uruguayos de mates desde 2015. Del campo a tus manos.">
   <meta property="og:locale" content="es_UY">
 
-  <link rel="stylesheet" href="css/jicrea-pro.css?v=97">
-  <link rel="stylesheet" href="css/historia.css?v=4">
+  <link rel="stylesheet" href="css/jicrea-pro.css?v=99">
+  <link rel="stylesheet" href="css/historia.css?v=5">
 </head>
 <body class="page-historia page-index-v2">
 
@@ -61,22 +61,27 @@
 
     <!-- HERO — pantalla completa con título grande tipo el hero del index.
          Foto de fondo: momento1.jpg (mate cinematográfico). -->
-    <section class="hero historia-hero" data-bg="dark">
+    <section class="hero hero--cinema historia-hero" data-bg="dark">
       <div class="hero__media historia-hero__media" aria-hidden="true"></div>
-      <div class="hero__inner">
-        <span class="historia-hero__eyebrow">Nuestra historia</span>
-        <h1 class="hero__title" aria-label="Del campo a tus manos">
-          <span class="line" data-text="DEL CAMPO"></span>
-          <span class="line" data-text="A TUS MANOS"></span>
+      <div class="hero__inner hero__inner--left">
+        <span class="historia-hero__eyebrow">— Desde 2015</span>
+        <h1 class="hero__title" aria-label="Nuestra historia">
+          <span class="line" data-text="NUESTRA"></span>
+          <span class="line" data-text="HISTORIA"></span>
         </h1>
-        <p class="hero__subtitle">Productores uruguayos desde 2015. Hecho a mano en Paysandú.</p>
+        <div class="hero__rule" aria-hidden="true"></div>
+        <p class="hero__subtitle">Productores uruguayos. Hecho a mano en Paysandú, <em class="text-accent-green">con los tiempos que pide el oficio</em>.</p>
+        <a class="hero__cta" href="#hist-origen">
+          <span>Conocé el origen</span>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
+        </a>
       </div>
     </section>
 
     <!-- BLOQUE 1 — EL ORIGEN. Leather con título serif XL + 3 párrafos
          narrando la historia: arranque (2015), formalización (2017),
          escala actual (1.000–1.500 mates/mes, 100+ mayoristas). -->
-    <section class="hist-block hist-block--leather" data-bg="leather">
+    <section class="hist-block hist-block--leather" id="hist-origen" data-bg="leather">
       <div class="hist-block__inner" data-reveal>
         <div class="hist-diamond" aria-hidden="true">◇</div>
         <span class="hist-eyebrow">El origen</span>
@@ -149,13 +154,14 @@
       </div>
     </section>
 
-    <!-- FILOSOFÍA — Calidad en lo sencillo. Leather, bloque corto. -->
-    <section class="hist-block hist-block--leather" data-bg="leather">
+    <!-- FILOSOFÍA — Calidad en lo sencillo. Variante LEAF (verde) para
+         integrar el color verde de la marca y romper el ritmo brown. -->
+    <section class="hist-block hist-block--leaf" data-bg="leaf">
       <div class="hist-block__inner" data-reveal>
         <div class="hist-diamond" aria-hidden="true">◇</div>
         <span class="hist-eyebrow">Filosofía</span>
         <h2 class="hist-title hist-title--oneline">Calidad en lo sencillo.</h2>
-        <p class="hist-lead hist-lead--center">No buscamos lo complejo ni lo artificioso. La calidad está en la materia prima, en el proceso honesto, en el producto que habla por sí solo.</p>
+        <p class="hist-lead hist-lead--center">No buscamos lo complejo ni lo artificioso. La calidad está en <em class="text-accent-green">la materia prima</em>, en el proceso honesto, en el producto que habla por sí solo.</p>
       </div>
     </section>
 

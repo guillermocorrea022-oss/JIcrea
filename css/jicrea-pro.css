@@ -2064,6 +2064,23 @@ em {
 }
 .b2b__card-cta:hover svg { transform: translateX(4px); }
 
+/* ─── ACENTOS VERDES — palabras destacadas en verde brand ──────────
+   Se usa en frases sueltas con <em class="text-accent-green">. Italic
+   por default (porque viene del em) + color verde de la marca.
+   Sobre fondo claro queda verde sólido; sobre cuero/oscuro saturamos
+   un poco para que se lea. */
+.text-accent-green {
+  color: var(--c-green);
+  font-style: italic;
+  font-weight: 600;
+}
+.manifesto--banner[data-bg="leather"] .text-accent-green,
+.manifesto--banner[data-bg="leaf"] .text-accent-green,
+[data-bg="dark"] .text-accent-green,
+[data-bg="leather"] .text-accent-green {
+  color: #9bb37a; /* Verde más claro para que se lea sobre dark/leather */
+}
+
 /* ════════════════════════════════════════════════════════════════════════
    INDEX V2 — Navbar alternativo (sin placa cuero, logo fijo apilado)
    ════════════════════════════════════════════════════════════════════════
