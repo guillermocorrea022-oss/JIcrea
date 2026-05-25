@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="JIcrea — Mates uruguayos hechos a mano en Paysandú. Calabaza, cerámica y algarrobo. Del campo a tus manos.">
-  <title>JIcrea — Mates uruguayos · Del campo a tus manos</title>
+  <meta name="description" content="JIcrea — Mates uruguayos hechos a mano en Paysandú. Calabaza, cerámica y algarrobo. Del campo a tus manos. [Versión 2]">
+  <title>JIcrea — Versión 2 · Del campo a tus manos</title>
 
   <link rel="icon" type="image/png" href="img/favicon.png">
 
@@ -32,47 +32,38 @@
   <!-- Fuentes locales de la marca -->
   <link rel="stylesheet" href="css/jicrea-pro.css?v=86">
 </head>
-<body>
-  <!-- PAGE CURTAIN — overlay con textura cuero que cubre la página al
-       cargar y al navegar. JS le agrega/quita .is-hidden para fade.
-       Ver: .page-curtain en jicrea-pro.css. Está en el HTML directamente
-       (no via JS) para que aparezca SIN FLASH al cargar. -->
+<body class="page-index-v2">
+  <!-- PAGE CURTAIN — overlay cuero que cubre la página al cargar. -->
   <div class="page-curtain" id="pageCurtain" aria-hidden="true">
     <img class="page-curtain__logo" src="img/logos_jlcrea_sin_fondo/08_logo_completo_blanco.png" alt="">
   </div>
 
-  <!-- HEADER — 3 ZONAS: nav-left + LOGO CENTRAL morphing + nav-right -->
-  <header class="header" id="header">
+  <!-- HEADER V2 — sin placa cuero. Logo FIJO siempre arriba al centro
+       (mate dorado + texto JIcrea apilados verticalmente). Nav links
+       limpios + icono bag al final. -->
+  <header class="header header--v2" id="header">
     <nav class="header__nav header__nav--left" aria-label="Navegación izquierda">
-      <a href="#">Inicio</a>
+      <a href="#" class="is-current">Inicio</a>
       <a href="tienda.html">Tienda</a>
     </nav>
 
     <div class="header__center">
-      <a href="#" class="header__logo" aria-label="Inicio JIcrea">
-        
-        <!-- Logo abierto — placa cuero premium con costura, side-texts
-             dorados y el logo circular trenzado nuevo en el centro. -->
-        <div class="header__logo--open">
-          <div class="header__side-text">
-            <span>DESDE</span>
-            <strong>2015</strong>
-          </div>
-          <img src="img/logos_jlcrea_sin_fondo/03_logo_completo_dorado.png" alt="JIcrea">
-          <div class="header__side-text">
-            <span>HECHOS</span>
-            <strong>A MANO</strong>
-          </div>
-        </div>
-
-        <!-- Logo cerrado — sólo el mate dorado cuando el header colapsa. -->
-        <img class="header__logo--closed" src="img/logos_jlcrea_sin_fondo/02_jlcrea_texto.png" alt="JIcrea">
+      <a href="#" class="header__logo header__logo--v2" aria-label="Inicio JIcrea">
+        <img class="header__v2-mate" src="img/logos_jlcrea_sin_fondo/01_mate_dorado.png" alt="" aria-hidden="true">
+        <img class="header__v2-text" src="img/logos_jlcrea_sin_fondo/02_jlcrea_texto.png" alt="JIcrea">
       </a>
     </div>
 
     <nav class="header__nav header__nav--right" aria-label="Navegación derecha">
       <a href="#manos">Proceso</a>
       <a href="nuestra-historia.html">Nuestra Historia</a>
+      <a href="tienda.html" class="header__v2-bag" aria-label="Tienda">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+      </a>
     </nav>
   </header>
 
@@ -451,11 +442,12 @@
     </div>
   </footer>
 
-  <!-- TOGGLE COMPARACIÓN — pill flotante para ir a la v2 con navbar
-       limpio. Temporal mientras el dueño decide. -->
-  <a href="index2.html" class="version-toggle" aria-label="Ver versión 2 (navbar minimal)">
-    <span class="version-toggle__label">Ver Versión 2</span>
-    <span class="version-toggle__badge">Navbar limpio</span>
+  <!-- TOGGLE COMPARACIÓN — pill flotante para alternar entre v1 y v2.
+       Sólo presente mientras el dueño decide qué versión le gusta más,
+       después se borra. -->
+  <a href="index.html" class="version-toggle" aria-label="Ver versión 1 (placa cuero)">
+    <span class="version-toggle__label">Ver Versión 1</span>
+    <span class="version-toggle__badge">Placa cuero</span>
   </a>
 
   <!-- WHATSAPP FAB -->

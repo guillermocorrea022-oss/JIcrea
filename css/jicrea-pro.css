@@ -2060,6 +2060,164 @@ em {
 .b2b__card-cta:hover svg { transform: translateX(4px); }
 
 /* ════════════════════════════════════════════════════════════════════════
+   INDEX V2 — Navbar alternativo (sin placa cuero, logo fijo apilado)
+   ════════════════════════════════════════════════════════════════════════
+   Propuesta alternativa para que el dueño compare. Header transparente,
+   logo central FIJO (mate dorado arriba + texto JIcrea abajo, apilados
+   verticalmente), nav limpio con icono de bag al final.
+   Se activa con body.page-index-v2 — no afecta a las demás páginas.
+   ════════════════════════════════════════════════════════════════════════ */
+.page-index-v2 .header--v2 {
+  background: transparent !important;
+  height: auto !important;
+  padding: 1.8rem var(--gutter) 1.4rem;
+  align-items: center;
+}
+/* Anulamos el efecto scroll-shrink — el header v2 mantiene su tamaño */
+.page-index-v2 .header.is-scrolled {
+  height: auto !important;
+  background: rgba(10, 8, 7, 0.55) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding-top: 1.2rem;
+  padding-bottom: 1rem;
+  transition: background-color 0.4s var(--ease-out), padding 0.4s var(--ease-out);
+}
+
+/* Logo v2 — sin placa cuero, sin trenzado, sin nada de la versión 1.
+   Sólo mate dorado arriba + texto JIcrea abajo, apilados. */
+.page-index-v2 .header__logo--v2 {
+  background: none !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: none !important;
+  overflow: visible !important;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0;
+  text-decoration: none;
+}
+.page-index-v2 .header__logo--v2::before,
+.page-index-v2 .header__logo--v2::after { display: none !important; }
+.page-index-v2 .header__v2-mate {
+  width: clamp(2.6rem, 3vw, 4rem);
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+}
+.page-index-v2 .header__v2-text {
+  width: clamp(8rem, 9vw, 12rem);
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+}
+
+/* Nav links v2 — más limpios, color cream-dorado sobre el hero dark */
+.page-index-v2 .header--v2 .header__nav {
+  align-items: center;
+  gap: clamp(2rem, 2.5vw, 3.5rem);
+  font-size: clamp(1.1rem, 0.95vw, 1.35rem);
+  letter-spacing: 0.24em;
+  font-weight: 600;
+}
+.page-index-v2 .header--v2 .header__nav a {
+  color: rgba(244, 235, 225, 0.92);
+  text-decoration: none;
+  transition: color 0.3s var(--ease-out);
+}
+.page-index-v2 .header--v2 .header__nav a:hover { color: var(--c-brand); }
+.page-index-v2 .header--v2 .header__nav a.is-current { color: var(--c-brand); }
+.page-index-v2 .header--v2 .header__nav a::after { display: none; }
+
+/* Icono bag al final del nav derecho */
+.page-index-v2 .header__v2-bag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(244, 235, 225, 0.92);
+  padding: 0.4rem;
+  transition: color 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+}
+.page-index-v2 .header__v2-bag:hover { color: var(--c-brand); transform: translateY(-2px); }
+
+/* En mobile el logo achica pero NO desaparece — la idea v2 es "logo
+   siempre presente". Nav un poco más chico y gap menor. */
+@media (max-width: 640px) {
+  .page-index-v2 .header--v2 { padding: 1.2rem 1.2rem 1rem; }
+  .page-index-v2 .header__v2-mate { width: 2.4rem; }
+  .page-index-v2 .header__v2-text { width: 7rem; }
+  .page-index-v2 .header--v2 .header__nav {
+    gap: 1.4rem;
+    font-size: 0.95rem;
+    letter-spacing: 0.16em;
+  }
+  /* En pantallas chicas ocultamos "Nuestra Historia" para que no se
+     amontone con el logo central. Queda el bag + Proceso. */
+  .page-index-v2 .header--v2 .header__nav--right a:not(.header__v2-bag):nth-of-type(2) {
+    display: none;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   TOGGLE V1 ↔ V2 — pill flotante para comparar las dos versiones.
+   ════════════════════════════════════════════════════════════════════════
+   Se muestra abajo-izquierda. Sólo en index/index2. Para borrar cuando
+   el dueño decida, eliminar el <a class="version-toggle"> de los HTMLs
+   y este bloque de CSS. */
+.version-toggle {
+  position: fixed;
+  left: 1.6rem;
+  bottom: 1.6rem;
+  z-index: 80;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  padding: 0.9rem 1.2rem;
+  background-color: rgba(20, 12, 6, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(203, 160, 88, 0.45);
+  border-radius: 999px;
+  color: var(--c-text-alt);
+  text-decoration: none;
+  font-family: var(--font-sans);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  transition: transform 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+}
+.version-toggle:hover {
+  transform: translateY(-3px);
+  border-color: var(--c-brand);
+}
+.version-toggle__label {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-brand);
+}
+.version-toggle__badge {
+  font-size: 0.95rem;
+  font-style: italic;
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  color: rgba(244, 235, 225, 0.75);
+}
+@media (max-width: 640px) {
+  .version-toggle {
+    bottom: 8rem; /* sobre el WhatsApp FAB en mobile */
+    left: 1rem;
+    padding: 0.7rem 1rem;
+  }
+  .version-toggle__label { font-size: 0.95rem; }
+  .version-toggle__badge { font-size: 0.85rem; }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
    MOBILE — overrides para celular (≤640px y ≤480px)
    ════════════════════════════════════════════════════════════════════════
    El sitio se diseñó desktop-first. Acá compactamos todo para que en un
