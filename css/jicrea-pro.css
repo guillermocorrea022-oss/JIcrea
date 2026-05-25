@@ -2488,8 +2488,8 @@ em {
   font-style: italic;
   font-weight: 500;
   color: var(--c-brand);
-  /* "JIcrea" un toque más grande para que destaque */
-  font-size: 1.04em;
+  /* Mismo font-size que el resto del título — el bump previo (1.04em)
+     desalineaba el "?" que viene después porque la línea base subía. */
 }
 .b2b-v2__lead {
   max-width: 720px;
