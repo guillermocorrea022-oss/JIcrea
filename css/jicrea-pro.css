@@ -2078,6 +2078,23 @@ em {
   padding: 1.8rem var(--gutter) 1.4rem;
   align-items: center;
 }
+/* CRÍTICO — el .header__center original es position:absolute con
+   height:100% del header, lo cual lo encierra y el logo más alto
+   se desbordaba por abajo (caía sobre el hero). En v2 lo sacamos
+   del posicionamiento absoluto y dejamos que el flex del header lo
+   coloque en el flujo (justify-content:space-between ya lo deja al
+   medio entre nav-left y nav-right). El header crece con el logo. */
+.page-index-v2 .header--v2 .header__center {
+  position: static !important;
+  transform: none !important;
+  height: auto !important;
+  left: auto !important;
+  top: auto !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
 /* Anulamos el efecto scroll-shrink — el header v2 mantiene su tamaño */
 .page-index-v2 .header.is-scrolled {
   height: auto !important;
