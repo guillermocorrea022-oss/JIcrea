@@ -2075,17 +2075,16 @@ em {
 .page-index-v2 .header--v2 {
   background: transparent !important;
   height: auto !important;
-  /* Padding más generoso para que el logo (ahora más grande) tenga
-     aire arriba y abajo dentro del header. */
-  padding: 2.2rem var(--gutter) 1.8rem;
+  /* Padding compacto — navbar no tan alto. */
+  padding: 1rem var(--gutter) 0.8rem;
   align-items: center;
+  /* flex-start para que el .header__center se mueva con margin-left:auto */
+  justify-content: flex-start !important;
+  gap: 1rem;
 }
-/* CRÍTICO — el .header__center original es position:absolute con
-   height:100% del header, lo cual lo encierra y el logo más alto
-   se desbordaba por abajo (caía sobre el hero). En v2 lo sacamos
-   del posicionamiento absoluto y dejamos que el flex del header lo
-   coloque en el flujo (justify-content:space-between ya lo deja al
-   medio entre nav-left y nav-right). El header crece con el logo. */
+/* .header__center pasa a flujo normal del flex y se va a la DERECHA
+   con margin-left:auto (consume el espacio sobrante a la izquierda,
+   empujándose a sí mismo y al nav-right hacia el final del header). */
 .page-index-v2 .header--v2 .header__center {
   position: static !important;
   transform: none !important;
@@ -2095,6 +2094,11 @@ em {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 0 0 auto;
+  margin-left: auto; /* Tira el logo a la derecha */
+  margin-right: clamp(1.6rem, 2.8vw, 3.6rem); /* separación del nav-right */
+}
+.page-index-v2 .header--v2 .header__nav--right {
   flex: 0 0 auto;
 }
 /* Anulamos el efecto scroll-shrink — el header v2 mantiene su tamaño */
@@ -2133,26 +2137,25 @@ em {
 }
 .page-index-v2 .header__logo--v2::before,
 .page-index-v2 .header__logo--v2::after { display: none !important; }
-/* Proporciones según la referencia del cliente:
-   - Mate más grande (gourd + bombilla bien visible)
-   - Texto JIcrea más grande proporcionalmente
-   - Pegados verticalmente sin gap entre ellos */
+/* Tamaño compacto para que el navbar no sea alto. Mate y texto bien
+   pegados con margins negativos más fuertes (las partes visibles
+   prácticamente se tocan, como en la referencia del cliente). */
 .page-index-v2 .header__v2-mate {
-  width: clamp(5rem, 6vw, 8rem);
+  width: clamp(3.4rem, 4vw, 5rem);
   height: auto;
   display: block;
-  /* Compensa el ~30% de aire transparente debajo del mate en el PNG. */
-  margin-bottom: clamp(-2.6rem, -2.4vw, -1.8rem);
+  /* Compensa el aire transparente DEBAJO del mate (~35% del alto PNG) */
+  margin-bottom: clamp(-1.8rem, -1.6vw, -1.2rem);
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
 }
 .page-index-v2 .header__v2-text {
-  width: clamp(11rem, 12vw, 16rem);
+  width: clamp(7.5rem, 8.5vw, 11rem);
   height: auto;
   display: block;
-  /* Compensa el ~30% de aire transparente arriba del texto en el PNG.
-     Junto con el margin-bottom negativo del mate, las partes visibles
-     quedan pegadas como en la referencia (mate apoyado sobre el texto). */
-  margin-top: clamp(-3.6rem, -3.4vw, -2.4rem);
+  /* Compensa el aire transparente ARRIBA del texto (~35% del alto PNG).
+     Combinado con el margin-bottom del mate, las partes visibles se
+     pegan casi a 0px de distancia. */
+  margin-top: clamp(-2.4rem, -2.4vw, -1.6rem);
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
 }
 
@@ -2187,14 +2190,20 @@ em {
 /* En mobile el logo achica pero NO desaparece — la idea v2 es "logo
    siempre presente". Nav un poco más chico y gap menor. */
 @media (max-width: 640px) {
-  .page-index-v2 .header--v2 { padding: 1.4rem 1.2rem 1.2rem; }
+  .page-index-v2 .header--v2 { padding: 0.6rem 1rem 0.5rem; gap: 0.6rem; }
   .page-index-v2 .header__v2-mate {
-    width: 4.2rem;
-    margin-bottom: -1.6rem;
+    width: 2.6rem;
+    margin-bottom: -1.1rem;
   }
   .page-index-v2 .header__v2-text {
-    width: 8.5rem;
-    margin-top: -2.2rem;
+    width: 5.6rem;
+    margin-top: -1.6rem;
+  }
+  /* En mobile no hay espacio para tirar el logo a la derecha — vuelve
+     al centro con un margin auto a cada lado. */
+  .page-index-v2 .header--v2 .header__center {
+    margin-left: auto;
+    margin-right: auto;
   }
   .page-index-v2 .header--v2 .header__nav {
     gap: 1.4rem;
