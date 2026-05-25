@@ -2137,25 +2137,25 @@ em {
 }
 .page-index-v2 .header__logo--v2::before,
 .page-index-v2 .header__logo--v2::after { display: none !important; }
-/* Tamaño compacto para que el navbar no sea alto. Mate y texto bien
-   pegados con margins negativos más fuertes (las partes visibles
-   prácticamente se tocan, como en la referencia del cliente). */
+/* Mate y texto apilados verticalmente, pegaditos pero SIN superponerse.
+   Margins negativos suaves — sólo compensan el padding transparente
+   sin invadir el espacio visible del otro elemento. */
 .page-index-v2 .header__v2-mate {
   width: clamp(3.4rem, 4vw, 5rem);
   height: auto;
   display: block;
-  /* Compensa el aire transparente DEBAJO del mate (~35% del alto PNG) */
-  margin-bottom: clamp(-1.8rem, -1.6vw, -1.2rem);
+  /* Sólo compensa el ~15% de aire transparente bajo el mate (no más,
+     para que el JIcrea quede DEBAJO, no sobre el mate). */
+  margin-bottom: clamp(-0.6rem, -0.5vw, -0.3rem);
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
 }
 .page-index-v2 .header__v2-text {
   width: clamp(7.5rem, 8.5vw, 11rem);
   height: auto;
   display: block;
-  /* Compensa el aire transparente ARRIBA del texto (~35% del alto PNG).
-     Combinado con el margin-bottom del mate, las partes visibles se
-     pegan casi a 0px de distancia. */
-  margin-top: clamp(-2.4rem, -2.4vw, -1.6rem);
+  /* Compensa el ~30% de aire transparente arriba del texto. Ahora
+     el JIcrea queda justo DEBAJO del mate sin invadirlo. */
+  margin-top: clamp(-1.4rem, -1.4vw, -0.9rem);
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
 }
 
@@ -2193,11 +2193,11 @@ em {
   .page-index-v2 .header--v2 { padding: 0.6rem 1rem 0.5rem; gap: 0.6rem; }
   .page-index-v2 .header__v2-mate {
     width: 2.6rem;
-    margin-bottom: -1.1rem;
+    margin-bottom: -0.4rem;
   }
   .page-index-v2 .header__v2-text {
     width: 5.6rem;
-    margin-top: -1.6rem;
+    margin-top: -1rem;
   }
   /* En mobile el grid sigue funcionando — el logo ya está centrado. */
   .page-index-v2 .header--v2 .header__nav {
