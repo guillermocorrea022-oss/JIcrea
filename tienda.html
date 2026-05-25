@@ -20,7 +20,7 @@
   <meta property="og:locale" content="es_UY">
 
   <link rel="stylesheet" href="css/jicrea-pro.css?v=98">
-  <link rel="stylesheet" href="css/tienda-cart.css?v=13">
+  <link rel="stylesheet" href="css/tienda-cart.css?v=14">
 </head>
 <body class="page-tienda page-index-v2">
 
@@ -470,7 +470,10 @@
        total del carrito y CTA para ir a finalizar compra. -->
   <div class="cart-notif" id="cartNotif" aria-live="polite">
     <div class="cart-notif__row">
-      <span class="cart-notif__check">✓</span>
+      <span class="cart-notif__check" aria-hidden="true">✓</span>
+      <div class="cart-notif__thumb" aria-hidden="true">
+        <img id="notifImg" src="" alt="" loading="lazy">
+      </div>
       <div class="cart-notif__text">
         <p class="cart-notif__title" id="notifTitle">Agregado al carrito</p>
         <p class="cart-notif__detail" id="notifDetail">—</p>
@@ -545,6 +548,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script src="js/jicrea-pro.js?v=62"></script>
-  <script src="js/tienda-cart.js?v=5"></script>
+  <script src="js/tienda-cart.js?v=6"></script>
 </body>
 </html>

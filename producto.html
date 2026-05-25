@@ -13,7 +13,7 @@
   <link rel="preload" as="font" type="font/woff2" href="fonts/super-reg.woff2" crossorigin>
 
   <link rel="stylesheet" href="css/jicrea-pro.css?v=97">
-  <link rel="stylesheet" href="css/tienda-cart.css?v=13">
+  <link rel="stylesheet" href="css/tienda-cart.css?v=14">
   <link rel="stylesheet" href="css/producto.css?v=2">
 </head>
 <body class="page-producto page-index-v2">
@@ -189,7 +189,10 @@
   <!-- Notificación -->
   <div class="cart-notif" id="cartNotif" aria-live="polite">
     <div class="cart-notif__row">
-      <span class="cart-notif__check">✓</span>
+      <span class="cart-notif__check" aria-hidden="true">✓</span>
+      <div class="cart-notif__thumb" aria-hidden="true">
+        <img id="notifImg" src="" alt="" loading="lazy">
+      </div>
       <div class="cart-notif__text">
         <p class="cart-notif__title" id="notifTitle">Agregado al carrito</p>
         <p class="cart-notif__detail" id="notifDetail">—</p>
@@ -217,6 +220,6 @@
   <script src="js/jicrea-pro.js?v=51"></script>
   <script src="js/productos-data.js?v=1"></script>
   <script src="js/producto.js?v=1"></script>
-  <script src="js/tienda-cart.js?v=3"></script>
+  <script src="js/tienda-cart.js?v=6"></script>
 </body>
 </html>

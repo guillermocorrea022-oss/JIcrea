@@ -1251,7 +1251,26 @@
   font-size: 1.8rem;
   font-weight: 700;
 }
-.cart-notif__text { flex: 1; }
+/* Thumb del producto agregado — bg cream para PNGs transparentes,
+   border dorado fino para destacar. */
+.cart-notif__thumb {
+  flex-shrink: 0;
+  width: 4.6rem; height: 4.6rem;
+  border-radius: 4px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 25%, rgba(255, 250, 235, 0.7) 0%, transparent 70%),
+    linear-gradient(180deg, #F0E4CB 0%, #D9C7A4 100%);
+  border: 1px solid rgba(203, 160, 88, 0.4);
+}
+.cart-notif__thumb img {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  padding: 6%;
+  box-sizing: border-box;
+  display: block;
+}
+.cart-notif__text { flex: 1; min-width: 0; }
 .cart-notif__title {
   font-family: var(--font-serif);
   font-size: 1.5rem;

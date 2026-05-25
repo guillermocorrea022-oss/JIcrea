@@ -78,12 +78,15 @@
   }
 
   // ─────────── Mutaciones ───────────
-  function addItem(id, name, price, qty) {
+  function addItem(id, name, price, qty, img) {
     const existing = cart.find(it => it.id === id);
     if (existing) {
       existing.qty += qty;
+      // Si el item legacy en localStorage no tiene .img, le seteamos
+      // la del producto para que se muestre el thumb correctamente.
+      if (img && !existing.img) existing.img = img;
     } else {
-      cart.push({ id, name, price, qty });
+      cart.push({ id, name, price, qty, img });
     }
     save();
     renderCart();
@@ -200,20 +203,31 @@
   }
   function confirmQty() {
     if (!pendingProduct) return;
-    addItem(pendingProduct.id, pendingProduct.name, pendingProduct.price, pendingQty);
+    addItem(pendingProduct.id, pendingProduct.name, pendingProduct.price, pendingQty, pendingProduct.img);
     const addedQty = pendingQty;
     const addedName = pendingProduct.name;
+    const addedImg = pendingProduct.img;
     const addedSubtotal = pendingProduct.price * pendingQty;
     closeQtyModal();
-    showNotif(addedName, addedQty, addedSubtotal);
+    showNotif(addedName, addedQty, addedSubtotal, addedImg);
   }
 
   // ─────────── Notificación ───────────
   let notifTimer = null;
-  function showNotif(name, qty, subtotal) {
+  function showNotif(name, qty, subtotal, img) {
     notifTitle.textContent = "Agregado al carrito";
     notifDetail.textContent = `${qty}× ${name} · ${fmt(subtotal)}`;
     notifTotal.textContent = fmt(totalPrice());
+    // Set la imagen del producto en el thumb de la notificación.
+    // El #notifImg lo agregamos al HTML en su sección .cart-notif__thumb.
+    const notifImg = document.getElementById("notifImg");
+    if (notifImg && img) {
+      notifImg.src = img;
+      notifImg.alt = name;
+      notifImg.style.display = "block";
+    } else if (notifImg) {
+      notifImg.style.display = "none";
+    }
     cartNotif.classList.add("is-visible");
     clearTimeout(notifTimer);
     notifTimer = setTimeout(hideNotif, 6000);
