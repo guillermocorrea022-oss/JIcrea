@@ -2141,12 +2141,10 @@ em {
    Margins negativos suaves — sólo compensan el padding transparente
    sin invadir el espacio visible del otro elemento. */
 .page-index-v2 .header__v2-mate {
-  /* Mate ~25% más chico — proporción más equilibrada con el texto JIcrea. */
-  width: clamp(2.6rem, 3vw, 3.8rem);
+  /* Mate -10% adicional (era 2.6-3.8rem, ahora 2.3-3.4rem). */
+  width: clamp(2.3rem, 2.7vw, 3.4rem);
   height: auto;
   display: block;
-  /* Sin margin negativo abajo — el mate del PNG llega casi hasta el
-     final del cuadro (poco aire transparente bajo el gourd). */
   margin-bottom: 0;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
 }
@@ -2154,10 +2152,9 @@ em {
   width: clamp(7.5rem, 8.5vw, 11rem);
   height: auto;
   display: block;
-  /* Margin negativo SOLO compensa el padding transparente arriba del
-     texto (~30% del alto PNG). Valores muy conservadores para que
-     NUNCA pisen al mate de arriba. */
-  margin-top: clamp(-0.6rem, -0.6vw, -0.4rem);
+  /* Pequeño respiro entre mate y texto: 0 margin (los PNGs naturales
+     ya quedan apenas separados gracias a su padding intrínseco). */
+  margin-top: 0;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
 }
 
@@ -2194,12 +2191,12 @@ em {
 @media (max-width: 640px) {
   .page-index-v2 .header--v2 { padding: 0.6rem 1rem 0.5rem; gap: 0.6rem; }
   .page-index-v2 .header__v2-mate {
-    width: 2.1rem;
+    width: 1.9rem;
     margin-bottom: 0;
   }
   .page-index-v2 .header__v2-text {
     width: 5.6rem;
-    margin-top: -0.4rem;
+    margin-top: 0;
   }
   /* En mobile el grid sigue funcionando — el logo ya está centrado. */
   .page-index-v2 .header--v2 .header__nav {
