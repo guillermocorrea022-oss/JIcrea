@@ -2141,12 +2141,14 @@ em {
    Margins negativos suaves — sólo compensan el padding transparente
    sin invadir el espacio visible del otro elemento. */
 .page-index-v2 .header__v2-mate {
-  width: clamp(3.4rem, 4vw, 5rem);
+  /* Mate ~25% más chico — proporción más equilibrada con el texto JIcrea. */
+  width: clamp(2.6rem, 3vw, 3.8rem);
   height: auto;
   display: block;
   /* Sólo compensa el ~15% de aire transparente bajo el mate (no más,
-     para que el JIcrea quede DEBAJO, no sobre el mate). */
-  margin-bottom: clamp(-0.6rem, -0.5vw, -0.3rem);
+     para que el JIcrea quede DEBAJO, no sobre el mate). Margin ajustado
+     al tamaño nuevo del PNG. */
+  margin-bottom: clamp(-0.5rem, -0.4vw, -0.25rem);
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
 }
 .page-index-v2 .header__v2-text {
@@ -2192,8 +2194,8 @@ em {
 @media (max-width: 640px) {
   .page-index-v2 .header--v2 { padding: 0.6rem 1rem 0.5rem; gap: 0.6rem; }
   .page-index-v2 .header__v2-mate {
-    width: 2.6rem;
-    margin-bottom: -0.4rem;
+    width: 2.1rem;
+    margin-bottom: -0.3rem;
   }
   .page-index-v2 .header__v2-text {
     width: 5.6rem;
