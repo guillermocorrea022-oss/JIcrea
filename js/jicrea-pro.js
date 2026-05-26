@@ -60,6 +60,42 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // ─────────────────────────────────────────────────────────────────
+  // COOKIE BANNER — aviso legal sutil con acepto / dismiss persistente
+  // ─────────────────────────────────────────────────────────────────
+  // Si ya aceptó (localStorage), no se muestra. Si rechaza/cierra,
+  // tampoco vuelve a aparecer hasta el próximo browser refresh sin
+  // localStorage. Spec mínimo: cumplir aviso, no molestar.
+  (function initCookieBanner(){
+    const STORAGE_KEY = "jicrea_cookies_v1";
+    try { if (localStorage.getItem(STORAGE_KEY) === "accepted") return; } catch(e){}
+    // Crear DOM dinámicamente para no ensuciar cada HTML
+    const banner = document.createElement("aside");
+    banner.className = "cookie-banner";
+    banner.setAttribute("role", "dialog");
+    banner.setAttribute("aria-label", "Aviso de cookies");
+    banner.innerHTML = `
+      <p class="cookie-banner__text">Usamos cookies para que tu experiencia sea mejor. Sin trampas, sólo lo necesario.</p>
+      <div class="cookie-banner__actions">
+        <button type="button" class="cookie-banner__btn cookie-banner__btn--primary" data-action="accept">Aceptar</button>
+        <button type="button" class="cookie-banner__btn cookie-banner__btn--ghost" data-action="dismiss">Más tarde</button>
+      </div>
+    `;
+    document.body.appendChild(banner);
+    // Mostrar con un pequeño delay para no atropellar el primer paint
+    setTimeout(() => banner.classList.add("is-visible"), 1200);
+
+    banner.addEventListener("click", (e) => {
+      const action = e.target.closest("[data-action]")?.getAttribute("data-action");
+      if (!action) return;
+      if (action === "accept") {
+        try { localStorage.setItem(STORAGE_KEY, "accepted"); } catch(e){}
+      }
+      banner.classList.remove("is-visible");
+      setTimeout(() => banner.remove(), 400);
+    });
+  })();
+
   // 1. Initialize Lenis for smooth scroll
   const lenis = typeof Lenis !== 'undefined' ? new Lenis({
     duration: 1.2,

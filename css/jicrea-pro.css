@@ -94,7 +94,9 @@ a {
     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.28 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   background-size: cover, cover, 180px 180px;
   background-blend-mode: normal, normal, overlay;
-  transition: opacity 0.55s cubic-bezier(0.65, 0, 0.35, 1);
+  /* Transición más cinematográfica — 0.7s con ease custom que sale
+     rápido y aterriza suave (sensación premium vs. plano). */
+  transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
   /* GPU layer hint para que el compositor lo trate como capa propia */
   will-change: opacity;
 }
@@ -104,8 +106,8 @@ a {
   opacity: 0;
   visibility: hidden;
   transition:
-    opacity 0.55s cubic-bezier(0.65, 0, 0.35, 1),
-    visibility 0s linear 0.55s;
+    opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+    visibility 0s linear 0.7s;
 }
 /* Logo centrado con scale-up sutil — al fade out crece 8% generando
    sensación "zoom hacia adentro de la página". GPU-only (transform). */
@@ -2063,6 +2065,129 @@ em {
   transition: transform 0.35s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1));
 }
 .b2b__card-cta:hover svg { transform: translateX(4px); }
+
+/* ════════════════════════════════════════════════════════════════════════
+   COOKIE BANNER — aviso legal sutil abajo-derecha
+   ════════════════════════════════════════════════════════════════════════
+   Toast pequeño con texto cream sobre fondo dark + 2 botones (Aceptar /
+   Más info). Se oculta con localStorage 'jicrea_cookies_v1' = 'accepted'.
+   La lógica vive en jicrea-pro.js. */
+.cookie-banner {
+  position: fixed;
+  bottom: 1.6rem;
+  right: 1.6rem;
+  z-index: 90;
+  max-width: 360px;
+  padding: 1.4rem 1.6rem;
+  background: rgba(20, 12, 6, 0.92);
+  color: rgba(244, 235, 225, 0.92);
+  border: 1px solid rgba(203, 160, 88, 0.4);
+  border-radius: 4px;
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-size: 1.3rem;
+  line-height: 1.45;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transform: translateY(20px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.4s var(--ease-out), opacity 0.4s var(--ease-out);
+}
+.cookie-banner.is-visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+.cookie-banner__text { margin: 0 0 1rem; }
+.cookie-banner__actions {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+}
+.cookie-banner__btn {
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.25s var(--ease-out), color 0.25s var(--ease-out);
+  border: none;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+.cookie-banner__btn--primary {
+  background: var(--c-brand);
+  color: #2A1810;
+}
+.cookie-banner__btn--primary:hover { background: #d8b070; }
+.cookie-banner__btn--ghost {
+  background: transparent;
+  color: rgba(244, 235, 225, 0.7);
+  text-decoration: underline;
+  padding: 0.6rem 0.4rem;
+}
+.cookie-banner__btn--ghost:hover { color: var(--c-brand); }
+@media (max-width: 480px) {
+  .cookie-banner {
+    left: 1rem; right: 1rem; bottom: 1rem;
+    max-width: none;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   LOADING STATES — spinners + dot animations
+   ════════════════════════════════════════════════════════════════════════
+   Reutilizable: .is-loading en un botón muestra un spinner al lado del
+   texto. .skeleton-line para placeholders mientras carga data. */
+.is-loading {
+  position: relative;
+  pointer-events: none;
+  opacity: 0.85;
+}
+.is-loading::after {
+  content: "";
+  display: inline-block;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-left: 0.8rem;
+  vertical-align: middle;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Skeleton lines — para placeholders mientras carga JS */
+.skeleton-line {
+  display: block;
+  height: 1em;
+  background: linear-gradient(90deg, rgba(107, 68, 35, 0.10) 0%, rgba(107, 68, 35, 0.20) 50%, rgba(107, 68, 35, 0.10) 100%);
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.4s ease-in-out infinite;
+  border-radius: 3px;
+  margin-bottom: 0.6em;
+}
+.skeleton-line--short { width: 40%; }
+.skeleton-line--medium { width: 70%; }
+.skeleton-line--long { width: 95%; }
+.skeleton-block {
+  background: linear-gradient(90deg, rgba(107, 68, 35, 0.10) 0%, rgba(107, 68, 35, 0.20) 50%, rgba(107, 68, 35, 0.10) 100%);
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.4s ease-in-out infinite;
+  border-radius: 4px;
+}
+@keyframes skeletonShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
 
 /* ─── ACENTOS VERDES — palabras destacadas en verde brand ──────────
    Se usa en frases sueltas con <em class="text-accent-green">. Italic

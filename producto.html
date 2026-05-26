@@ -12,7 +12,7 @@
   <link rel="preload" as="font" type="font/woff2" href="fonts/super-med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="fonts/super-reg.woff2" crossorigin>
 
-  <link rel="stylesheet" href="css/jicrea-pro.css?v=101">
+  <link rel="stylesheet" href="css/jicrea-pro.css?v=102">
   <link rel="stylesheet" href="css/tienda-cart.css?v=14">
   <link rel="stylesheet" href="css/producto.css?v=3">
 </head>
@@ -65,10 +65,19 @@
         </div>
       </div>
       <div class="producto-hero__info" data-reveal>
-        <span class="eyebrow" id="prodCategory">Categoría</span>
-        <h1 class="producto-hero__title" id="prodTitle">—</h1>
-        <p class="producto-hero__price" id="prodPrice">$0</p>
-        <p class="producto-hero__short" id="prodShort">—</p>
+        <span class="eyebrow" id="prodCategory">
+          <span class="skeleton-line skeleton-line--short" aria-hidden="true"></span>
+        </span>
+        <h1 class="producto-hero__title" id="prodTitle">
+          <span class="skeleton-line skeleton-line--medium" aria-hidden="true"></span>
+        </h1>
+        <p class="producto-hero__price" id="prodPrice">
+          <span class="skeleton-line skeleton-line--short" aria-hidden="true"></span>
+        </p>
+        <p class="producto-hero__short" id="prodShort">
+          <span class="skeleton-line skeleton-line--long" aria-hidden="true"></span>
+          <span class="skeleton-line skeleton-line--medium" aria-hidden="true"></span>
+        </p>
         <button class="prod__btn producto-hero__btn" id="prodAddBtn">Agregar al carrito</button>
         <p class="producto-hero__note">El pago y la entrega se coordinan por WhatsApp.</p>
 
@@ -251,7 +260,7 @@
   <script src="https://unpkg.com/lenis@1.0.42/dist/lenis.min.js" onerror="console.info('Lenis no')"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="js/jicrea-pro.js?v=51"></script>
+  <script src="js/jicrea-pro.js?v=69"></script>
   <script src="js/productos-data.js?v=1"></script>
   <script src="js/producto.js?v=3"></script>
   <script src="js/tienda-cart.js?v=6"></script>

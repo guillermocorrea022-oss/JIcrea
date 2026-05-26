@@ -621,6 +621,10 @@
     function sendWhatsApp() {
       const units = totalUnits();
       if (units < MAYORISTA_MIN) return;
+      // Loading state — feedback visual mientras se arma la URL y abre WA.
+      // Aunque el armado sea instantáneo, en mobile abrir WA puede tardar
+      // 200-600ms y la sensación sin spinner es de "no pasó nada".
+      confirm.classList.add("is-loading");
       const lines = ["Hola JIcrea! Quiero pedir esta compra MAYORISTA:", ""];
       mayoristaCatalog.forEach(p => {
         const q = mayoristaQty[p.id] || 0;
@@ -632,6 +636,10 @@
       lines.push("¿Cómo coordinamos el envío y el pago?");
       const msg = encodeURIComponent(lines.join("\n"));
       window.open("https://wa.me/" + WA_PHONE + "?text=" + msg, "_blank", "noopener");
+      // Quitamos el spinner después de 1.2s — suficiente para que el
+      // browser haya disparado el window.open. Si el user vuelve a la
+      // pestaña, el botón está listo de nuevo.
+      setTimeout(() => confirm.classList.remove("is-loading"), 1200);
     }
 
     // Bindings
