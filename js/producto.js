@@ -69,6 +69,39 @@
     addBtn.setAttribute("data-price", prod.price);
     addBtn.setAttribute("data-img", prod.img);
 
+    // Dudas WhatsApp con nombre del producto pre-cargado en el msg.
+    const doubtsBtn = document.getElementById("prodDoubtsBtn");
+    if (doubtsBtn) {
+      const msg = `Hola JIcrea, tengo una consulta sobre el ${prod.name}.`;
+      doubtsBtn.href = "https://wa.me/59898507241?text=" + encodeURIComponent(msg);
+    }
+
+    // Botones de compartir
+    const productUrl = window.location.href;
+    const shareWa = document.getElementById("prodShareWa");
+    if (shareWa) {
+      const waMsg = `Mirá este ${prod.name} de JIcrea: ${productUrl}`;
+      shareWa.href = "https://wa.me/?text=" + encodeURIComponent(waMsg);
+    }
+    const shareCopy = document.getElementById("prodShareCopy");
+    if (shareCopy) {
+      shareCopy.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(productUrl);
+          const originalLabel = shareCopy.getAttribute("aria-label");
+          shareCopy.setAttribute("aria-label", "Link copiado ✓");
+          shareCopy.classList.add("is-copied");
+          setTimeout(() => {
+            shareCopy.classList.remove("is-copied");
+            shareCopy.setAttribute("aria-label", originalLabel);
+          }, 1800);
+        } catch (e) {
+          // Fallback: select text manually (raro pero seguro).
+          window.prompt("Copiá el link:", productUrl);
+        }
+      });
+    }
+
     // Historia
     document.getElementById("prodStory").textContent = prod.story;
     const stepsEl = document.getElementById("prodSteps");

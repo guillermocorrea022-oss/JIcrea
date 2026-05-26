@@ -517,6 +517,221 @@
   transform: translateY(-2px);
 }
 
+/* ════════════════════════════════════════════════════════════════════════
+   TIMELINE — recorrido cronológico de la marca
+   ════════════════════════════════════════════════════════════════════════
+   Horizontal en desktop con línea dorada que conecta los 4 puntos.
+   Vertical en mobile. Año dorado grande arriba, dot dorado, milestone
+   serif y descripción italic. */
+.hist-timeline {
+  position: relative;
+  padding: clamp(5rem, 8vw, 11rem) var(--gutter);
+  background-color: #EFE5D5;
+  color: var(--c-text);
+  overflow: hidden;
+}
+.hist-timeline::before {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 160px 160px;
+  opacity: 0.25;
+  mix-blend-mode: multiply;
+}
+.hist-timeline__inner { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; }
+.hist-timeline__head { text-align: center; margin-bottom: 5rem; }
+.hist-timeline__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  position: relative;
+}
+/* Línea dorada que conecta todos los puntos */
+.hist-timeline__list::before {
+  content: "";
+  position: absolute;
+  top: 4.6rem; /* alineada con el dot */
+  left: 12.5%; right: 12.5%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(203, 160, 88, 0.45) 15%, rgba(203, 160, 88, 0.45) 85%, transparent 100%);
+  z-index: 0;
+}
+.hist-timeline__item {
+  position: relative;
+  text-align: center;
+  padding-top: 6rem;
+}
+.hist-timeline__year {
+  display: block;
+  font-family: "Cormorant Garamond", "EB Garamond", "Times New Roman", Georgia, serif;
+  font-size: clamp(2.4rem, 3vw, 3.8rem);
+  font-weight: 500;
+  color: var(--c-brand);
+  line-height: 1;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.hist-timeline__dot {
+  position: absolute;
+  top: 4.4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--c-brand);
+  box-shadow: 0 0 0 4px #EFE5D5, 0 0 0 5px rgba(203, 160, 88, 0.45);
+  z-index: 1;
+}
+.hist-timeline__milestone {
+  font-family: "Cormorant Garamond", "EB Garamond", "Times New Roman", Georgia, serif;
+  font-size: clamp(1.7rem, 1.8vw, 2.2rem);
+  font-weight: 600;
+  color: #2B3A2C;
+  margin: 1.4rem 0 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+}
+.hist-timeline__text {
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(1.35rem, 1.2vw, 1.55rem);
+  line-height: 1.5;
+  color: rgba(42, 24, 16, 0.75);
+  margin: 0;
+}
+@media (max-width: 800px) {
+  .hist-timeline__list { grid-template-columns: 1fr; gap: 3rem; }
+  .hist-timeline__list::before { display: none; }
+  .hist-timeline__item { padding-top: 0; text-align: left; padding-left: 6rem; }
+  .hist-timeline__year { position: static; transform: none; display: inline-block; }
+  .hist-timeline__dot { display: none; }
+  .hist-timeline__item::before {
+    /* En mobile: línea vertical a la izquierda */
+    content: "";
+    position: absolute;
+    left: 2.2rem;
+    top: 2.4rem;
+    bottom: -2rem;
+    width: 1px;
+    background: linear-gradient(180deg, rgba(203, 160, 88, 0.45) 0%, transparent 100%);
+  }
+  .hist-timeline__item:last-child::before { display: none; }
+  .hist-timeline__item::after {
+    /* Dot en mobile */
+    content: "";
+    position: absolute;
+    left: 1.6rem;
+    top: 1rem;
+    width: 12px; height: 12px;
+    background: var(--c-brand);
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px #EFE5D5;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   FUNDADOR — foto + quote
+   ════════════════════════════════════════════════════════════════════════
+   Layout 2 columnas: foto a la izq, quote a la der. Fondo leather.
+   Foto es un placeholder hasta que se suba img/fundador.jpg — un div
+   con bg cream y un mensaje en gris en el medio. */
+.hist-founder {
+  position: relative;
+  padding: clamp(5rem, 8vw, 11rem) var(--gutter);
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(255, 230, 200, 0.10), transparent 55%),
+    radial-gradient(ellipse at 80% 70%, rgba(46, 24, 12, 0.32), transparent 60%),
+    linear-gradient(135deg, #6B4423 0%, #8B5A33 50%, #7A4A28 100%);
+  color: var(--c-text-alt);
+  overflow: hidden;
+}
+.hist-founder::before {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 220px 220px;
+  opacity: 0.45;
+  mix-blend-mode: multiply;
+}
+.hist-founder__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: clamp(2.4rem, 4vw, 6rem);
+  align-items: center;
+}
+.hist-founder__photo {
+  aspect-ratio: 4/5;
+  background: linear-gradient(135deg, rgba(244, 235, 225, 0.20) 0%, rgba(203, 160, 88, 0.12) 100%);
+  border: 1px solid rgba(203, 160, 88, 0.35);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  /* Cuando se suba img/fundador.jpg, agregarle:
+     background-image: url('../img/fundador.jpg');
+     background-size: cover; background-position: center;
+     y quitar el data-placeholder del HTML. */
+}
+.hist-founder__photo[data-placeholder] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.hist-founder__placeholder-text {
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: rgba(244, 235, 225, 0.55);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 1rem 2rem;
+}
+.hist-founder__placeholder-text small {
+  display: block;
+  margin-top: 0.6rem;
+  font-size: 1rem;
+  text-transform: none;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+}
+.hist-founder__text {}
+.hist-founder__quote {
+  font-family: "Cormorant Garamond", "EB Garamond", "Times New Roman", Georgia, serif;
+  font-size: clamp(1.7rem, 1.9vw, 2.4rem);
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--c-text-alt);
+  margin: 1.6rem 0 2rem;
+  padding-left: 1.6rem;
+  border-left: 2px solid var(--c-brand);
+}
+.hist-founder__sign {
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-size: 1.45rem;
+  letter-spacing: 0.08em;
+  color: var(--c-brand);
+  margin: 0;
+}
+@media (max-width: 720px) {
+  .hist-founder { padding: 4rem 1.4rem !important; }
+  .hist-founder__inner { grid-template-columns: 1fr; }
+  .hist-founder__photo { aspect-ratio: 4/3; }
+  .hist-founder__quote { padding-left: 1rem; font-size: 1.55rem; }
+}
+
 /* ─── Link "current" en el navbar (estado activo) ────────────────── */
 .page-historia .header__nav a.is-current {
   color: var(--c-brand) !important;
