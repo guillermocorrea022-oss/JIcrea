@@ -2067,6 +2067,140 @@ em {
 .b2b__card-cta:hover svg { transform: translateX(4px); }
 
 /* ════════════════════════════════════════════════════════════════════════
+   GALERÍA INSTAGRAM — grid 4x2 con placeholders
+   ════════════════════════════════════════════════════════════════════════
+   Cream parchment bg. 8 tiles cuadrados con esperanza de foto real
+   (background-image inline o ::data-img). Mientras no haya foto,
+   el placeholder muestra "Foto N" en el centro. Link al perfil IG.
+   ──────────────────────────────────────────────────────────────────── */
+.ig-gallery {
+  position: relative;
+  padding: clamp(5rem, 8vw, 11rem) var(--gutter);
+  background-color: #EFE5D5;
+  color: var(--c-text);
+  overflow: hidden;
+}
+.ig-gallery::before {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 160px 160px;
+  opacity: 0.25;
+  mix-blend-mode: multiply;
+}
+.ig-gallery__inner { position: relative; z-index: 1; max-width: 1300px; margin: 0 auto; }
+.ig-gallery__head { text-align: center; margin-bottom: 4rem; }
+.ig-gallery__eyebrow {
+  display: inline-block;
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-size: 1.35rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--c-brand);
+  margin-bottom: 1.4rem;
+}
+.ig-gallery__title {
+  font-family: "Cormorant Garamond", "EB Garamond", "Times New Roman", Georgia, serif;
+  font-size: clamp(2.6rem, 4.4vw, 5.2rem);
+  font-weight: 500;
+  line-height: 1.1;
+  color: #2B3A2C;
+  margin: 0 0 1rem;
+}
+.ig-gallery__lead {
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(1.45rem, 1.3vw, 1.75rem);
+  color: rgba(42, 24, 16, 0.7);
+  margin: 0;
+}
+.ig-gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(0.8rem, 1.2vw, 1.4rem);
+  margin-bottom: 4rem;
+}
+.ig-tile {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  background-size: cover;
+  background-position: center;
+  background-color: rgba(107, 68, 35, 0.10);
+  border: 1px solid rgba(107, 68, 35, 0.15);
+  border-radius: 4px;
+  overflow: hidden;
+  text-decoration: none;
+  transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
+}
+.ig-tile:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 28px rgba(46, 24, 12, 0.20);
+}
+/* Overlay con icono IG en hover */
+.ig-tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 12, 6, 0.0);
+  transition: background-color 0.3s var(--ease-out);
+  pointer-events: none;
+}
+.ig-tile:hover::after { background: rgba(20, 12, 6, 0.30); }
+/* Placeholder cuando no hay foto cargada */
+.ig-tile[data-placeholder] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    repeating-linear-gradient(45deg, rgba(107, 68, 35, 0.04) 0 12px, transparent 12px 24px),
+    #f7eedd;
+}
+.ig-tile__placeholder {
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(107, 68, 35, 0.4);
+}
+.ig-gallery__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0 auto;
+  padding: 1.2rem 2.4rem;
+  background: transparent;
+  border: 1px solid var(--c-brand);
+  border-radius: 999px;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--c-brand);
+  text-decoration: none;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: background-color 0.3s var(--ease-out), color 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+}
+.ig-gallery__cta:hover {
+  background: var(--c-brand);
+  color: #2A1810;
+  transform: translateX(-50%) translateY(-2px);
+}
+@media (max-width: 800px) {
+  .ig-gallery { padding: 4rem 1.4rem !important; }
+  .ig-gallery__grid { grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
+  .ig-tile__placeholder { font-size: 1.1rem; }
+}
+@media (max-width: 480px) {
+  .ig-gallery__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
    COOKIE BANNER — aviso legal sutil abajo-derecha
    ════════════════════════════════════════════════════════════════════════
    Toast pequeño con texto cream sobre fondo dark + 2 botones (Aceptar /
