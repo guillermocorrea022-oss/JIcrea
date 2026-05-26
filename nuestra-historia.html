@@ -19,7 +19,7 @@
   <meta property="og:description" content="Productores uruguayos de mates desde 2015. Del campo a tus manos.">
   <meta property="og:locale" content="es_UY">
 
-  <link rel="stylesheet" href="css/jicrea-pro.css?v=102">
+  <link rel="stylesheet" href="css/jicrea-pro.css?v=103">
   <link rel="stylesheet" href="css/historia.css?v=6">
 </head>
 <body class="page-historia page-index-v2">
@@ -33,8 +33,8 @@
   <!-- HEADER V2 — logo apilado centrado, sin placa cuero. -->
   <header class="header header--v2" id="header">
     <nav class="header__nav header__nav--left" aria-label="Navegación izquierda">
-      <a href="index.html">Inicio</a>
-      <a href="tienda.html">Tienda</a>
+      <a href="index.html" data-i18n="nav.home">Inicio</a>
+      <a href="tienda.html" data-i18n="nav.shop">Tienda</a>
     </nav>
 
     <div class="header__center">
@@ -45,8 +45,9 @@
     </div>
 
     <nav class="header__nav header__nav--right" aria-label="Navegación derecha">
-      <a href="index.html#manos">Proceso</a>
-      <a href="nuestra-historia.html" class="is-current">Nuestra Historia</a>
+      <a href="index.html#manos" data-i18n="nav.process">Proceso</a>
+      <a href="nuestra-historia.html" class="is-current" data-i18n="nav.history">Nuestra Historia</a>
+      <button type="button" id="i18nToggle" class="i18n-toggle" data-current="es" aria-label="Switch to English">EN</button>
       <a href="tienda.html" class="header__v2-bag" aria-label="Tienda">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
@@ -64,15 +65,15 @@
     <section class="hero hero--cinema historia-hero" data-bg="dark">
       <div class="hero__media historia-hero__media" aria-hidden="true"></div>
       <div class="hero__inner hero__inner--left">
-        <span class="historia-hero__eyebrow">— Desde 2015</span>
+        <span class="historia-hero__eyebrow" data-i18n="history.hero.eyebrow">— Desde 2015</span>
         <h1 class="hero__title" aria-label="Nuestra historia">
-          <span class="line" data-text="NUESTRA"></span>
-          <span class="line" data-text="HISTORIA"></span>
+          <span class="line" data-text="NUESTRA" data-i18n="history.hero.title.l1"></span>
+          <span class="line" data-text="HISTORIA" data-i18n="history.hero.title.l2"></span>
         </h1>
         <div class="hero__rule" aria-hidden="true"></div>
-        <p class="hero__subtitle">Productores uruguayos. Hecho a mano en Paysandú, <em class="text-accent-green">con los tiempos que pide el oficio</em>.</p>
+        <p class="hero__subtitle" data-i18n="history.hero.subtitle">Productores uruguayos. Hecho a mano en Paysandú, <em class="text-accent-green">con los tiempos que pide el oficio</em>.</p>
         <a class="hero__cta" href="#hist-origen">
-          <span>Conocé el origen</span>
+          <span data-i18n="history.hero.cta">Conocé el origen</span>
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
         </a>
       </div>
@@ -347,6 +348,7 @@
   <script src="https://unpkg.com/lenis@1.0.42/dist/lenis.min.js" onerror="console.info('[JIcrea] Lenis CDN no disponible')"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="js/i18n.js?v=1"></script>
   <script src="js/jicrea-pro.js?v=69"></script>
 </body>
 </html>

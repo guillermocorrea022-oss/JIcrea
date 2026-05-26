@@ -30,7 +30,7 @@
   <meta property="og:locale" content="es_UY">
 
   <!-- Fuentes locales de la marca -->
-  <link rel="stylesheet" href="css/jicrea-pro.css?v=102">
+  <link rel="stylesheet" href="css/jicrea-pro.css?v=103">
 </head>
 <body class="page-index-v2">
   <!-- PAGE CURTAIN — overlay cuero que cubre la página al cargar. -->
@@ -43,8 +43,8 @@
        limpios + icono bag al final. -->
   <header class="header header--v2" id="header">
     <nav class="header__nav header__nav--left" aria-label="Navegación izquierda">
-      <a href="#" class="is-current">Inicio</a>
-      <a href="tienda.html">Tienda</a>
+      <a href="#" class="is-current" data-i18n="nav.home">Inicio</a>
+      <a href="tienda.html" data-i18n="nav.shop">Tienda</a>
     </nav>
 
     <div class="header__center">
@@ -55,9 +55,10 @@
     </div>
 
     <nav class="header__nav header__nav--right" aria-label="Navegación derecha">
-      <a href="#manos">Proceso</a>
-      <a href="personaliza.html">Personalizá tu mate</a>
-      <a href="nuestra-historia.html">Nuestra Historia</a>
+      <a href="#manos" data-i18n="nav.process">Proceso</a>
+      <a href="personaliza.html" data-i18n="nav.customize">Personalizá tu mate</a>
+      <a href="nuestra-historia.html" data-i18n="nav.history">Nuestra Historia</a>
+      <button type="button" id="i18nToggle" class="i18n-toggle" data-current="es" aria-label="Switch to English">EN</button>
       <a href="tienda.html" class="header__v2-bag" aria-label="Tienda">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
@@ -77,13 +78,13 @@
       <div class="hero__media" aria-hidden="true"></div>
       <div class="hero__inner hero__inner--left">
         <h1 class="hero__title" aria-label="Del campo a tus manos">
-          <span class="line" data-text="DEL CAMPO"></span>
-          <span class="line" data-text="A TUS MANOS"></span>
+          <span class="line" data-text="DEL CAMPO" data-i18n="hero.title.l1"></span>
+          <span class="line" data-text="A TUS MANOS" data-i18n="hero.title.l2"></span>
         </h1>
         <div class="hero__rule" aria-hidden="true"></div>
-        <p class="hero__subtitle">Del porongo natural al mate terminado. Una pieza hecha con tiempo, oficio y origen.</p>
+        <p class="hero__subtitle" data-i18n="hero.subtitle">Del porongo natural al mate terminado. Una pieza hecha con tiempo, oficio y origen.</p>
         <a class="hero__cta" href="#manos">
-          <span>Conocé el proceso</span>
+          <span data-i18n="hero.cta">Conocé el proceso</span>
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
         </a>
       </div>
@@ -486,6 +487,7 @@
   <script src="https://unpkg.com/lenis@1.0.42/dist/lenis.min.js" onerror="console.info('[JIcrea] Lenis CDN no disponible — scroll nativo')"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="js/i18n.js?v=1"></script>
   <script src="js/jicrea-pro.js?v=69"></script>
 </body>
 </html>

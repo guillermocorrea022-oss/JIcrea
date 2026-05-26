@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&display=swap">
 
-  <link rel="stylesheet" href="css/jicrea-pro.css?v=101">
+  <link rel="stylesheet" href="css/jicrea-pro.css?v=103">
   <style>
     /* Página 404 — full-screen dark con la imagen del campo y un
        mensaje cálido. Sin nav (la idea es que vuelvan al inicio).
@@ -103,19 +103,20 @@
   <main class="page-404">
     <div class="page-404__inner">
       <p class="page-404__num">404</p>
-      <h1 class="page-404__title">Te perdiste<br>en el campo.</h1>
-      <p class="page-404__sub">La página que buscás no existe — o se la llevó el viento.<br>Volvé al taller y empezamos de nuevo.</p>
+      <h1 class="page-404__title"><span data-i18n="404.title.l1">Te perdiste</span><br><span data-i18n="404.title.l2">en el campo.</span></h1>
+      <p class="page-404__sub" data-i18n="404.sub">La página que buscás no existe — o se la llevó el viento.<br>Volvé al taller y empezamos de nuevo.</p>
       <div class="page-404__actions">
         <a class="page-404__cta page-404__cta--primary" href="/">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="11 18 5 12 11 6"/></svg>
-          <span>Volver al inicio</span>
+          <span data-i18n="404.back">Volver al inicio</span>
         </a>
         <a class="page-404__cta page-404__cta--ghost" href="/tienda.html">
-          <span>Ir a la tienda</span>
+          <span data-i18n="404.shop">Ir a la tienda</span>
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
         </a>
       </div>
     </div>
   </main>
+  <script src="js/i18n.js?v=1"></script>
 </body>
 </html>

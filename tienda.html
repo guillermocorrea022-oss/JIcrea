@@ -19,7 +19,7 @@
   <meta property="og:description" content="Mates, posa mates, materas y yerberos uruguayos hechos a mano.">
   <meta property="og:locale" content="es_UY">
 
-  <link rel="stylesheet" href="css/jicrea-pro.css?v=102">
+  <link rel="stylesheet" href="css/jicrea-pro.css?v=103">
   <link rel="stylesheet" href="css/tienda-cart.css?v=17">
 </head>
 <body class="page-tienda page-index-v2">
@@ -34,8 +34,8 @@
        como bag icon a la derecha. -->
   <header class="header header--v2" id="header">
     <nav class="header__nav header__nav--left" aria-label="Navegación izquierda">
-      <a href="index.html">Inicio</a>
-      <a href="tienda.html" class="is-current">Tienda</a>
+      <a href="index.html" data-i18n="nav.home">Inicio</a>
+      <a href="tienda.html" class="is-current" data-i18n="nav.shop">Tienda</a>
     </nav>
 
     <div class="header__center">
@@ -46,8 +46,9 @@
     </div>
 
     <nav class="header__nav header__nav--right" aria-label="Navegación derecha">
-      <a href="index.html#manos">Proceso</a>
-      <a href="nuestra-historia.html">Nuestra Historia</a>
+      <a href="index.html#manos" data-i18n="nav.process">Proceso</a>
+      <a href="nuestra-historia.html" data-i18n="nav.history">Nuestra Historia</a>
+      <button type="button" id="i18nToggle" class="i18n-toggle" data-current="es" aria-label="Switch to English">EN</button>
       <button class="cart-btn header__v2-bag" id="cartBtn" aria-label="Abrir carrito">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
@@ -94,13 +95,13 @@
       <div class="hero__media hero__media--tienda" aria-hidden="true"></div>
       <div class="hero__inner hero__inner--left">
         <h1 class="hero__title" aria-label="Piezas hechas a mano">
-          <span class="line" data-text="PIEZAS"></span>
-          <span class="line" data-text="HECHAS A MANO"></span>
+          <span class="line" data-text="PIEZAS" data-i18n="shop.hero.title.l1"></span>
+          <span class="line" data-text="HECHAS A MANO" data-i18n="shop.hero.title.l2"></span>
         </h1>
         <div class="hero__rule" aria-hidden="true"></div>
-        <p class="hero__subtitle">Mates, posa mates, materas y yerberos. Una pieza para cada momento.</p>
+        <p class="hero__subtitle" data-i18n="shop.hero.subtitle">Mates, posa mates, materas y yerberos. Una pieza para cada momento.</p>
         <a class="hero__cta" href="#mates">
-          <span>Ver los productos</span>
+          <span data-i18n="shop.hero.cta">Ver los productos</span>
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
         </a>
       </div>
@@ -117,7 +118,7 @@
           <circle cx="5.5" cy="18.5" r="2.5"/>
           <circle cx="18.5" cy="18.5" r="2.5"/>
         </svg>
-        <span><strong>Envío gratis</strong> en compras de más de <strong>$2.500</strong></span>
+        <span data-i18n="shop.ship"><strong>Envío gratis</strong> en compras de más de <strong>$2.500</strong></span>
       </div>
     </aside>
 
@@ -181,6 +182,8 @@
             id="tiendaSearchInput"
             class="tienda-search__input"
             placeholder="Buscar productos..."
+            data-i18n="shop.search"
+            data-i18n-attr="placeholder,aria-label"
             aria-label="Buscar productos">
           <button type="button" id="tiendaSearchClear" class="tienda-search__clear" aria-label="Limpiar búsqueda" hidden>
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
@@ -190,7 +193,7 @@
         <!-- Pills de filtros — la primera "Todos" siempre activa por default.
              Las demás (una por categoría) las inyecta el JS. -->
         <div class="tienda-filters" id="tiendaFilters" role="tablist" aria-label="Filtrar por categoría">
-          <button type="button" class="tienda-filter is-active" data-filter="all">Todos</button>
+          <button type="button" class="tienda-filter is-active" data-filter="all" data-i18n="shop.filter.all">Todos</button>
           <!-- Pills inyectadas por JS -->
         </div>
       </div>
@@ -713,6 +716,7 @@
   <script src="https://unpkg.com/lenis@1.0.42/dist/lenis.min.js" onerror="console.info('[JIcrea] Lenis CDN no disponible')"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="js/i18n.js?v=1"></script>
   <script src="js/jicrea-pro.js?v=69"></script>
   <script src="js/tienda-cart.js?v=8"></script>
 </body>
