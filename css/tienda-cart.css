@@ -1772,6 +1772,158 @@
 }
 
 /* ════════════════════════════════════════════════════════════════════════
+   TOOLBAR — buscador + filter pills antes del catálogo
+   ════════════════════════════════════════════════════════════════════════
+   Fondo cream parchment. Layout en 2 filas en mobile, 1 fila en desktop.
+   Buscador a la izquierda (input con ícono + clear), pills a la derecha. */
+.tienda-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255, 250, 235, 0.5) 0%, transparent 70%),
+    #EFE5D5;
+  border-top: 1px solid rgba(107, 68, 35, 0.15);
+  border-bottom: 1px solid rgba(107, 68, 35, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 1.4rem var(--gutter);
+}
+.tienda-toolbar__inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: clamp(1.2rem, 2vw, 2.8rem);
+  flex-wrap: wrap;
+}
+
+/* Buscador con ícono lupa adentro y botón clear opcional */
+.tienda-search {
+  position: relative;
+  flex: 0 0 auto;
+  width: min(360px, 100%);
+  display: flex;
+  align-items: center;
+}
+.tienda-search__icon {
+  position: absolute;
+  left: 1.2rem;
+  color: rgba(42, 24, 16, 0.5);
+  pointer-events: none;
+}
+.tienda-search__input {
+  width: 100%;
+  padding: 1rem 3.4rem 1rem 3.6rem;
+  background: rgba(255, 252, 247, 0.7);
+  border: 1px solid rgba(107, 68, 35, 0.22);
+  border-radius: 999px;
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-size: 1.5rem;
+  font-style: italic;
+  color: var(--c-text);
+  letter-spacing: 0.02em;
+  transition: border-color 0.3s var(--ease-out), background-color 0.3s var(--ease-out);
+}
+.tienda-search__input::placeholder { color: rgba(42, 24, 16, 0.45); }
+.tienda-search__input:focus {
+  outline: none;
+  border-color: var(--c-brand);
+  background: #fff;
+}
+.tienda-search__clear {
+  position: absolute;
+  right: 0.8rem;
+  background: rgba(107, 68, 35, 0.15);
+  color: rgba(42, 24, 16, 0.65);
+  border: none;
+  cursor: pointer;
+  width: 2.4rem; height: 2.4rem;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: background-color 0.25s var(--ease-out), color 0.25s var(--ease-out);
+}
+.tienda-search__clear:hover {
+  background: rgba(107, 68, 35, 0.28);
+  color: var(--c-text);
+}
+
+/* Filter pills — una por categoría. Activa = dorado sólido. */
+.tienda-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  flex: 1 1 auto;
+}
+.tienda-filter {
+  padding: 0.7rem 1.4rem;
+  background: transparent;
+  border: 1px solid rgba(107, 68, 35, 0.28);
+  border-radius: 999px;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(42, 24, 16, 0.7);
+  cursor: pointer;
+  transition:
+    background-color 0.25s var(--ease-out),
+    color 0.25s var(--ease-out),
+    border-color 0.25s var(--ease-out);
+}
+.tienda-filter:hover {
+  background: rgba(203, 160, 88, 0.15);
+  border-color: var(--c-brand);
+  color: var(--c-text);
+}
+.tienda-filter.is-active {
+  background: var(--c-brand);
+  border-color: var(--c-brand);
+  color: #2A1810;
+}
+
+/* Empty state — no hay resultados de búsqueda */
+.tienda-empty {
+  max-width: 600px;
+  margin: 6rem auto;
+  padding: 0 var(--gutter);
+  text-align: center;
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-size: 1.6rem;
+  line-height: 1.5;
+  color: rgba(42, 24, 16, 0.7);
+}
+.tienda-empty small {
+  display: inline-block;
+  margin-top: 0.8rem;
+  font-size: 1.3rem;
+}
+.tienda-empty a {
+  color: var(--c-brand);
+  font-weight: 600;
+  text-decoration: none;
+}
+.tienda-empty a:hover { color: #b88d3f; }
+
+@media (max-width: 720px) {
+  .tienda-toolbar { padding: 1rem 1.2rem; position: relative; }
+  .tienda-toolbar__inner { flex-direction: column; align-items: stretch; gap: 1rem; }
+  .tienda-search { width: 100%; }
+  .tienda-filters {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.4rem;
+    margin: 0 -1.2rem;
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
+  }
+  .tienda-filter { flex-shrink: 0; font-size: 1rem; padding: 0.6rem 1.1rem; }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
    BANNER ENVÍOS — stripe fina entre hero y catálogo
    ════════════════════════════════════════════════════════════════════════
    Fondo dorado oscuro tipo "etiqueta artesanal", texto cream. Sutil

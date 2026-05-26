@@ -252,6 +252,141 @@
     window.open("https://wa.me/" + WA_PHONE + "?text=" + msg, "_blank", "noopener");
   }
 
+  // ─────────── Categorías dinámicas ───────────
+  // Lee tiendaCategoriesData (JSON inline) y devuelve el array.
+  // Si no existe (o falla parseo), devuelve []. Las features dependientes
+  // (floating-island, filters) hacen no-op cuando no hay data.
+  function loadCategoriesData() {
+    const node = document.getElementById("tiendaCategoriesData");
+    if (!node) return [];
+    try {
+      const data = JSON.parse(node.textContent || "[]");
+      return Array.isArray(data) ? data : [];
+    } catch (e) {
+      console.warn("[JIcrea] tiendaCategoriesData parse error:", e);
+      return [];
+    }
+  }
+
+  // Inyecta los links de categoría en el floating-island al principio
+  // (antes del separator y de los links Personalizados/Mayoristas).
+  function renderFloatingIslandCategories(categories) {
+    if (!floatingIsland) return;
+    const sep = floatingIsland.querySelector(".floating-island__sep");
+    if (!sep) return;
+    categories.forEach(cat => {
+      const a = document.createElement("a");
+      a.href = "#" + cat.slug;
+      a.className = "floating-island__link";
+      a.setAttribute("data-target", cat.slug);
+      a.textContent = cat.name;
+      // insertar antes del separator (que está delante de Personalizados)
+      floatingIsland.insertBefore(a, sep);
+    });
+  }
+
+  // Inyecta las filter pills (una por categoría) en el toolbar de tienda.
+  // La pill "Todos" ya está en HTML.
+  function renderFilterPills(categories) {
+    const container = document.getElementById("tiendaFilters");
+    if (!container) return;
+    categories.forEach(cat => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "tienda-filter";
+      btn.setAttribute("data-filter", cat.slug);
+      btn.textContent = cat.name;
+      container.appendChild(btn);
+    });
+  }
+
+  // ─────────── Buscador + filtros ───────────
+  // Búsqueda por nombre/descripción (case-insensitive). Filter por
+  // categoría (slug = id de la <section>). Cuando hay filter activo,
+  // se muestran sólo los productos de esa sección. Cuando hay
+  // búsqueda activa, se muestran los productos que matchean en
+  // CUALQUIER sección visible (respetando el filter activo).
+  let activeFilter = "all";
+  let activeSearch = "";
+
+  function applySearchAndFilter() {
+    const sections = document.querySelectorAll(".seccion-prod");
+    const q = activeSearch.toLowerCase().trim();
+    let totalVisible = 0;
+
+    sections.forEach(section => {
+      const slug = section.id;
+      const matchesFilter = activeFilter === "all" || activeFilter === slug;
+
+      if (!matchesFilter) {
+        section.style.display = "none";
+        return;
+      }
+
+      // Sección visible por filter — ahora aplicamos search a sus productos
+      let sectionVisible = 0;
+      section.querySelectorAll(".prod").forEach(prod => {
+        if (!q) {
+          prod.style.display = "";
+          sectionVisible++;
+          return;
+        }
+        const name = (prod.querySelector(".prod__name")?.textContent || "").toLowerCase();
+        const desc = (prod.querySelector(".prod__desc")?.textContent || "").toLowerCase();
+        const match = name.includes(q) || desc.includes(q);
+        prod.style.display = match ? "" : "none";
+        if (match) sectionVisible++;
+      });
+
+      // Si la sección no tiene resultados, ocultamos la sección entera
+      section.style.display = sectionVisible > 0 ? "" : "none";
+      totalVisible += sectionVisible;
+    });
+
+    // Empty state cuando no hay resultados
+    const emptyEl = document.getElementById("tiendaEmpty");
+    if (emptyEl) emptyEl.hidden = totalVisible > 0;
+  }
+
+  function initSearchAndFilters() {
+    const searchInput = document.getElementById("tiendaSearchInput");
+    const searchClear = document.getElementById("tiendaSearchClear");
+    const filters = document.getElementById("tiendaFilters");
+
+    if (searchInput) {
+      searchInput.addEventListener("input", () => {
+        activeSearch = searchInput.value;
+        if (searchClear) searchClear.hidden = !activeSearch;
+        applySearchAndFilter();
+      });
+    }
+    if (searchClear) {
+      searchClear.addEventListener("click", () => {
+        searchInput.value = "";
+        activeSearch = "";
+        searchClear.hidden = true;
+        applySearchAndFilter();
+        searchInput.focus();
+      });
+    }
+    if (filters) {
+      filters.addEventListener("click", (e) => {
+        const btn = e.target.closest(".tienda-filter");
+        if (!btn) return;
+        activeFilter = btn.getAttribute("data-filter") || "all";
+        filters.querySelectorAll(".tienda-filter").forEach(b => b.classList.toggle("is-active", b === btn));
+        applySearchAndFilter();
+        // Scroll suave al toolbar para que veas las cards filtradas
+        const toolbar = document.querySelector(".tienda-toolbar");
+        if (toolbar) {
+          const headerH = document.getElementById("header")?.offsetHeight || 0;
+          const y = window.scrollY + toolbar.getBoundingClientRect().top - headerH - 20;
+          window.scrollTo({ top: y, behavior: "smooth" });
+        }
+      });
+    }
+  }
+
   // ─────────── ISLA FLOTANTE — show/hide en scroll up ───────────
   function initFloatingIsland() {
     if (!floatingIsland) return;
@@ -528,6 +663,12 @@
     load();
     renderCart();
     bindEvents();
+    // Categorías dinámicas — primero, para que cuando initFloatingIsland
+    // lea los links ya estén los de categorías inyectados.
+    const categories = loadCategoriesData();
+    renderFloatingIslandCategories(categories);
+    renderFilterPills(categories);
+    initSearchAndFilters();
     initFloatingIsland();
     initMayorista();
   });

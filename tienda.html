@@ -20,7 +20,7 @@
   <meta property="og:locale" content="es_UY">
 
   <link rel="stylesheet" href="css/jicrea-pro.css?v=101">
-  <link rel="stylesheet" href="css/tienda-cart.css?v=16">
+  <link rel="stylesheet" href="css/tienda-cart.css?v=17">
 </head>
 <body class="page-tienda page-index-v2">
 
@@ -59,13 +59,25 @@
     </nav>
   </header>
 
-  <!-- ISLA FLOTANTE — barra de navegación con textura cuero, fija abajo,
-       aparece al scrollear hacia arriba (oculta al scrollear hacia abajo). -->
+  <!-- CONFIGURACIÓN DE CATEGORÍAS — array que define todas las
+       categorías visibles en la tienda. Para agregar una nueva (p.ej.
+       Bombillas, Cintos, Llaveros) sumá un objeto al array y creá la
+       <section id="<slug>" class="seccion-prod"> con los productos.
+       Las filter pills, floating-island y display dinámico salen
+       todos de acá. -->
+  <script type="application/json" id="tiendaCategoriesData">
+  [
+    { "slug": "mates",      "name": "Mates" },
+    { "slug": "posa-mates", "name": "Posa Mates" },
+    { "slug": "materas",    "name": "Materas" },
+    { "slug": "yerberos",   "name": "Yerberos" }
+  ]
+  </script>
+
+  <!-- ISLA FLOTANTE — generada por JS a partir de tiendaCategoriesData.
+       El contenedor empieza vacío; tienda-cart.js inyecta los links. -->
   <nav class="floating-island" id="floatingIsland" aria-label="Secciones de la tienda">
-    <a href="#mates" class="floating-island__link" data-target="mates">Mates</a>
-    <a href="#posa-mates" class="floating-island__link" data-target="posa-mates">Posa Mates</a>
-    <a href="#materas" class="floating-island__link" data-target="materas">Materas</a>
-    <a href="#yerberos" class="floating-island__link" data-target="yerberos">Yerberos</a>
+    <!-- categorías inyectadas por JS -->
     <span class="floating-island__sep" aria-hidden="true"></span>
     <a href="#personalizados" class="floating-island__link" data-target="personalizados">Personalizados</a>
     <a href="#mayorista" class="floating-island__link" data-target="mayorista">Mayoristas</a>
@@ -151,6 +163,44 @@
           <p class="tienda-card__desc">Madera y cuero.</p>
         </a>
       </div>
+    </section>
+
+    <!-- BÚSQUEDA + FILTROS — buscador por nombre/descripción + pills
+         de categorías. Las pills se generan desde tiendaCategoriesData.
+         El JS de tienda-cart.js maneja la lógica de mostrar/ocultar
+         secciones y productos. -->
+    <section class="tienda-toolbar" aria-label="Buscar y filtrar productos">
+      <div class="tienda-toolbar__inner">
+        <div class="tienda-search">
+          <svg class="tienda-search__icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input
+            type="search"
+            id="tiendaSearchInput"
+            class="tienda-search__input"
+            placeholder="Buscar productos..."
+            aria-label="Buscar productos">
+          <button type="button" id="tiendaSearchClear" class="tienda-search__clear" aria-label="Limpiar búsqueda" hidden>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+          </button>
+        </div>
+
+        <!-- Pills de filtros — la primera "Todos" siempre activa por default.
+             Las demás (una por categoría) las inyecta el JS. -->
+        <div class="tienda-filters" id="tiendaFilters" role="tablist" aria-label="Filtrar por categoría">
+          <button type="button" class="tienda-filter is-active" data-filter="all">Todos</button>
+          <!-- Pills inyectadas por JS -->
+        </div>
+      </div>
+
+      <!-- Banner de "no se encontró nada" — se muestra cuando search
+           no devuelve resultados. Por default oculto. -->
+      <p class="tienda-empty" id="tiendaEmpty" hidden>
+        No encontramos productos con ese nombre.<br>
+        <small>Probá con otra palabra o pedinos lo que buscás <a href="https://wa.me/59898507241?text=Hola%20JIcrea%2C%20estoy%20buscando..." target="_blank" rel="noopener noreferrer">por WhatsApp</a>.</small>
+      </p>
     </section>
 
     <!-- MATES — sección con título estilo manifesto + grid de productos -->
@@ -664,6 +714,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script src="js/jicrea-pro.js?v=62"></script>
-  <script src="js/tienda-cart.js?v=6"></script>
+  <script src="js/tienda-cart.js?v=7"></script>
 </body>
 </html>
