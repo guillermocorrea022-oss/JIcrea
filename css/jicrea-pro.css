@@ -3275,14 +3275,18 @@ em {
   }
   .productos__bg { display: none !important; }
   .productos__inner { padding: 2rem 0 !important; }
+  /* Eyebrow grande en mobile — el user pidió tipografía más grande.
+     Ahora con <br> entre "Calidad" y "en lo sencillo" rompe en 2
+     líneas, lo que permite agrandarla sin que se desborde. */
   .productos__eyebrow {
-    font-size: 1.6rem !important;
-    letter-spacing: 0.18em !important;
-    line-height: 1.3 !important;
+    font-size: 2.6rem !important;
+    letter-spacing: 0.2em !important;
+    line-height: 1.25 !important;
     text-align: center;
-    margin-bottom: 2.4rem !important;
-    /* Eyebrow Garamond italic — sin uppercase wraparound feo */
+    margin-bottom: 3rem !important;
     white-space: normal;
+    /* Quitamos el font-weight bold default del .eyebrow para que se
+       lea más editorial (Garamond italic shines en weight 600). */
   }
   .productos__stage {
     width: 100% !important;
