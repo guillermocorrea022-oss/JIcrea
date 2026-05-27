@@ -3085,102 +3085,113 @@ em {
     line-height: 1.1;
   }
   /* ═══════════════════════════════════════════════════════════════
-     ORIGEN MUSEO — Mobile estilo "ilustración editorial"
+     ORIGEN MUSEO — Mobile con 4 ilustraciones en esquinas (como PC)
      ═══════════════════════════════════════════════════════════════
-     Referencia visual: bolsa de café Cartapani (porongo central con
-     ilustraciones flanqueando a los costados como dibujos a tinta
-     sobre el papel). Las descripciones van DEBAJO sin cards — texto
-     escrito directo sobre el bg cream de la página.
+     Layout pedido por el dueño: igual que desktop pero achicado al
+     ancho mobile. Porongo central + 4 ilustraciones en las 4 esquinas
+     (tl/tr/bl/br) formando un cuadrante perfecto alrededor del mate.
+     Las descripciones (h3 + p) van debajo del cuadrante, en stack
+     vertical, sin cards — sólo texto sobre el cream.
 
-     - .origen-museo se vuelve referencia posicional (relative)
-     - .origen-museo__center (porongo) sube al top via order:-1
-     - Los 4 .origen-museo__icon se posicionan ABSOLUTE alrededor
-       del porongo via top values calibrados manualmente
-     - .origen-museo__corner queda como bloque de texto plano (sin
-       fondo, sin border, sin padding card) — solo texto sobre la
-       página, alineado izquierda. */
+     Técnica: CSS Grid 3 columnas (auto 1fr auto) + display:contents
+     en .corner para que sus hijos (icon + content) se vuelvan items
+     directos del grid. Así podemos:
+     - Icons → cells de esquina del grid 2x2 (rows 1-2)
+     - Center → cell central (col 2, span row 1-2)
+     - Contents → rows 3-6 spanning full width
+  */
   .origen-museo {
     position: relative;
     overflow: visible !important;
   }
   .origen-museo__grid {
-    display: flex !important;
-    flex-direction: column;
-    gap: 2.2rem;
-    grid-template-columns: none !important;
-    grid-template-rows: none !important;
-    position: relative;
+    display: grid !important;
+    grid-template-columns: 6.6rem 1fr 6.6rem;
+    grid-template-rows: auto auto auto auto auto auto;
+    gap: 0.8rem 0.6rem;
+    align-items: center;
+    flex-direction: unset !important; /* override del flex del rule anterior */
+    position: static;
   }
-  /* Porongo central — sube arriba, grande, con margen para alojar
-     las ilustraciones flotando a los costados. */
-  .origen-museo__center {
-    order: -1;
-    position: relative;
-    width: 68%;
-    max-width: 22rem;
-    margin: 1rem auto 2.4rem !important;
-    z-index: 2;
-  }
-  .origen-museo__img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-  /* Texto de cada bloque — SIN CARDS. Solo texto en el bg cream de
-     la sección, alineado izquierda, separados por gap del flex. */
+  /* display:contents — sacamos la .corner box y sus hijos (icon +
+     content) suben a ser items directos del grid */
   .origen-museo__corner {
+    display: contents !important;
     background: none !important;
     border: none !important;
     box-shadow: none !important;
     border-radius: 0 !important;
-    padding: 0 0.4rem !important;
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    text-align: left !important;
-    position: static !important;
+    padding: 0 !important;
   }
-  /* Los 4 íconos son ilustraciones de tinta que flotan alrededor
-     del porongo (referencia Cartapani). Se posicionan absolute
-     dentro de .origen-museo (que ya es relative). Top tuneados
-     a ojo según el flow del mobile estándar (393px iPhone 13). */
+  /* Las 4 ilustraciones en las 4 esquinas del porongo (2x2 grid) */
   .origen-museo__corner .origen-museo__icon {
-    position: absolute;
-    width: 7.6rem !important;
-    height: 7.6rem !important;
+    position: static !important;
+    width: 6.4rem !important;
+    height: 6.4rem !important;
     z-index: 1;
     pointer-events: none;
-    opacity: 0.78;
-    /* Filter para dar look de tinta sobre papel — desatura un
-       poco + blend multiply hace que parezca dibujo sobre el
-       cream de la página. */
+    opacity: 0.85;
+    margin: 0 !important;
+    align-self: center;
+    /* Look tinta sobre papel para que se sientan ilustradas */
     mix-blend-mode: multiply;
-    filter: saturate(0.4) brightness(0.85);
+    filter: saturate(0.5) brightness(0.9);
   }
-  /* tl: top-left, justo arriba/izquierda del porongo */
+  /* Cada ícono a su esquina específica del cuadrante */
   .origen-museo__corner--tl .origen-museo__icon {
-    top: 10rem;
-    left: -0.4rem;
-    transform: rotate(-8deg);
+    grid-column: 1; grid-row: 1;
+    transform: rotate(-4deg);
+    justify-self: center;
   }
-  /* tr: top-right, costado derecho del porongo */
   .origen-museo__corner--tr .origen-museo__icon {
-    top: 18rem;
-    right: -0.4rem;
-    transform: rotate(10deg);
+    grid-column: 3; grid-row: 1;
+    transform: rotate(4deg);
+    justify-self: center;
   }
-  /* bl: izquierda, más abajo cerca del fin del porongo */
   .origen-museo__corner--bl .origen-museo__icon {
-    top: 24rem;
-    left: -1rem;
-    transform: rotate(-5deg);
-    opacity: 0.65;
+    grid-column: 1; grid-row: 2;
+    transform: rotate(-3deg);
+    justify-self: center;
   }
-  /* br: derecha abajo, escapándose por debajo del porongo */
   .origen-museo__corner--br .origen-museo__icon {
-    top: 30rem;
-    right: -1rem;
-    transform: rotate(8deg);
-    opacity: 0.65;
+    grid-column: 3; grid-row: 2;
+    transform: rotate(3deg);
+    justify-self: center;
+  }
+  /* Porongo en el centro del cuadrante, spans las 2 rows del top */
+  .origen-museo__center {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    order: 0;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 !important;
+    justify-self: center;
+    align-self: center;
+  }
+  .origen-museo__img {
+    width: 100%;
+    height: auto;
+    max-width: 22rem;
+    display: block;
+    margin: 0 auto;
+  }
+  /* Cada bloque de texto (h3 + p) va en su propia row debajo del
+     cuadrante, ancho completo, sin cards — sólo texto. */
+  .origen-museo__content {
+    grid-column: 1 / -1;
+    padding: 0 0.4rem;
+    text-align: left;
+  }
+  .origen-museo__corner--tl .origen-museo__content { grid-row: 3; margin-top: 2rem; }
+  .origen-museo__corner--tr .origen-museo__content { grid-row: 4; }
+  .origen-museo__corner--bl .origen-museo__content { grid-row: 5; }
+  .origen-museo__corner--br .origen-museo__content { grid-row: 6; }
+  /* Separación entre bloques de texto */
+  .origen-museo__corner--tr .origen-museo__content,
+  .origen-museo__corner--bl .origen-museo__content,
+  .origen-museo__corner--br .origen-museo__content {
+    margin-top: 1.8rem;
   }
   .origen-museo__title {
     font-size: 1.7rem !important;
@@ -3191,6 +3202,7 @@ em {
     font-size: 1.4rem !important;
     line-height: 1.55;
     color: rgba(42, 24, 16, 0.78);
+    margin: 0;
   }
 
   /* ─── PROCESO VIDEO ──────────────────────────────────────────────────
