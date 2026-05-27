@@ -3177,11 +3177,15 @@ em {
     margin: 0 auto;
   }
   /* Cada bloque de texto (h3 + p) va en su propia row debajo del
-     cuadrante, ancho completo, sin cards — sólo texto. */
+     cuadrante, ancho completo, sin cards — sólo texto centrado
+     (coherente con el resto de la página mobile). */
   .origen-museo__content {
     grid-column: 1 / -1;
-    padding: 0 0.4rem;
-    text-align: left;
+    padding: 0 1.2rem;
+    text-align: center;
+    max-width: 36rem;
+    margin-left: auto;
+    margin-right: auto;
   }
   .origen-museo__corner--tl .origen-museo__content { grid-row: 3; margin-top: 2rem; }
   .origen-museo__corner--tr .origen-museo__content { grid-row: 4; }
