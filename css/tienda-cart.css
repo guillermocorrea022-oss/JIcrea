@@ -292,7 +292,11 @@
   max-width: 1500px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  /* auto-fill (NO auto-fit) — cuando hay menos productos visibles
+     (search/filter), las cards mantienen su tamaño natural y dejan
+     espacios vacíos en la fila en vez de estirarse al 100%. */
+  grid-template-columns: repeat(auto-fill, minmax(260px, 340px));
+  justify-content: center;
   gap: max(2.4rem, min(2.5vw, 3.6rem));
 }
 
@@ -1794,6 +1798,7 @@
   margin: 0 auto;
   display: flex;
   align-items: center;
+  justify-content: center; /* Centra search + pills como grupo */
   gap: clamp(1.2rem, 2vw, 2.8rem);
   flex-wrap: wrap;
 }
@@ -1853,7 +1858,9 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
-  flex: 1 1 auto;
+  /* No grow — toma sólo el ancho que necesita y respeta el centrado */
+  flex: 0 0 auto;
+  justify-content: center;
 }
 .tienda-filter {
   padding: 0.7rem 1.4rem;

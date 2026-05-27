@@ -2336,8 +2336,14 @@ em {
 .manifesto--banner[data-bg="leather"] .text-accent-green,
 .manifesto--banner[data-bg="leaf"] .text-accent-green,
 [data-bg="dark"] .text-accent-green,
-[data-bg="leather"] .text-accent-green {
-  color: #9bb37a; /* Verde más claro para que se lea sobre dark/leather */
+[data-bg="leather"] .text-accent-green,
+[data-bg="leaf"] .text-accent-green,
+.hist-block--leaf .text-accent-green,
+.b2b-v2 .text-accent-green,
+.stats-v2 .text-accent-green {
+  /* En fondos verdes (leaf) el dorado se lee mejor que el verde claro */
+  color: var(--c-brand);
+  opacity: 0.95;
 }
 
 /* ════════════════════════════════════════════════════════════════════════
