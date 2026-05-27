@@ -2841,11 +2841,15 @@ em {
 
 /* CTA verde WhatsApp grande */
 .b2b-v2__cta {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: center;
   gap: 1.2rem;
-  width: auto;
+  width: fit-content;
   max-width: 100%;
+  /* Centrado horizontal dentro del .b2b-v2__inner */
+  margin-left: auto;
+  margin-right: auto;
   padding: 1.8rem 3.6rem;
   background: #25D366;
   color: #0A0807;
