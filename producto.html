@@ -12,14 +12,20 @@
   <link rel="preload" as="font" type="font/woff2" href="fonts/super-med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="fonts/super-reg.woff2" crossorigin>
 
-  <link rel="stylesheet" href="css/jicrea-pro.css?v=108">
-  <link rel="stylesheet" href="css/tienda-cart.css?v=19">
+  <link rel="stylesheet" href="css/jicrea-pro.css?v=109">
+  <link rel="stylesheet" href="css/tienda-cart.css?v=20">
   <link rel="stylesheet" href="css/producto.css?v=3">
 </head>
 <body class="page-producto page-index-v2">
 
   <!-- HEADER V2 — logo apilado centrado + cart bag a la derecha. -->
   <header class="header header--v2" id="header">
+    <!-- HAMBURGER — solo visible en mobile (≤900px). Abre overlay full-screen. -->
+    <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
     <nav class="header__nav header__nav--left" aria-label="Navegación izquierda">
       <a href="index.html" data-i18n="nav.home">Inicio</a>
       <a href="tienda.html" class="is-current" data-i18n="nav.shop">Tienda</a>
@@ -44,6 +50,28 @@
       </button>
     </nav>
   </header>
+
+  <!-- MOBILE MENU OVERLAY — fullscreen drawer al tocar hamburger. -->
+  <aside class="mobile-menu" id="mobileMenu" aria-hidden="true" inert>
+    <div class="mobile-menu__bg" aria-hidden="true"></div>
+    <button class="mobile-menu__close" id="mobileMenuClose" aria-label="Cerrar menú">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <div class="mobile-menu__inner">
+      <a href="index.html" class="mobile-menu__link" data-i18n="nav.home">Inicio</a>
+      <a href="tienda.html" class="mobile-menu__link" data-i18n="nav.shop">Tienda</a>
+      <a href="index.html#manos" class="mobile-menu__link" data-i18n="nav.process">Proceso</a>
+      <a href="nuestra-historia.html" class="mobile-menu__link" data-i18n="nav.history">Nuestra Historia</a>
+      <button type="button" id="i18nToggleMobile" class="mobile-menu__lang" data-current="es" aria-label="Switch to English">EN</button>
+      <a class="mobile-menu__ig" href="https://www.instagram.com/jicrea/" target="_blank" rel="noopener noreferrer" aria-label="Instagram JIcrea">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        <span>@jicrea</span>
+      </a>
+    </div>
+  </aside>
+
 
   <main>
     <!-- Breadcrumb -->
@@ -262,7 +290,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script src="js/i18n.js?v=2"></script>
-  <script src="js/jicrea-pro.js?v=70"></script>
+  <script src="js/jicrea-pro.js?v=71"></script>
   <script src="js/productos-data.js?v=1"></script>
   <script src="js/producto.js?v=4"></script>
   <script src="js/tienda-cart.js?v=6"></script>

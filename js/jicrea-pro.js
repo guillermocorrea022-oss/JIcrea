@@ -63,6 +63,70 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ─────────────────────────────────────────────────────────────────
+  // HAMBURGER + MOBILE MENU — toggle del overlay full-screen.
+  // ─────────────────────────────────────────────────────────────────
+  // El mobile-menu vive como sibling del header, fixed full-screen.
+  // Hamburger toggle: agrega .is-open al menú + .menu-open al body
+  // (que bloquea scroll). Cierra al hacer click en X, en cualquier
+  // link interno del menú, o con tecla Escape.
+  (function initMobileMenu(){
+    const ham   = document.getElementById("hamburger");
+    const menu  = document.getElementById("mobileMenu");
+    const close = document.getElementById("mobileMenuClose");
+    const langMobile = document.getElementById("i18nToggleMobile");
+    if (!ham || !menu) return;
+
+    function openMenu(){
+      menu.classList.add("is-open");
+      menu.removeAttribute("inert");
+      menu.setAttribute("aria-hidden", "false");
+      ham.setAttribute("aria-expanded", "true");
+      document.body.classList.add("menu-open");
+    }
+    function closeMenu(){
+      menu.classList.remove("is-open");
+      menu.setAttribute("inert", "");
+      menu.setAttribute("aria-hidden", "true");
+      ham.setAttribute("aria-expanded", "false");
+      document.body.classList.remove("menu-open");
+    }
+
+    ham.addEventListener("click", () => {
+      if (menu.classList.contains("is-open")) closeMenu(); else openMenu();
+    });
+    if (close) close.addEventListener("click", closeMenu);
+    // Click en cualquier link interno cierra el menú (la navegación
+    // la gestiona el page-curtain transition arriba).
+    menu.querySelectorAll(".mobile-menu__link").forEach(a => {
+      a.addEventListener("click", () => {
+        // Pequeño delay para que la transición del curtain se vea
+        setTimeout(closeMenu, 50);
+      });
+    });
+    // Esc cierra
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && menu.classList.contains("is-open")) closeMenu();
+    });
+    // El toggle de idioma mobile dispara el mismo evento que el desktop
+    if (langMobile) {
+      langMobile.addEventListener("click", () => {
+        const desktop = document.getElementById("i18nToggle");
+        if (desktop) desktop.click();
+        // Actualizar el texto del botón mobile para reflejar el nuevo estado
+        setTimeout(() => {
+          if (desktop) langMobile.textContent = desktop.textContent;
+        }, 50);
+      });
+      // Sincronizar el texto inicial con el del desktop
+      const desktop = document.getElementById("i18nToggle");
+      if (desktop) {
+        // Esperar a que i18n haya inicializado
+        setTimeout(() => { langMobile.textContent = desktop.textContent; }, 200);
+      }
+    }
+  })();
+
+  // ─────────────────────────────────────────────────────────────────
   // COOKIE BANNER — aviso legal sutil con acepto / dismiss persistente
   // ─────────────────────────────────────────────────────────────────
   // Si ya aceptó (localStorage), no se muestra. Si rechaza/cierra,

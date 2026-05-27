@@ -2290,8 +2290,20 @@
   .manifesto__text--intro { font-size: 1.4rem !important; margin-bottom: 3rem !important; }
   .info-grid {
     grid-template-columns: 1fr !important;
-    gap: 2.4rem !important;
+    gap: 1.4rem !important;
     margin: 3rem auto !important;
+  }
+  /* En mobile cada pilar pasa a ser una CARD real con fondo sutil
+     verde-leaf (matches el .manifesto--banner[data-bg="leaf"]) y
+     border-left dorado tipo etiqueta. NO se aplana a fila plana
+     con border-top. */
+  .info-grid__item {
+    padding: 2rem 1.6rem !important;
+    border-top: 1px solid rgba(203, 160, 88, 0.3) !important;
+    background: rgba(255, 250, 235, 0.06);
+    border: 1px solid rgba(203, 160, 88, 0.2);
+    border-radius: 6px;
+    border-left: 3px solid var(--c-brand);
   }
   .info-grid__title { font-size: 1.7rem !important; }
   .info-grid__text  { font-size: 1.3rem !important; }
