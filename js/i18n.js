@@ -25,7 +25,7 @@
       "nav.home":          "Inicio",
       "nav.shop":          "Tienda",
       "nav.process":       "Proceso",
-      "nav.customize":     "Personalizá tu mate",
+      "nav.customize":     "Grabamos tu mate",
       "nav.history":       "Nuestra Historia",
 
       // Hero index
@@ -83,7 +83,7 @@
       "nav.home":          "Home",
       "nav.shop":          "Shop",
       "nav.process":       "Process",
-      "nav.customize":     "Customize",
+      "nav.customize":     "Engraving",
       "nav.history":       "Our Story",
 
       "hero.eyebrow":      "— Uruguayan craftsmen",
