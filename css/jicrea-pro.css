@@ -1430,8 +1430,13 @@ em {
 }
 
 @media (max-width: 900px) {
+  /* Mobile: el video es self-contained (autoplay loop), no necesita
+     360vh de scroll-track. 100vh alcanza para mostrarlo full-bleed.
+     Antes había un legacy scroll-scrub que requería 360vh — ahora
+     genera 2923px de espacio negro debajo del video. */
   .proceso-3d {
-    height: 360vh;
+    height: 100vh;
+    min-height: 560px;
   }
   .proceso-3d__overlay {
     flex-direction: column;
