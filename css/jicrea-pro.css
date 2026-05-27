@@ -2915,7 +2915,9 @@ em {
     border-bottom: 1px solid rgba(203, 160, 88, 0.22) !important;
   }
   .b2b-v2__feature:first-child { border-top: 1px solid rgba(203, 160, 88, 0.22) !important; }
-  .b2b-v2__arrow { width: 3.4rem; height: 3.4rem; }
+  /* En mobile las flechitas no aportan — el card ya queda elegante
+     solo con título + descripción centrada. */
+  .b2b-v2__arrow { display: none !important; }
   .b2b-v2__feature-text { text-align: center; }
   .b2b-v2__feature-text h3 { font-size: 1.7rem; }
   .b2b-v2__feature-text p { font-size: 1.4rem; }
