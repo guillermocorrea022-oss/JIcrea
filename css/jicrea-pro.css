@@ -2886,9 +2886,13 @@ em {
   .b2b-v2 { padding: 5rem 1.4rem !important; }
   .b2b-v2__title { font-size: clamp(3.2rem, 9vw, 5.4rem); }
   .b2b-v2__lead { margin-bottom: 3rem; font-size: 1.55rem; }
-  /* En mobile cada feature pasa a ser una CARD real — fondo sutil,
-     border + padding generoso, gap entre cards. NO se aplanan a
-     filas con border-bottom. */
+  /* CENTRADO MOBILE — el resto de la página está centrado, así que
+     b2b también. Head (eyebrow + title + lead) centrado, cards con
+     contenido apilado y centrado (arrow arriba, texto debajo). */
+  .b2b-v2__head { text-align: center; }
+  .b2b-v2__lead { margin-left: auto; margin-right: auto; }
+  /* En mobile cada feature pasa a ser una CARD vertical centrada —
+     fondo sutil, border + padding generoso, arrow arriba del texto. */
   .b2b-v2__features {
     display: flex;
     flex-direction: column;
@@ -2896,7 +2900,10 @@ em {
   }
   .b2b-v2__feature {
     padding: 2rem 1.6rem !important;
-    gap: 1.4rem !important;
+    gap: 1.2rem !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
     background: rgba(255, 250, 235, 0.04);
     border: 1px solid rgba(203, 160, 88, 0.22) !important;
     border-radius: 6px !important;
@@ -2904,6 +2911,7 @@ em {
   }
   .b2b-v2__feature:first-child { border-top: 1px solid rgba(203, 160, 88, 0.22) !important; }
   .b2b-v2__arrow { width: 3.4rem; height: 3.4rem; }
+  .b2b-v2__feature-text { text-align: center; }
   .b2b-v2__feature-text h3 { font-size: 1.7rem; }
   .b2b-v2__feature-text p { font-size: 1.4rem; }
   .b2b-v2__cta {
@@ -3599,20 +3607,51 @@ body.menu-open { overflow: hidden; }
     align-items: center;
   }
 
-  /* EN toggle mobile: un poco más chico que en desktop, con padding
-     compacto para no competir con el cart. El color se hereda del
-     header (que también es dinámico según fondo). */
-  .header__nav--right .i18n-toggle {
+  /* ─── NAVBAR MOBILE — COLOR FIJO CREAM ─────────────────────────
+     En mobile NO usamos el color dinámico — el user pidió que los
+     iconos sean siempre claros porque quedan mejor visualmente y
+     son más consistentes. Para garantizar legibilidad sobre fondos
+     light agregamos un backdrop oscuro sutil con gradiente que
+     se desvanece hacia abajo + blur sutil — patrón estándar de
+     navbars premium en apps móviles. */
+  .header {
+    background: linear-gradient(180deg, rgba(20, 12, 6, 0.55) 0%, rgba(20, 12, 6, 0.20) 70%, transparent 100%) !important;
+    backdrop-filter: blur(6px) saturate(120%);
+    -webkit-backdrop-filter: blur(6px) saturate(120%);
+  }
+  /* Lock cream — override de TODAS las reglas dinámicas (is-scrolled
+     / is-dark-bg / is-leather-bg). Cream siempre. */
+  .hamburger,
+  .header.is-scrolled .hamburger,
+  .header.is-leather-bg .hamburger,
+  .header.is-scrolled.is-leather-bg .hamburger {
+    color: #F4EBE1 !important;
+  }
+  .header__nav--right .i18n-toggle,
+  .header.is-scrolled .header__nav--right .i18n-toggle {
     padding: 0.4rem 0.8rem;
     font-size: 0.95rem;
     letter-spacing: 0.16em;
-    /* Hereda color del nav del header — ya tiene reglas dinámicas
-       según is-dark-bg / is-leather-bg / is-scrolled. */
-    color: inherit;
-    border-color: currentColor;
-    opacity: 0.85;
+    color: #F4EBE1 !important;
+    border-color: rgba(244, 235, 225, 0.4) !important;
+    opacity: 0.95;
   }
   .header__nav--right .i18n-toggle:hover { opacity: 1; }
+  /* Cart icon también cream siempre */
+  .page-index-v2 .header__v2-bag,
+  .header.is-scrolled .page-index-v2 .header__v2-bag {
+    color: #F4EBE1 !important;
+  }
+  .page-index-v2 .cart-btn__count {
+    /* Badge dorado del contador del carrito — se mantiene */
+    background: var(--c-brand, #CBA058) !important;
+    color: #2A1810 !important;
+  }
+  /* Logo del header (mate dorado + texto JIcrea) — el texto JIcrea
+     blanco siempre, sin filtros que lo manchen */
+  .page-index-v2 .header__v2-text {
+    filter: brightness(1.05);
+  }
 
   /* Ocultar el lang toggle DUPLICADO dentro del mobile menu — ahora
      vive en el header. Mantenemos el HTML por compatibilidad con
