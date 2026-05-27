@@ -224,8 +224,12 @@ document.addEventListener("DOMContentLoaded", () => {
           break;
         }
       }
-      // 3 estados: dark (tierra negro), light (crudo), leather (cuero terracotta)
-      header.classList.toggle('is-dark-bg', currentBg === 'dark');
+      // 3 estados: dark (tierra negro / leaf verde profundo / dark-leaf),
+      // light (crudo) y leather (cuero terracotta). Las secciones verdes
+      // oscuras también necesitan nav cream para legibilidad — por eso
+      // las agrupamos junto con 'dark' en la misma clase is-dark-bg.
+      const isDark = (currentBg === 'dark' || currentBg === 'leaf' || currentBg === 'dark-leaf');
+      header.classList.toggle('is-dark-bg', isDark);
       header.classList.toggle('is-leather-bg', currentBg === 'leather');
     }
     ScrollTrigger.create({

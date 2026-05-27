@@ -3255,7 +3255,11 @@ em {
    visibles en el header (no se ocultan nunca — son CTAs críticos).
    ════════════════════════════════════════════════════════════════════════ */
 
-/* HAMBURGER BUTTON — invisible en desktop, sale en mobile */
+/* HAMBURGER BUTTON — invisible en desktop, sale en mobile.
+   El color se adapta dinámicamente al tema del fondo: cream sobre
+   dark, terracotta-cream sobre leather, dark sobre páginas scrolleadas.
+   Por default arranca cream — coherente con hero dark del index/tienda/
+   historia. */
 .hamburger {
   display: none;
   position: relative;
@@ -3271,7 +3275,32 @@ em {
   justify-content: center;
   flex-direction: column;
   gap: 5px;
+  color: var(--c-text-alt);  /* default: cream para hero dark inicial */
+  transition: color 0.4s var(--ease-out);
   /* Touch target ≥44x44px (WCAG). El padding del span lo logra. */
+}
+/* COLOR DINÁMICO — matchea las reglas del .header__nav a para que el
+   hamburger se vea siempre, sea cual sea el fondo de la sección actual. */
+.header.is-dark-bg .hamburger,
+.header[data-theme="dark"]:not(.is-scrolled) .hamburger {
+  color: var(--c-text-alt);  /* cream brillante sobre fondo oscuro */
+}
+.header.is-leather-bg .hamburger {
+  color: #F0E2C9;  /* cream cálido sobre cuero terracotta */
+}
+.header.is-scrolled .hamburger {
+  color: #2A1810;  /* dark earth sobre cream — scrolled state */
+}
+.header.is-scrolled.is-dark-bg .hamburger {
+  color: var(--c-text-alt);
+}
+.header.is-scrolled.is-leather-bg .hamburger {
+  color: #F0E2C9;
+}
+/* Cuando el menu está abierto, el hamburger queda sobre el overlay
+   cuero — siempre cream (alto contraste). */
+.hamburger[aria-expanded="true"] {
+  color: #F4EBE1 !important;
 }
 .hamburger span {
   display: block;
@@ -3444,19 +3473,39 @@ body.menu-open { overflow: hidden; }
   /* Mostrar hamburger */
   .hamburger { display: inline-flex; }
 
-  /* Ocultar TODOS los links de navegación del header desktop —
-     aparecen dentro del mobile-menu overlay en su lugar. */
+  /* Ocultar links de texto del nav desktop — aparecen en el overlay.
+     PERO mantenemos #i18nToggle y #cartBtn visibles porque viven al
+     lado uno del otro como acciones rápidas en el header. */
   .header__nav--left { display: none !important; }
-  .header__nav--right > a,
-  .header__nav--right > #i18nToggle { display: none !important; }
+  .header__nav--right > a { display: none !important; }
 
-  /* El header__nav--right se mantiene visible PORQUE adentro está el
-     #cartBtn (que NO se oculta). Lo dejamos como flex con justify-end
-     para que el cart quede al borde derecho. */
+  /* El header__nav--right ahora contiene solo el EN toggle + cart.
+     Quedan al borde derecho con gap chico. */
   .header__nav--right {
     margin-left: auto;
-    gap: 0;
+    gap: 0.8rem;
+    align-items: center;
   }
+
+  /* EN toggle mobile: un poco más chico que en desktop, con padding
+     compacto para no competir con el cart. El color se hereda del
+     header (que también es dinámico según fondo). */
+  .header__nav--right .i18n-toggle {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.95rem;
+    letter-spacing: 0.16em;
+    /* Hereda color del nav del header — ya tiene reglas dinámicas
+       según is-dark-bg / is-leather-bg / is-scrolled. */
+    color: inherit;
+    border-color: currentColor;
+    opacity: 0.85;
+  }
+  .header__nav--right .i18n-toggle:hover { opacity: 1; }
+
+  /* Ocultar el lang toggle DUPLICADO dentro del mobile menu — ahora
+     vive en el header. Mantenemos el HTML por compatibilidad con
+     traducciones que pudieran apuntarle. */
+  .mobile-menu__lang { display: none; }
 
   /* Logo central sigue centrado — el grid de 3 columnas auto del
      .page-index-v2 lo respeta. */
