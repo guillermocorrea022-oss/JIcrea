@@ -79,8 +79,8 @@
           <span class="skeleton-line skeleton-line--long" aria-hidden="true"></span>
           <span class="skeleton-line skeleton-line--medium" aria-hidden="true"></span>
         </p>
-        <button class="prod__btn producto-hero__btn" id="prodAddBtn">Agregar al carrito</button>
-        <p class="producto-hero__note">El pago y la entrega se coordinan por WhatsApp.</p>
+        <button class="prod__btn producto-hero__btn" id="prodAddBtn" data-i18n="prod.addCart">Agregar al carrito</button>
+        <p class="producto-hero__note" data-i18n="prod.note">El pago y la entrega se coordinan por WhatsApp.</p>
 
         <!-- Acciones secundarias — dudas + compartir.
              Dudas: abre WhatsApp con el nombre del producto pre-cargado.
@@ -93,10 +93,10 @@
               <line x1="12" y1="17" x2="12.01" y2="17"/>
               <circle cx="12" cy="12" r="10"/>
             </svg>
-            <span>¿Tenés dudas? Escribinos</span>
+            <span data-i18n="prod.doubts">¿Tenés dudas? Escribinos</span>
           </a>
           <div class="producto-hero__share" aria-label="Compartir">
-            <span class="producto-hero__share-label">Compartir:</span>
+            <span class="producto-hero__share-label" data-i18n="prod.share">Compartir:</span>
             <a class="producto-hero__share-btn" id="prodShareWa" href="#" target="_blank" rel="noopener noreferrer" aria-label="Compartir por WhatsApp">
               <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M19.05 4.91A10 10 0 0 0 12 2c-5.5 0-10 4.5-10 10 0 1.76.46 3.48 1.34 5L2 22l5.13-1.34A10 10 0 0 0 12 22c5.5 0 10-4.5 10-10 0-2.66-1.05-5.18-2.95-7.09zM12 20.13c-1.6 0-3.18-.43-4.55-1.24l-.32-.19-3.04.79.81-2.96-.21-.34A8.13 8.13 0 1 1 20.14 12 8.14 8.14 0 0 1 12 20.13z"/></svg>
             </a>
@@ -122,7 +122,7 @@
     <section class="producto-historia" data-bg="leather">
       <div class="manifesto__inner" data-reveal>
         <div class="manifesto__icon" aria-hidden="true"></div>
-        <h2 class="manifesto__title">Cómo se hace</h2>
+        <h2 class="manifesto__title" data-i18n="prod.howmade">Cómo se hace</h2>
         <p class="manifesto__text" id="prodStory">—</p>
       </div>
       <div class="producto-historia__steps" id="prodSteps">
@@ -133,8 +133,8 @@
     <!-- SIMILARES -->
     <section class="producto-similares" data-bg="light">
       <div class="seccion-prod__head" data-reveal>
-        <h2 class="manifesto__title">Productos relacionados</h2>
-        <p class="manifesto__text">Otras piezas que también te pueden gustar.</p>
+        <h2 class="manifesto__title" data-i18n="prod.related">Productos relacionados</h2>
+        <p class="manifesto__text" data-i18n="prod.related.sub">Otras piezas que también te pueden gustar.</p>
       </div>
       <div class="seccion-prod__grid" id="similaresGrid">
         <!-- similares inyectados por JS -->
@@ -147,30 +147,30 @@
     <div class="footer__inner">
       <div class="footer__brand">
         <img class="footer__logo" loading="lazy" decoding="async" src="img/logos_jlcrea_sin_fondo/08_logo_completo_blanco.png" alt="JIcrea">
-        <p class="footer__slogan">Del campo a tus manos.</p>
+        <p class="footer__slogan" data-i18n="footer.tagline">Del campo a tus manos.</p>
       </div>
       <div class="footer__cols">
         <div class="footer__col">
-          <h4>Contacto</h4>
+          <h4 data-i18n="footer.contact">Contacto</h4>
           <a href="https://wa.me/59898507241" target="_blank" rel="noopener noreferrer">WhatsApp</a>
           <a href="https://www.instagram.com/jicrea/" target="_blank" rel="noopener noreferrer">Instagram</a>
           <a href="mailto:jicrea17@gmail.com">jicrea17@gmail.com</a>
         </div>
         <div class="footer__col">
-          <h4>Tienda</h4>
+          <h4 data-i18n="footer.shop">Tienda</h4>
           <a href="tienda.html#mates">Mates</a>
           <a href="tienda.html#posa-mates">Posa Mates</a>
           <a href="tienda.html#materas">Materas</a>
           <a href="tienda.html#yerberos">Yerberos</a>
         </div>
         <div class="footer__col">
-          <h4>Dónde estamos</h4>
-          <p>Paysandú, Uruguay</p>
-          <p>Productores y fabricantes desde 2015</p>
+          <h4 data-i18n="footer.where">Dónde estamos</h4>
+          <p data-i18n="footer.where.p1">Paysandú, Uruguay</p>
+          <p data-i18n="footer.where.p2">Productores y fabricantes desde 2015</p>
         </div>
       </div>
       <div class="footer__base">
-        <p>© 2026 JIcrea — Mates uruguayos hechos a mano</p>
+        <p data-i18n="footer.copy">© 2026 JIcrea — Mates uruguayos hechos a mano</p>
       </div>
     </div>
   </footer>
@@ -261,7 +261,7 @@
   <script src="https://unpkg.com/lenis@1.0.42/dist/lenis.min.js" onerror="console.info('Lenis no')"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="js/i18n.js?v=1"></script>
+  <script src="js/i18n.js?v=2"></script>
   <script src="js/jicrea-pro.js?v=69"></script>
   <script src="js/productos-data.js?v=1"></script>
   <script src="js/producto.js?v=3"></script>
