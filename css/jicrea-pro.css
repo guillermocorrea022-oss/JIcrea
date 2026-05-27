@@ -127,6 +127,21 @@ a {
 .page-curtain.is-hidden .page-curtain__logo {
   transform: scale(1.06);
 }
+/* En mobile el logo se veía minúsculo (~140x140) porque max-height
+   140px limitaba al cuadrado. Subimos los dos clamps para que ocupe
+   ~60% del ancho del viewport, sensación pantalla de carga premium. */
+@media (max-width: 720px) {
+  .page-curtain__logo {
+    max-width: 60vw;
+    max-height: 60vw;
+  }
+}
+@media (max-width: 380px) {
+  .page-curtain__logo {
+    max-width: 68vw;
+    max-height: 68vw;
+  }
+}
 
 /* HEADER */
 .header {
