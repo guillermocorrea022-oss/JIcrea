@@ -30,7 +30,7 @@
   <meta property="og:locale" content="es_UY">
 
   <!-- Fuentes locales de la marca -->
-  <link rel="stylesheet" href="css/jicrea-pro.css?v=111">
+  <link rel="stylesheet" href="css/jicrea-pro.css?v=112">
   <link rel="stylesheet" href="css/tienda-cart.css?v=20">
 </head>
 <body class="page-index-v2">
@@ -182,18 +182,17 @@
       <div class="proceso-3d__pin">
 
         <!-- Video cinemático. autoplay+loop+muted permiten el play sin
-             interacción. playsinline evita el fullscreen en iOS. preload
-             auto descarga el video apenas cargue la página. -->
-        <!-- preload=metadata para no bajar el video entero en el load
-             inicial. <source media> hace que el navegador elija UNO solo:
-             mobile (≤768px) → proceso.mp4 (versión específica móvil),
-             resto → proceso-video.mp4. El filter CSS más abajo le aplica
-             grade cinematográfico a cualquiera de los dos. -->
+             interacción. playsinline evita el fullscreen en iOS.
+             El src se setea via JS (data-src-mobile / data-src-desktop)
+             porque Chrome NO respeta <source media> en <video> al
+             cambiar viewport (devtools resize) ni a veces en el load
+             inicial — es spotty cross-browser. JS con matchMedia es
+             100% confiable. Ver js/jicrea-pro.js → setProcesoVideoSrc. -->
         <video class="proceso-3d__video" id="procesoVideo"
                autoplay loop muted playsinline preload="metadata"
-               aria-hidden="true">
-          <source media="(max-width: 768px)" src="img/proceso.mp4" type="video/mp4">
-          <source src="img/proceso-video.mp4" type="video/mp4">
+               aria-hidden="true"
+               data-src-mobile="img/proceso.mp4"
+               data-src-desktop="img/proceso-video.mp4">
         </video>
 
         <!-- Vignette: oscurece bordes para foco cinematográfico al centro
@@ -629,7 +628,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script src="js/i18n.js?v=2"></script>
-  <script src="js/jicrea-pro.js?v=72"></script>
+  <script src="js/jicrea-pro.js?v=73"></script>
   <script src="js/tienda-cart.js?v=8"></script>
 </body>
 </html>

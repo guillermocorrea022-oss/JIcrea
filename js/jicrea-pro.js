@@ -241,6 +241,44 @@ document.addEventListener("DOMContentLoaded", () => {
     updateNavTheme();
   }
 
+  // ─────────────────────────────────────────────────────────────────
+  // PROCESO VIDEO — swap mobile/desktop via JS
+  // ─────────────────────────────────────────────────────────────────
+  // Chrome no respeta <source media> en <video> de forma confiable
+  // (a diferencia de <picture>) ni en load ni al resize del devtools.
+  // Solución: matchMedia + setter del src directo. Re-evalúa también
+  // en resize por si el usuario rota el celu o usa el inspector.
+  (function initProcesoVideo(){
+    const video = document.getElementById("procesoVideo");
+    if (!video) return;
+    const mobileSrc = video.dataset.srcMobile;
+    const desktopSrc = video.dataset.srcDesktop;
+    if (!mobileSrc || !desktopSrc) return;
+
+    const mq = window.matchMedia("(max-width: 768px)");
+    let lastSrc = "";
+
+    function setSrc() {
+      const target = mq.matches ? mobileSrc : desktopSrc;
+      if (target === lastSrc) return;
+      lastSrc = target;
+      // Reemplaza el contenido del <video> con un solo <source> nuevo,
+      // después llama load() para que el browser re-fetchee el src
+      // correcto. play() después porque load() lo pausa.
+      video.innerHTML = `<source src="${target}" type="video/mp4">`;
+      video.load();
+      // autoplay puede fallar si el user no interactuó — lo ignoramos
+      const playPromise = video.play();
+      if (playPromise && typeof playPromise.catch === "function") {
+        playPromise.catch(() => {});
+      }
+    }
+    setSrc();
+    // Cambio de viewport (resize / rotación / devtools toggle)
+    if (mq.addEventListener) mq.addEventListener("change", setSrc);
+    else if (mq.addListener) mq.addListener(setSrc); /* legacy iOS */
+  })();
+
   // 4. Proceso Story Image Switcher
   const procesoSteps = document.querySelectorAll('.proceso-story__step');
   const procesoImgs = document.querySelectorAll('.proceso-story__img');
