@@ -27,20 +27,22 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.prepend(curtain);
   }
 
-  // 3) Fade out el curtain. Triggereamos la clase is-hidden tras un
-  //    breve delay (50ms) — suficiente para que el primer paint muestre
-  //    el curtain en su estado inicial (opacity 1), después la clase
-  //    activa la transición CSS hacia opacity 0. setTimeout es más
-  //    confiable que doble-rAF en algunos entornos (background tabs,
-  //    headless renderers).
-  setTimeout(() => {
-    curtain.classList.add("is-hidden");
-  }, 50);
+  // 3) Fade out el curtain. Doble requestAnimationFrame es más confiable
+  //    que setTimeout — garantiza que el primer paint haya pintado el
+  //    curtain en estado inicial (opacity:1) antes de activar la
+  //    transición hacia opacity:0. Esto evita el "salto" que se siente
+  //    cuando el delay es muy corto y la transición no llega a engancharse.
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      curtain.classList.add("is-hidden");
+    });
+  });
 
   // 4) Navegación entre páginas — al click en un link interno, mostramos
-  //    el curtain de nuevo (fade in), esperamos 320ms (~60% de la
-  //    transición de 550ms; salir antes del 100% se siente más vivo
-  //    que esperar el fin), y navegamos.
+  //    el curtain de nuevo (fade in 500ms) y navegamos cuando casi
+  //    completó (~440ms = 88%). Antes era 320ms (~60%) y se cortaba antes
+  //    de que el curtain terminara de aparecer → flash visible de la
+  //    página anterior justo antes del nav.
   const internalLinks = document.querySelectorAll('a[href]:not([href^="#"]):not([target="_blank"])');
   internalLinks.forEach((link) => {
     link.addEventListener("click", (e) => {
@@ -56,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       const target = link.href;
       curtain.classList.remove("is-hidden");
-      setTimeout(() => { window.location.href = target; }, 320);
+      setTimeout(() => { window.location.href = target; }, 440);
     });
   });
 

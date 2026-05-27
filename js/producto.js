@@ -144,10 +144,12 @@
       const sim = PRODUCTOS[simId];
       if (!sim) return;
       const card = document.createElement("article");
-      card.className = "prod";
       // Misma estructura que las cards de la tienda (.prod__link >
-      // .prod__img > h3 + p + price + .prod__btn). El loading="lazy"
-      // está en el img porque la sección está below-the-fold.
+      // .prod__img > h3 + p + price + .prod__btn). Si la categoría
+      // es "Mates" agregamos .prod--mate para que la imagen tenga
+      // el backdrop cream de pedestal (mismo look que en #mates).
+      // El loading="lazy" está porque la sección es below-the-fold.
+      card.className = "prod" + (sim.cat === "Mates" ? " prod--mate" : "");
       card.innerHTML = `
         <a class="prod__link" href="producto.html?id=${escapeHtml(sim.id)}">
           <div class="prod__img"><img loading="lazy" decoding="async" src="${escapeHtml(sim.img)}" alt="${escapeHtml(sim.name)}"></div>

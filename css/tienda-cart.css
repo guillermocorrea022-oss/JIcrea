@@ -287,17 +287,25 @@
   font-weight: 400;
 }
 
-/* Grid de productos — flexible auto-fit */
+/* Grid de productos — flexbox para centrar perfecto con cualquier cantidad */
 .seccion-prod__grid {
   max-width: 1500px;
   margin: 0 auto;
-  display: grid;
-  /* auto-fill (NO auto-fit) — cuando hay menos productos visibles
-     (search/filter), las cards mantienen su tamaño natural y dejan
-     espacios vacíos en la fila en vez de estirarse al 100%. */
-  grid-template-columns: repeat(auto-fill, minmax(260px, 340px));
+  /* Flexbox en vez de grid — cuando hay 3, 2 o 1 productos (porque
+     filtraron o son productos relacionados) las cards quedan
+     CENTRADAS horizontalmente manteniendo su tamaño fijo (no se
+     estiran ni quedan pegadas a la izquierda). El min/max width
+     mantiene la apariencia "polaroid" coherente. */
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  align-items: stretch;
   gap: max(2.4rem, min(2.5vw, 3.6rem));
+}
+.seccion-prod__grid > .prod {
+  flex: 0 1 300px;
+  max-width: 340px;
+  min-width: 260px;
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -405,15 +413,19 @@
   transform: scale(1.06);
 }
 
-/* ─── EXCEPCIÓN: SOLO la sección de MATES ────────────────────────────
+/* ─── EXCEPCIÓN: cards de MATES (en CUALQUIER página) ────────────────
    Los mates son PNG con fondo transparente. SÍ necesitan el backdrop
    cream para no quedar "flotando en el vacío" sobre el cream de la card.
-   Acá restauramos el bg estudio + object-fit:contain + padding interno. */
+   Acá restauramos el bg estudio + object-fit:contain + padding interno.
+   Usamos clase .prod--mate (no #mates) para que también aplique en
+   "productos relacionados" de la página de detalle. */
+.prod--mate .prod__img,
 #mates .prod__img {
   background:
     radial-gradient(ellipse 90% 60% at 50% 25%, rgba(255, 250, 235, 0.7) 0%, transparent 70%),
     linear-gradient(180deg, #F0E4CB 0%, #D9C7A4 100%);
 }
+.prod--mate .prod__img img,
 #mates .prod__img img {
   object-fit: contain;
   padding: 8%;
@@ -1746,8 +1758,9 @@
 
 /* Responsive */
 @media (max-width: 800px) {
-  .seccion-prod__grid {
-    grid-template-columns: 1fr;
+  /* En tablet/mobile las cards usan más ancho disponible */
+  .seccion-prod__grid > .prod {
+    flex: 1 1 260px;
   }
   .cart {
     width: 100vw;
@@ -2238,8 +2251,14 @@
   .seccion-prod__head { margin-bottom: 3.2rem !important; padding-top: 2rem !important; }
   .seccion-prod__head .manifesto__title { font-size: 2.6rem !important; }
   .seccion-prod__grid {
-    grid-template-columns: repeat(2, 1fr) !important;
     gap: 1.4rem !important;
+  }
+  /* Mobile (≤640px): 2 columnas — cada card flex: 0 0 calc(50% - gap)
+     para que entren exactamente 2 por fila sin estirarse */
+  .seccion-prod__grid > .prod {
+    flex: 0 1 calc(50% - 0.7rem) !important;
+    min-width: 0 !important;
+    max-width: calc(50% - 0.7rem) !important;
   }
   .prod {
     min-height: 0 !important;
