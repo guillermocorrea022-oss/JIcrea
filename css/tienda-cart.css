@@ -2254,59 +2254,27 @@
     padding: 0 !important;
     overflow: visible;
   }
-  .tienda-card {
+  .cards__inner--tienda .tienda-card {
     position: absolute !important;
     inset: 0;
-    width: 100%;
-    height: 100%;
+    width: 100% !important;
+    height: 100% !important;
     margin: 0 !important;
-    border-radius: 10px;
+    border-radius: 10px !important;
     overflow: hidden;
     background: #FAF3E8;
-    /* Card "cuero label" — bordes finos + sombra dramática para
-       sensación de carta de naipe sobre madera. */
-    border: 1px solid rgba(107, 68, 35, 0.18);
+    border: 1px solid rgba(107, 68, 35, 0.18) !important;
     box-shadow:
       0 1px 0 rgba(255, 250, 235, 0.4) inset,
       0 20px 40px -12px rgba(46, 24, 12, 0.40),
-      0 8px 16px -4px rgba(46, 24, 12, 0.20);
-    transform-origin: center center;
+      0 8px 16px -4px rgba(46, 24, 12, 0.20) !important;
+    transform-origin: center center !important;
     transition:
       transform 0.7s cubic-bezier(0.4, 0, 0.2, 1),
       opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: transform, opacity;
-    transform: scale(0.7) translateX(0);
-    opacity: 0;
-    pointer-events: none;
-    z-index: 0;
-  }
-  /* Active: al frente, centro, sin rotación */
-  .tienda-card.is-active {
-    transform: scale(1) translateX(0) rotate(0deg);
-    opacity: 1;
-    pointer-events: auto;
-    z-index: 4;
-  }
-  /* is-pos-1: la SIGUIENTE — asoma por la derecha, rotada CW */
-  .tienda-card.is-pos-1 {
-    transform: scale(0.9) translateX(38%) rotate(8deg);
-    opacity: 0.82;
-    z-index: 3;
-  }
-  /* is-pos-2: 4ta card escondida atrás del active (sólo asoma un
-     pelo arriba para insinuar "hay más") */
-  .tienda-card.is-pos-2 {
-    transform: scale(0.82) translateY(-12px) rotate(0deg);
-    opacity: 0.35;
-    z-index: 1;
-  }
-  /* is-pos-3: la ANTERIOR — asoma por la izquierda, rotada CCW.
-     Cuando hay rotación, la is-pos-3 se vuelve active (la is-active
-     pasa a is-pos-3 → sale por la izq). */
-  .tienda-card.is-pos-3 {
-    transform: scale(0.9) translateX(-38%) rotate(-8deg);
-    opacity: 0.82;
-    z-index: 3;
+    /* NO usamos `will-change` + initial opacity:0 — Chrome compone la
+       capa con el estado inicial y queda stuck. Default: visible. JS
+       aplica inline styles vía applyClasses() según la posición. */
   }
   .tienda-card__photo {
     aspect-ratio: 1 / 1 !important;
@@ -2380,30 +2348,31 @@
   /* ─── PRODUCTOS — CAROUSEL CLÁSICO 2-UP ─────────────────────────────
      Scroll horizontal con scroll-snap. 2 productos visibles lado a
      lado. JS auto-advance cada 4s. Swipe nativo del browser.
-     A diferencia del fan style de las categorías, este es el clásico
-     carousel "deslizable" — más práctico para mostrar productos
-     comprables (precio + botón siempre visibles). */
+     IMPORTANTE: el contenedor padre (.seccion-prod) tiene overflow:
+     hidden para que el scroll horizontal de las cards no rompa el
+     layout del page (sino el body scroll horizontaliza). */
+  .seccion-prod {
+    overflow-x: hidden !important;
+  }
   .seccion-prod__grid {
     display: flex !important;
     flex-wrap: nowrap !important;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
     scrollbar-width: none;
     gap: 1.2rem !important;
-    padding: 0.6rem 0.4rem 1rem !important;
-    margin: 0 -0.4rem !important;
-    max-width: none !important;
+    padding: 0.6rem 0 1rem !important;
+    margin: 0 !important;
+    max-width: 100% !important;
     height: auto !important;
     position: static !important;
     perspective: none !important;
   }
   .seccion-prod__grid::-webkit-scrollbar { display: none; }
   .seccion-prod__grid > .prod {
-    /* 2 cards visibles → ~50% del container con gap. flex-basis
-       calc(50% - 0.6rem) para que 2 cards + 1.2rem gap = 100%. */
     position: static !important;
     flex: 0 0 calc(50% - 0.6rem) !important;
     max-width: calc(50% - 0.6rem) !important;
@@ -2415,9 +2384,10 @@
     pointer-events: auto !important;
     z-index: auto !important;
     scroll-snap-align: start;
-    /* Restaurar el shadow y borde original de .prod */
     border-radius: 4px !important;
     inset: auto !important;
+    /* Override del fan-style anterior */
+    height: auto !important;
   }
   /* Cards de producto compactas (2 por fila visible) */
   .prod {

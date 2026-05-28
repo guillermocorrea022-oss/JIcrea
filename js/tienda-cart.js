@@ -683,19 +683,32 @@
     function applyClasses() {
       const n = cards.length;
       // FAN layout (cartas de naipe):
-      //   rel 0       → is-active (centro)
-      //   rel 1       → is-pos-1  (asoma derecha, "siguiente")
-      //   rel n-1     → is-pos-3  (asoma izquierda, "anterior")
-      //   resto       → is-pos-2  (atrás, casi oculto)
-      // Esto garantiza que las 2 cards laterales SIEMPRE se vean,
-      // sin importar si hay 3, 4 o 5 cards en el carousel.
+      //   rel 0    → active (centro)
+      //   rel 1    → pos-1  (asoma derecha, "siguiente")
+      //   rel n-1  → pos-3  (asoma izquierda, "anterior")
+      //   resto    → pos-2  (atrás, casi oculto)
+      // IMPORTANTE: aplicamos los estilos INLINE además de la clase.
+      // Hay un bug raro en el cascade donde las clases is-active /
+      // is-pos-X no terminaban de ganar sobre el initial opacity:0
+      // a pesar del !important. Setear inline garantiza que se vea.
+      const styles = {
+        active: { opacity: 1,    transform: "scale(1) translateX(0) rotate(0deg)",  z: 4 },
+        pos1:   { opacity: 0.82, transform: "scale(0.9) translateX(38%) rotate(8deg)", z: 3 },
+        pos3:   { opacity: 0.82, transform: "scale(0.9) translateX(-38%) rotate(-8deg)", z: 3 },
+        pos2:   { opacity: 0.35, transform: "scale(0.82) translateY(-12px)",         z: 1 },
+      };
       cards.forEach((c, i) => {
         const rel = (i - activeIdx + n) % n;
         c.classList.remove("is-active", "is-pos-1", "is-pos-2", "is-pos-3");
-        if (rel === 0) c.classList.add("is-active");
-        else if (rel === 1) c.classList.add("is-pos-1");
-        else if (rel === n - 1) c.classList.add("is-pos-3");
-        else c.classList.add("is-pos-2");
+        let s;
+        if (rel === 0)        { c.classList.add("is-active"); s = styles.active; }
+        else if (rel === 1)   { c.classList.add("is-pos-1");  s = styles.pos1; }
+        else if (rel === n-1) { c.classList.add("is-pos-3");  s = styles.pos3; }
+        else                  { c.classList.add("is-pos-2");  s = styles.pos2; }
+        c.style.setProperty("opacity",   s.opacity,  "important");
+        c.style.setProperty("transform", s.transform, "important");
+        c.style.setProperty("z-index",   s.z, "important");
+        c.style.setProperty("pointer-events", rel === 0 ? "auto" : "none", "important");
       });
       if (dotsRoot) {
         Array.from(dotsRoot.children).forEach((dot, i) => {
@@ -736,7 +749,14 @@
     }
     function deactivate() {
       stopAutoRotate();
-      cards.forEach(c => c.classList.remove("is-active", "is-pos-1", "is-pos-2", "is-pos-3"));
+      cards.forEach(c => {
+        c.classList.remove("is-active", "is-pos-1", "is-pos-2", "is-pos-3");
+        // Limpiar inline styles que pusimos en applyClasses
+        c.style.removeProperty("opacity");
+        c.style.removeProperty("transform");
+        c.style.removeProperty("z-index");
+        c.style.removeProperty("pointer-events");
+      });
       if (dotsRoot) dotsRoot.style.display = "none";
     }
 
