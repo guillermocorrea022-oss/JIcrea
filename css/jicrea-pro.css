@@ -47,6 +47,24 @@ html {
   scroll-behavior: auto;
   background-color: #140C06;
 }
+/* ─── iOS SAFE-AREA CAP ───────────────────────────────────────────────
+   Franja fija dedicada a cubrir la zona del notch / Dynamic Island en
+   iPhones. En desktop / Android sin notch env() = 0 → height: 0 → no se
+   renderiza. En iOS con viewport-fit=cover env() ≈ 59px y se dibuja una
+   barra dark arriba del todo, encima del navbar (z-index 1000 > .header
+   100 > content). Soluciona el bug donde el page-content sub-aparecía
+   en el safe-area arriba del navbar al hacer scroll. */
+html::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: env(safe-area-inset-top);
+  background: #140C06;
+  z-index: 1000;
+  pointer-events: none;
+}
 
 body {
   font-family: var(--font-serif);

@@ -1,32 +1,32 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#140C06">
-  <meta name="description" content="JIcrea — Detalle del producto. Mates uruguayos hechos a mano en Paysandú.">
-  <title>JIcrea — Producto</title>
+  <meta name="description" content="JIcrea â€” Detalle del producto. Mates uruguayos hechos a mano en PaysandÃº.">
+  <title>JIcrea â€” Producto</title>
   <link rel="icon" type="image/png" href="img/favicon.png?v=2">
 
-  <!-- PRELOAD assets críticos — logo curtain + fuentes. -->
+  <!-- PRELOAD assets crÃ­ticos â€” logo curtain + fuentes. -->
   <link rel="preload" as="image" href="img/logos_jlcrea_sin_fondo/08_logo_completo_blanco.png" fetchpriority="high">
   <link rel="preload" as="font" type="font/woff2" href="fonts/super-med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="fonts/super-reg.woff2" crossorigin>
 
-  <link rel="stylesheet" href="css/jicrea-pro.css?v=143">
+  <link rel="stylesheet" href="css/jicrea-pro.css?v=144">
   <link rel="stylesheet" href="css/tienda-cart.css?v=33">
   <link rel="stylesheet" href="css/producto.css?v=3">
 </head>
 <body class="page-producto page-index-v2">
-  <!-- HEADER V2 — logo apilado centrado + cart bag a la derecha. -->
+  <!-- HEADER V2 â€” logo apilado centrado + cart bag a la derecha. -->
   <header class="header header--v2" id="header">
-    <!-- HAMBURGER — solo visible en mobile (≤900px). Abre overlay full-screen. -->
-    <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
+    <!-- HAMBURGER â€” solo visible en mobile (â‰¤900px). Abre overlay full-screen. -->
+    <button class="hamburger" id="hamburger" aria-label="Abrir menÃº" aria-expanded="false" aria-controls="mobileMenu">
       <span></span>
       <span></span>
       <span></span>
     </button>
-    <nav class="header__nav header__nav--left" aria-label="Navegación izquierda">
+    <nav class="header__nav header__nav--left" aria-label="NavegaciÃ³n izquierda">
       <a href="index.html" data-i18n="nav.home">Inicio</a>
       <a href="tienda.html" class="is-current" data-i18n="nav.shop">Tienda</a>
     </nav>
@@ -36,7 +36,7 @@
         <img class="header__v2-text" src="img/logos_jlcrea_sin_fondo/02_jlcrea_texto.png" alt="JIcrea">
       </a>
     </div>
-    <nav class="header__nav header__nav--right" aria-label="Navegación derecha">
+    <nav class="header__nav header__nav--right" aria-label="NavegaciÃ³n derecha">
       <a href="index.html#manos" data-i18n="nav.process">Proceso</a>
       <a href="nuestra-historia.html" data-i18n="nav.history">Nuestra Historia</a>
       <button type="button" id="i18nToggle" class="i18n-toggle" data-current="es" aria-label="Switch to English">EN</button>
@@ -51,10 +51,10 @@
     </nav>
   </header>
 
-  <!-- MOBILE MENU OVERLAY — fullscreen drawer al tocar hamburger. -->
+  <!-- MOBILE MENU OVERLAY â€” fullscreen drawer al tocar hamburger. -->
   <aside class="mobile-menu" id="mobileMenu" aria-hidden="true" inert>
     <div class="mobile-menu__bg" aria-hidden="true"></div>
-    <button class="mobile-menu__close" id="mobileMenuClose" aria-label="Cerrar menú">
+    <button class="mobile-menu__close" id="mobileMenuClose" aria-label="Cerrar menÃº">
       <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
       </svg>
@@ -78,19 +78,19 @@
     <nav class="breadcrumb" aria-label="Migaja">
       <a href="tienda.html">Tienda</a>
       <span class="breadcrumb__sep">/</span>
-      <span class="breadcrumb__current" id="bcCategory">Categoría</span>
+      <span class="breadcrumb__current" id="bcCategory">CategorÃ­a</span>
       <span class="breadcrumb__sep">/</span>
       <span class="breadcrumb__current" id="bcName">Producto</span>
     </nav>
 
-    <!-- HERO DEL PRODUCTO — 2 columnas: foto grande + info+CTA -->
+    <!-- HERO DEL PRODUCTO â€” 2 columnas: foto grande + info+CTA -->
     <section class="producto-hero" data-bg="light">
       <div class="producto-hero__gallery">
         <div class="producto-hero__main">
           <img loading="lazy" decoding="async" id="prodMainImg" src="" alt="">
         </div>
         <div class="producto-hero__thumbs" id="prodThumbs">
-          <!-- thumbs se inyectan vía JS -->
+          <!-- thumbs se inyectan vÃ­a JS -->
         </div>
       </div>
       <div class="producto-hero__info" data-reveal>
@@ -110,7 +110,7 @@
         <button class="prod__btn producto-hero__btn" id="prodAddBtn" data-i18n="prod.addCart">Agregar al carrito</button>
         <p class="producto-hero__note" data-i18n="prod.note">El pago y la entrega se coordinan por WhatsApp.</p>
 
-        <!-- Acciones secundarias — dudas + compartir.
+        <!-- Acciones secundarias â€” dudas + compartir.
              Dudas: abre WhatsApp con el nombre del producto pre-cargado.
              Compartir: 3 botones (WhatsApp + Instagram + copy link).
              Los handlers de share viven en producto.js (#prodShare*). -->
@@ -121,7 +121,7 @@
               <line x1="12" y1="17" x2="12.01" y2="17"/>
               <circle cx="12" cy="12" r="10"/>
             </svg>
-            <span data-i18n="prod.doubts">¿Tenés dudas? Escribinos</span>
+            <span data-i18n="prod.doubts">Â¿TenÃ©s dudas? Escribinos</span>
           </a>
           <div class="producto-hero__share" aria-label="Compartir">
             <span class="producto-hero__share-label" data-i18n="prod.share">Compartir:</span>
@@ -146,12 +146,12 @@
       </div>
     </section>
 
-    <!-- HISTORIA / CÓMO SE HACE -->
+    <!-- HISTORIA / CÃ“MO SE HACE -->
     <section class="producto-historia" data-bg="leather">
       <div class="manifesto__inner" data-reveal>
         <div class="manifesto__icon" aria-hidden="true"></div>
-        <h2 class="manifesto__title" data-i18n="prod.howmade" data-aos="fade-up">Cómo se hace</h2>
-        <p class="manifesto__text" id="prodStory">—</p>
+        <h2 class="manifesto__title" data-i18n="prod.howmade" data-aos="fade-up">CÃ³mo se hace</h2>
+        <p class="manifesto__text" id="prodStory">â€”</p>
       </div>
       <div class="producto-historia__steps" id="prodSteps">
         <!-- pasos del proceso, inyectados por JS -->
@@ -162,7 +162,7 @@
     <section class="producto-similares" data-bg="light">
       <div class="seccion-prod__head" data-reveal>
         <h2 class="manifesto__title" data-i18n="prod.related" data-aos="fade-up">Productos relacionados</h2>
-        <p class="manifesto__text" data-i18n="prod.related.sub">Otras piezas que también te pueden gustar.</p>
+        <p class="manifesto__text" data-i18n="prod.related.sub">Otras piezas que tambiÃ©n te pueden gustar.</p>
       </div>
       <div class="seccion-prod__grid" id="similaresGrid">
         <!-- similares inyectados por JS -->
@@ -192,18 +192,18 @@
           <a href="tienda.html#yerberos">Yerberos</a>
         </div>
         <div class="footer__col">
-          <h4 data-i18n="footer.where" data-aos="fade-up">Dónde estamos</h4>
-          <p data-i18n="footer.where.p1">Paysandú, Uruguay</p>
+          <h4 data-i18n="footer.where" data-aos="fade-up">DÃ³nde estamos</h4>
+          <p data-i18n="footer.where.p1">PaysandÃº, Uruguay</p>
           <p data-i18n="footer.where.p2">Productores y fabricantes desde 2015</p>
         </div>
       </div>
       <div class="footer__base">
-        <p data-i18n="footer.copy">© 2026 JIcrea — Mates uruguayos hechos a mano</p>
+        <p data-i18n="footer.copy">Â© 2026 JIcrea â€” Mates uruguayos hechos a mano</p>
       </div>
     </div>
   </footer>
 
-  <!-- Cart drawer + modal de cantidad + notificación (mismos del tienda) -->
+  <!-- Cart drawer + modal de cantidad + notificaciÃ³n (mismos del tienda) -->
   <div class="cart-backdrop" id="cartBackdrop"></div>
   <aside class="cart" id="cart" aria-hidden="true">
     <div class="cart__head">
@@ -215,7 +215,7 @@
       </button>
     </div>
     <div class="cart__body">
-      <p class="cart__empty" id="cartEmpty">Tu carrito está vacío.<br><span>Agregá productos para coordinar la compra por WhatsApp.</span></p>
+      <p class="cart__empty" id="cartEmpty">Tu carrito estÃ¡ vacÃ­o.<br><span>AgregÃ¡ productos para coordinar la compra por WhatsApp.</span></p>
       <ul class="cart__list" id="cartList"></ul>
     </div>
     <div class="cart__foot">
@@ -243,13 +243,13 @@
       <div class="qty-modal__product">
         <img loading="lazy" decoding="async" class="qty-modal__img" id="qtyModalImg" src="" alt="">
         <div>
-          <h4 class="qty-modal__name" id="qtyModalName" data-aos="fade-up">—</h4>
-          <p class="qty-modal__price" id="qtyModalPrice">—</p>
+          <h4 class="qty-modal__name" id="qtyModalName" data-aos="fade-up">â€”</h4>
+          <p class="qty-modal__price" id="qtyModalPrice">â€”</p>
         </div>
       </div>
-      <p class="qty-modal__question">¿Cuántas unidades querés agregar?</p>
+      <p class="qty-modal__question">Â¿CuÃ¡ntas unidades querÃ©s agregar?</p>
       <div class="qty-modal__qty">
-        <button class="qty-modal__btn" id="qtyMinus">−</button>
+        <button class="qty-modal__btn" id="qtyMinus">âˆ’</button>
         <span class="qty-modal__value" id="qtyValue">1</span>
         <button class="qty-modal__btn" id="qtyPlus">+</button>
       </div>
@@ -258,16 +258,16 @@
     </div>
   </div>
 
-  <!-- Notificación -->
+  <!-- NotificaciÃ³n -->
   <div class="cart-notif" id="cartNotif" aria-live="polite">
     <div class="cart-notif__row">
-      <span class="cart-notif__check" aria-hidden="true">✓</span>
+      <span class="cart-notif__check" aria-hidden="true">âœ“</span>
       <div class="cart-notif__thumb" aria-hidden="true">
         <img decoding="async" id="notifImg" src="" alt="" loading="lazy">
       </div>
       <div class="cart-notif__text">
         <p class="cart-notif__title" id="notifTitle">Agregado al carrito</p>
-        <p class="cart-notif__detail" id="notifDetail">—</p>
+        <p class="cart-notif__detail" id="notifDetail">â€”</p>
       </div>
     </div>
     <div class="cart-notif__sep"></div>
@@ -277,7 +277,7 @@
     </div>
     <div class="cart-notif__actions">
       <button class="cart-notif__btn cart-notif__btn--ghost" id="notifKeep">Seguir mirando</button>
-      <button class="cart-notif__btn cart-notif__btn--solid" id="notifCheckout">Finalizar compra →</button>
+      <button class="cart-notif__btn cart-notif__btn--solid" id="notifCheckout">Finalizar compra â†’</button>
     </div>
   </div>
 

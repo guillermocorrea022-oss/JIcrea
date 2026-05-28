@@ -1,24 +1,24 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#140C06">
-  <meta name="description" content="JIcrea — Mates uruguayos hechos a mano en Paysandú. Calabaza, cerámica y algarrobo. Del campo a tus manos.">
-  <title>JIcrea — Mates uruguayos · Del campo a tus manos</title>
+  <meta name="description" content="JIcrea â€” Mates uruguayos hechos a mano en PaysandÃº. Calabaza, cerÃ¡mica y algarrobo. Del campo a tus manos.">
+  <title>JIcrea â€” Mates uruguayos Â· Del campo a tus manos</title>
 
   <link rel="icon" type="image/png" href="img/favicon.png?v=2">
 
-  <!-- PRELOAD de assets críticos (LCP / curtain) — bajan en paralelo con
-       el HTML/CSS, así el primer paint no espera el round-trip. Reduce
-       el tiempo perceptual de aparición del logo y del hero. -->
+  <!-- PRELOAD de assets crÃ­ticos (LCP / curtain) â€” bajan en paralelo con
+       el HTML/CSS, asÃ­ el primer paint no espera el round-trip. Reduce
+       el tiempo perceptual de apariciÃ³n del logo y del hero. -->
   <link rel="preload" as="image" href="img/logos_jlcrea_sin_fondo/08_logo_completo_blanco.png" fetchpriority="high">
   <link rel="preload" as="image" href="img/hero1.jpg" fetchpriority="high">
   <link rel="preload" as="font" type="font/woff2" href="fonts/super-med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="fonts/super-reg.woff2" crossorigin>
 
-  <!-- Google Font Cormorant Garamond — fuente serif delicada para el
-       título del hero. Preconnect + display=swap para no bloquear el
+  <!-- Google Font Cormorant Garamond â€” fuente serif delicada para el
+       tÃ­tulo del hero. Preconnect + display=swap para no bloquear el
        render mientras carga. Solo cargamos el regular y medium que es
        lo que usa el hero. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,31 +26,31 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&display=swap">
 
   <meta property="og:type" content="website">
-  <meta property="og:title" content="JIcrea — Mates uruguayos">
-  <meta property="og:description" content="Mates uruguayos hechos a mano en Paysandú. Del campo a tus manos.">
+  <meta property="og:title" content="JIcrea â€” Mates uruguayos">
+  <meta property="og:description" content="Mates uruguayos hechos a mano en PaysandÃº. Del campo a tus manos.">
   <meta property="og:locale" content="es_UY">
 
   <!-- Fuentes locales de la marca -->
-  <link rel="stylesheet" href="css/jicrea-pro.css?v=143">
+  <link rel="stylesheet" href="css/jicrea-pro.css?v=144">
   <link rel="stylesheet" href="css/tienda-cart.css?v=33">
 </head>
 <body class="page-index-v2">
-  <!-- PAGE CURTAIN — overlay cuero que cubre la página al cargar. -->
+  <!-- PAGE CURTAIN â€” overlay cuero que cubre la pÃ¡gina al cargar. -->
   <div class="page-curtain" id="pageCurtain" aria-hidden="true">
     <img class="page-curtain__logo" src="img/logos_jlcrea_sin_fondo/08_logo_completo_blanco.png" alt="">
   </div>
 
-  <!-- HEADER V2 — sin placa cuero. Logo FIJO siempre arriba al centro
+  <!-- HEADER V2 â€” sin placa cuero. Logo FIJO siempre arriba al centro
        (mate dorado + texto JIcrea apilados verticalmente). Nav links
        limpios + icono bag al final. -->
   <header class="header header--v2" id="header">
-    <!-- HAMBURGER — solo visible en mobile (≤900px). Abre overlay full-screen. -->
-    <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
+    <!-- HAMBURGER â€” solo visible en mobile (â‰¤900px). Abre overlay full-screen. -->
+    <button class="hamburger" id="hamburger" aria-label="Abrir menÃº" aria-expanded="false" aria-controls="mobileMenu">
       <span></span>
       <span></span>
       <span></span>
     </button>
-    <nav class="header__nav header__nav--left" aria-label="Navegación izquierda">
+    <nav class="header__nav header__nav--left" aria-label="NavegaciÃ³n izquierda">
       <a href="#" class="is-current" data-i18n="nav.home">Inicio</a>
       <a href="tienda.html" data-i18n="nav.shop">Tienda</a>
     </nav>
@@ -62,7 +62,7 @@
       </a>
     </div>
 
-    <nav class="header__nav header__nav--right" aria-label="Navegación derecha">
+    <nav class="header__nav header__nav--right" aria-label="NavegaciÃ³n derecha">
       <a href="#manos" data-i18n="nav.process">Proceso</a>
       <a href="nuestra-historia.html" data-i18n="nav.history">Nuestra Historia</a>
       <button type="button" id="i18nToggle" class="i18n-toggle" data-current="es" aria-label="Switch to English">EN</button>
@@ -77,10 +77,10 @@
     </nav>
   </header>
 
-  <!-- MOBILE MENU OVERLAY — fullscreen drawer al tocar hamburger. -->
+  <!-- MOBILE MENU OVERLAY â€” fullscreen drawer al tocar hamburger. -->
   <aside class="mobile-menu" id="mobileMenu" aria-hidden="true" inert>
     <div class="mobile-menu__bg" aria-hidden="true"></div>
-    <button class="mobile-menu__close" id="mobileMenuClose" aria-label="Cerrar menú">
+    <button class="mobile-menu__close" id="mobileMenuClose" aria-label="Cerrar menÃº">
       <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
       </svg>
@@ -101,9 +101,9 @@
 
   <main>
 
-    <!-- HERO — imagen protagonista. Título alineado a la izquierda
-         abajo, texto mínimo. Subtítulo corto y un CTA al proceso para
-         dar contexto a quien recién llega (la foto sola no alcanza). -->
+    <!-- HERO â€” imagen protagonista. TÃ­tulo alineado a la izquierda
+         abajo, texto mÃ­nimo. SubtÃ­tulo corto y un CTA al proceso para
+         dar contexto a quien reciÃ©n llega (la foto sola no alcanza). -->
     <section class="hero hero--cinema" data-bg="dark">
       <div class="hero__media" aria-hidden="true"></div>
       <div class="hero__inner hero__inner--left">
@@ -114,13 +114,13 @@
         <div class="hero__rule" aria-hidden="true"></div>
         <p class="hero__subtitle" data-i18n="hero.subtitle">Del porongo natural al mate terminado. Una pieza hecha con tiempo, oficio y origen.</p>
         <a class="hero__cta" href="#manos">
-          <span data-i18n="hero.cta">Conocé el proceso</span>
+          <span data-i18n="hero.cta">ConocÃ© el proceso</span>
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
         </a>
       </div>
     </section>
 
-    <!-- ORIGEN - MUSEO BOTÁNICO (4 esquinas) -->
+    <!-- ORIGEN - MUSEO BOTÃNICO (4 esquinas) -->
     <section class="origen-museo" id="origen" data-bg="light">
       
       <div class="origen-museo__header" data-reveal>
@@ -140,14 +140,14 @@
 
         <!-- Esquina 2: Abajo Izquierda (Ahora es TR) -->
         <div class="origen-museo__corner origen-museo__corner--tr" data-reveal>
-          <img class="origen-museo__icon" loading="lazy" decoding="async" src="img/proceso-ilustracion2.png" alt="Maduración natural">
+          <img class="origen-museo__icon" loading="lazy" decoding="async" src="img/proceso-ilustracion2.png" alt="MaduraciÃ³n natural">
           <div class="origen-museo__content">
-            <h3 class="origen-museo__title" data-i18n="origen.c2.title" data-aos="fade-up">Maduración natural</h3>
-            <p data-i18n="origen.c2.text">El fruto permanece en la planta hasta madurar completamente, endureciendo su cáscara de manera natural.</p>
+            <h3 class="origen-museo__title" data-i18n="origen.c2.title" data-aos="fade-up">MaduraciÃ³n natural</h3>
+            <p data-i18n="origen.c2.text">El fruto permanece en la planta hasta madurar completamente, endureciendo su cÃ¡scara de manera natural.</p>
           </div>
         </div>
 
-        <!-- Centro: Porongo Fijo (más chico) -->
+        <!-- Centro: Porongo Fijo (mÃ¡s chico) -->
         <div class="origen-museo__center" data-reveal>
           <img class="origen-museo__img" loading="lazy" decoding="async" src="img/porongo-bruto.png" alt="Porongo en bruto">
         </div>
@@ -156,7 +156,7 @@
         <div class="origen-museo__corner origen-museo__corner--bl" data-reveal>
           <div class="origen-museo__content">
             <h3 class="origen-museo__title" data-i18n="origen.c3.title" data-aos="fade-up">Cosecha y secado</h3>
-            <p data-i18n="origen.c3.text">Una vez listo, el porongo se cosecha y atraviesa un proceso de secado lento que permite conservar su durabilidad y carácter único.</p>
+            <p data-i18n="origen.c3.text">Una vez listo, el porongo se cosecha y atraviesa un proceso de secado lento que permite conservar su durabilidad y carÃ¡cter Ãºnico.</p>
           </div>
           <img class="origen-museo__icon" loading="lazy" decoding="async" src="img/proceso-ilustracion3.png" alt="Cosecha y secado">
         </div>
@@ -173,22 +173,22 @@
       </div>
     </section>
 
-    <!-- PROCESO — sección cinematográfica con video autoplay. El video se
-         reproduce solo cuando la sección entra en viewport (IntersectionObs),
-         loop muted por defecto. Tiene música propia: un botón sutil permite
-         activar el sonido. Sobre el video hay un título grande que conecta
+    <!-- PROCESO â€” secciÃ³n cinematogrÃ¡fica con video autoplay. El video se
+         reproduce solo cuando la secciÃ³n entra en viewport (IntersectionObs),
+         loop muted por defecto. Tiene mÃºsica propia: un botÃ³n sutil permite
+         activar el sonido. Sobre el video hay un tÃ­tulo grande que conecta
          emocionalmente con el oficio. Estructura natural (sin sticky pin),
          100vh de alto. -->
     <section class="proceso-3d proceso-3d--video" id="manos" data-bg="dark">
       <div class="proceso-3d__pin">
 
-        <!-- Video cinemático. autoplay+loop+muted permiten el play sin
-             interacción. playsinline evita el fullscreen en iOS.
+        <!-- Video cinemÃ¡tico. autoplay+loop+muted permiten el play sin
+             interacciÃ³n. playsinline evita el fullscreen en iOS.
              El src se setea via JS (data-src-mobile / data-src-desktop)
              porque Chrome NO respeta <source media> en <video> al
              cambiar viewport (devtools resize) ni a veces en el load
-             inicial — es spotty cross-browser. JS con matchMedia es
-             100% confiable. Ver js/jicrea-pro.js → setProcesoVideoSrc. -->
+             inicial â€” es spotty cross-browser. JS con matchMedia es
+             100% confiable. Ver js/jicrea-pro.js â†’ setProcesoVideoSrc. -->
         <video class="proceso-3d__video" id="procesoVideo"
                autoplay loop muted playsinline preload="metadata"
                aria-hidden="true"
@@ -196,21 +196,21 @@
                data-src-desktop="img/proceso-video.mp4">
         </video>
 
-        <!-- Vignette: oscurece bordes para foco cinematográfico al centro
-             y para que el título overlay tenga contraste sobre el video. -->
+        <!-- Vignette: oscurece bordes para foco cinematogrÃ¡fico al centro
+             y para que el tÃ­tulo overlay tenga contraste sobre el video. -->
         <div class="proceso-3d__vignette" aria-hidden="true"></div>
 
-        <!-- Título overlay potente. Aparece sobre el video con un degradado
-             oscuro detrás para garantizar lectura. Mantiene la tipografía
+        <!-- TÃ­tulo overlay potente. Aparece sobre el video con un degradado
+             oscuro detrÃ¡s para garantizar lectura. Mantiene la tipografÃ­a
              del resto del sitio: super-med uppercase letter-spaced. -->
         <div class="proceso-3d__title-overlay">
           <span class="proceso-3d__title-eyebrow" data-i18n="proceso.eyebrow">El oficio</span>
           <h2 class="proceso-3d__title-text" data-i18n="proceso.title" data-aos="fade-up">Las manos<br>que le dan vida<br>a la cultura</h2>
         </div>
 
-        <!-- [DESHABILITADO — mute toggle del video proceso].
-             Se retiró por decisión del cliente. El video corre muted en
-             loop sin opción de activar sonido. Para reactivar:
+        <!-- [DESHABILITADO â€” mute toggle del video proceso].
+             Se retirÃ³ por decisiÃ³n del cliente. El video corre muted en
+             loop sin opciÃ³n de activar sonido. Para reactivar:
              descomentar este bloque + el handler en jicrea-pro.js.
         <button class="proceso-3d__mute-toggle" id="procesoMuteToggle"
                 type="button" aria-label="Activar sonido" aria-pressed="false">
@@ -229,12 +229,12 @@
         -->
 
 
-        <!-- ═══════════════════════════════════════════════════════════════
-             [DESHABILITADO — sistema 3D + fotos cross-fade]
-             Estaba acá el sistema viejo con 6 capas de fondo y 3 mate 3D
-             (model-viewer GLBs). Se reemplazó por el video de arriba.
+        <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+             [DESHABILITADO â€” sistema 3D + fotos cross-fade]
+             Estaba acÃ¡ el sistema viejo con 6 capas de fondo y 3 mate 3D
+             (model-viewer GLBs). Se reemplazÃ³ por el video de arriba.
              Para revertir: descomentar este bloque y comentar el <video>.
-             ─────────────────────────────────────────────────────────────── -->
+             â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
         <!--
         <div class="proceso-3d__bg" id="procesoBg" aria-hidden="true">
           <div class="proceso-3d__bg-layer" data-step="0" style="opacity:1"></div>
@@ -281,17 +281,17 @@
         </div>
         -->
 
-        <!-- [DESHABILITADO — overlay de texto explicativo].
+        <!-- [DESHABILITADO â€” overlay de texto explicativo].
              El video ya muestra todo el proceso en modo cine, no hace
-             falta texto encima. Se mantiene comentado por si más adelante
-             se decide volver a poner algún overlay sutil.
+             falta texto encima. Se mantiene comentado por si mÃ¡s adelante
+             se decide volver a poner algÃºn overlay sutil.
         <div class="proceso-3d__overlay">
           <div class="proceso-3d__copy-left">
             <span class="eyebrow proceso-3d__eyebrow">El proceso</span>
             <div class="proceso-3d__text" id="procesoText">
               <span class="reveal"><span class="reveal-inner proceso-3d__num">01</span></span>
               <span class="reveal"><h2 class="reveal-inner proceso-3d__title" data-aos="fade-up">Corte<br>y lavado</h2></span>
-              <span class="reveal"><p class="reveal-inner proceso-3d__desc">La calabaza se corta a la altura justa y se lava por fuera. Queda lista, limpia, sin la cáscara de campo.</p></span>
+              <span class="reveal"><p class="reveal-inner proceso-3d__desc">La calabaza se corta a la altura justa y se lava por fuera. Queda lista, limpia, sin la cÃ¡scara de campo.</p></span>
             </div>
           </div>
 
@@ -306,10 +306,10 @@
 
       </div>
 
-      <!-- [DESHABILITADO — datos de steps del overlay].
+      <!-- [DESHABILITADO â€” datos de steps del overlay].
       <script type="application/json" id="procesoSteps">
         [
-          { "src": "img/mate-3d-1-torno.glb",  "num": "01", "title": "Corte<br>y lavado",     "desc": "La calabaza se corta a la altura justa y se lava por fuera. Queda lista, limpia, sin la cáscara de campo." },
+          { "src": "img/mate-3d-1-torno.glb",  "num": "01", "title": "Corte<br>y lavado",     "desc": "La calabaza se corta a la altura justa y se lava por fuera. Queda lista, limpia, sin la cÃ¡scara de campo." },
           { "src": "img/mate-3d-2-lija.glb",   "num": "02", "title": "El torno<br>y la lija", "desc": "En el torno se ajusta la boca y se da la forma final. La lija busca la textura, sin apuro, hasta que la madera respira." },
           { "src": "img/mate-meshy-amber.glb", "num": "03", "title": "Barnizado<br>y virola", "desc": "Un barniz natural protege la calabaza sin taparla. Se engarza la virola y se cuidan los detalles. Cada mate sale con identidad propia." }
         ]
@@ -317,12 +317,12 @@
       -->
     </section>
 
-    <!-- MANIFESTO ROJO — título chico + texto grande terracotta -->
+    <!-- MANIFESTO ROJO â€” tÃ­tulo chico + texto grande terracotta -->
     <section class="manifesto" id="importancia" data-bg="light">
       <div class="manifesto__inner" data-reveal>
         <div class="manifesto__icon" aria-hidden="true"></div>
         <h2 class="manifesto__title" data-i18n="importancia.title" data-aos="fade-up">La importancia del mate</h2>
-        <p class="manifesto__text" data-i18n="importancia.text">En Uruguay el mate está en todo lugar y momento — en la mañana, en la tarde, en la noche. Acompaña charlas, silencios, momentos en compañía, en soledad. Une generaciones y comparte nuestra cultura.</p>
+        <p class="manifesto__text" data-i18n="importancia.text">En Uruguay el mate estÃ¡ en todo lugar y momento â€” en la maÃ±ana, en la tarde, en la noche. AcompaÃ±a charlas, silencios, momentos en compaÃ±Ã­a, en soledad. Une generaciones y comparte nuestra cultura.</p>
       </div>
     </section>
 
@@ -343,13 +343,13 @@
 
         <a class="card card--right" href="#productos" aria-label="La sobremesa">
           <div class="card__media">
-            <img loading="lazy" decoding="async" src="img/momento3.jpg" alt="Mate después de comer">
+            <img loading="lazy" decoding="async" src="img/momento3.jpg" alt="Mate despuÃ©s de comer">
           </div>
         </a>
       </div>
     </section>
 
-    <!-- AMARGOR — palabra gigante char-by-char + texto explicativo -->
+    <!-- AMARGOR â€” palabra gigante char-by-char + texto explicativo -->
     <section class="amargor" data-bg="light">
       <h2 class="amargor__giant" data-reveal>
         <span class="line" data-text="ES AMARGO" data-i18n="amargor.l1"></span>
@@ -357,11 +357,11 @@
         <span class="line" data-text="ES NUESTRO" data-i18n="amargor.l3"></span>
       </h2>
       <p class="amargor__text" data-reveal data-delay="2" data-i18n="amargor.text">
-        La primera vez no se entiende, la segunda tampoco… y después ya es parte de todos los días.
+        La primera vez no se entiende, la segunda tampocoâ€¦ y despuÃ©s ya es parte de todos los dÃ­as.
       </p>
     </section>
 
-    <!-- PRODUCTOS — selector con palabra gigante atrás -->
+    <!-- PRODUCTOS â€” selector con palabra gigante atrÃ¡s -->
     <section class="productos" id="productos" data-bg="leather">
       <div class="productos__bg" aria-hidden="true">
         <h2 class="productos__giant" data-aos="fade-up">
@@ -385,17 +385,17 @@
         </div>
 
         <p class="productos__desc" id="productosDesc" data-reveal data-delay="3" data-i18n="productos.desc.porongo">
-          Calabaza curada. La forma más antigua de tomar mate.
+          Calabaza curada. La forma mÃ¡s antigua de tomar mate.
         </p>
       </div>
     </section>
 
-    <!-- ESTADÍSTICAS — 4 datos numéricos que respaldan la marca antes
-         de la sección mayorista. Estilo serif delicado, dorado en los
-         números, layout 4 columnas en desktop / 2x2 en mobile. -->
+    <!-- ESTADÃSTICAS â€” 4 datos numÃ©ricos que respaldan la marca antes
+         de la secciÃ³n mayorista. Estilo serif delicado, dorado en los
+         nÃºmeros, layout 4 columnas en desktop / 2x2 en mobile. -->
     <section class="stats-v2" data-bg="leather" id="stats">
       <div class="stats-v2__inner" data-reveal>
-        <span class="stats-v2__eyebrow" data-i18n="stats.eyebrow">JIcrea en números</span>
+        <span class="stats-v2__eyebrow" data-i18n="stats.eyebrow">JIcrea en nÃºmeros</span>
         <div class="stats-v2__grid">
           <div class="stats-v2__item">
             <span class="stats-v2__num">+100</span>
@@ -417,34 +417,34 @@
       </div>
     </section>
 
-    <!-- GALERÍA IG — grid 4x2 con placeholders para fotos del Instagram
+    <!-- GALERÃA IG â€” grid 4x2 con placeholders para fotos del Instagram
          de JIcrea (taller, mates personalizados, comercios que venden).
          Para reemplazar: cambiar el style background-image de cada
-         .ig-tile por la URL de la foto (o usar un loop si querés
+         .ig-tile por la URL de la foto (o usar un loop si querÃ©s
          hacerlo desde JS). Link al perfil real al final. -->
     <section class="ig-gallery" data-bg="light">
       <div class="ig-gallery__inner" data-reveal>
         <header class="ig-gallery__head">
-          <span class="ig-gallery__eyebrow" data-i18n="ig.eyebrow">— JIcrea en imágenes</span>
+          <span class="ig-gallery__eyebrow" data-i18n="ig.eyebrow">â€” JIcrea en imÃ¡genes</span>
           <h2 class="ig-gallery__title" data-i18n="ig.title" data-aos="fade-up">El taller, las manos, los mates.</h2>
-          <p class="ig-gallery__lead" data-i18n="ig.lead">Seguinos en Instagram para ver cómo nace cada pieza.</p>
+          <p class="ig-gallery__lead" data-i18n="ig.lead">Seguinos en Instagram para ver cÃ³mo nace cada pieza.</p>
         </header>
 
-        <!-- Galería con 4 fotos reales del Instagram de JIcrea, bajadas
+        <!-- GalerÃ­a con 4 fotos reales del Instagram de JIcrea, bajadas
              del feed oficial y guardadas en img/ig/. Cada tile linkea
-             al perfil (no a un post específico, para no romper si se borra). -->
+             al perfil (no a un post especÃ­fico, para no romper si se borra). -->
         <div class="ig-gallery__grid">
-          <a class="ig-tile" href="https://www.instagram.com/jicrea/" target="_blank" rel="noopener noreferrer" aria-label="Así nace un mate de verdad — JIcrea">
-            <img loading="lazy" decoding="async" src="img/ig/ig-1.jpg" alt="Así nace un mate de verdad, con tradición y dedicación">
+          <a class="ig-tile" href="https://www.instagram.com/jicrea/" target="_blank" rel="noopener noreferrer" aria-label="AsÃ­ nace un mate de verdad â€” JIcrea">
+            <img loading="lazy" decoding="async" src="img/ig/ig-1.jpg" alt="AsÃ­ nace un mate de verdad, con tradiciÃ³n y dedicaciÃ³n">
           </a>
-          <a class="ig-tile" href="https://www.instagram.com/jicrea/" target="_blank" rel="noopener noreferrer" aria-label="El detrás del taller JIcrea">
-            <img loading="lazy" decoding="async" src="img/ig/ig-2.jpg" alt="El detrás de los sonidos del taller">
+          <a class="ig-tile" href="https://www.instagram.com/jicrea/" target="_blank" rel="noopener noreferrer" aria-label="El detrÃ¡s del taller JIcrea">
+            <img loading="lazy" decoding="async" src="img/ig/ig-2.jpg" alt="El detrÃ¡s de los sonidos del taller">
           </a>
-          <a class="ig-tile" href="https://www.instagram.com/jicrea/" target="_blank" rel="noopener noreferrer" aria-label="Antes y después de un mate con vuelo">
-            <img loading="lazy" decoding="async" src="img/ig/ig-3.jpg" alt="Antes y después de un mate con vuelo">
+          <a class="ig-tile" href="https://www.instagram.com/jicrea/" target="_blank" rel="noopener noreferrer" aria-label="Antes y despuÃ©s de un mate con vuelo">
+            <img loading="lazy" decoding="async" src="img/ig/ig-3.jpg" alt="Antes y despuÃ©s de un mate con vuelo">
           </a>
           <a class="ig-tile" href="https://www.instagram.com/jicrea/" target="_blank" rel="noopener noreferrer" aria-label="Nuestro taller stockeado JIcrea">
-            <img loading="lazy" decoding="async" src="img/ig/ig-4.jpg" alt="Nuestro taller, stockeadísimo de mates">
+            <img loading="lazy" decoding="async" src="img/ig/ig-4.jpg" alt="Nuestro taller, stockeadÃ­simo de mates">
           </a>
         </div>
 
@@ -459,16 +459,16 @@
       </div>
     </section>
 
-    <!-- MAYORISTA V2 — rediseñada según el mockup del dueño. Look más
-         editorial: eyebrow italic, título serif italic con "JIcrea"
-         destacado, lista de 3 features con flechita → al costado y
+    <!-- MAYORISTA V2 â€” rediseÃ±ada segÃºn el mockup del dueÃ±o. Look mÃ¡s
+         editorial: eyebrow italic, tÃ­tulo serif italic con "JIcrea"
+         destacado, lista de 3 features con flechita â†’ al costado y
          CTA verde WhatsApp grande. -->
     <section class="b2b-v2" id="b2b" data-bg="dark-leaf">
       <div class="b2b-v2__inner">
         <div class="b2b-v2__head" data-reveal>
-          <span class="b2b-v2__eyebrow" data-i18n="b2b.eyebrow">— Para distribuidores</span>
-          <h2 class="b2b-v2__title" data-i18n="b2b.title" data-aos="fade-up">¿Querés vender <em>JIcrea?</em></h2>
-          <p class="b2b-v2__lead" data-i18n="b2b.lead">Trabajamos con supermercados, agroveterinarias, ferreterías, estaciones de servicio y muchos comercios más en todo Uruguay. Stock permanente, entregas regulares y atención directa.</p>
+          <span class="b2b-v2__eyebrow" data-i18n="b2b.eyebrow">â€” Para distribuidores</span>
+          <h2 class="b2b-v2__title" data-i18n="b2b.title" data-aos="fade-up">Â¿QuerÃ©s vender <em>JIcrea?</em></h2>
+          <p class="b2b-v2__lead" data-i18n="b2b.lead">Trabajamos con supermercados, agroveterinarias, ferreterÃ­as, estaciones de servicio y muchos comercios mÃ¡s en todo Uruguay. Stock permanente, entregas regulares y atenciÃ³n directa.</p>
         </div>
 
         <ul class="b2b-v2__features" data-reveal data-delay="1">
@@ -478,7 +478,7 @@
             </span>
             <div class="b2b-v2__feature-text">
               <h3 data-i18n="b2b.f1.title" data-aos="fade-up">Stock permanente</h3>
-              <p data-i18n="b2b.f1.text">Producción continua para garantizar disponibilidad todo el año.</p>
+              <p data-i18n="b2b.f1.text">ProducciÃ³n continua para garantizar disponibilidad todo el aÃ±o.</p>
             </div>
           </li>
           <li class="b2b-v2__feature">
@@ -486,8 +486,8 @@
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
             </span>
             <div class="b2b-v2__feature-text">
-              <h3 data-i18n="b2b.f2.title" data-aos="fade-up">Catálogo completo</h3>
-              <p data-i18n="b2b.f2.text">Más de 50 productos para elegir según el perfil de tu local.</p>
+              <h3 data-i18n="b2b.f2.title" data-aos="fade-up">CatÃ¡logo completo</h3>
+              <p data-i18n="b2b.f2.text">MÃ¡s de 50 productos para elegir segÃºn el perfil de tu local.</p>
             </div>
           </li>
           <li class="b2b-v2__feature">
@@ -495,7 +495,7 @@
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
             </span>
             <div class="b2b-v2__feature-text">
-              <h3 data-i18n="b2b.f3.title" data-aos="fade-up">Atención directa</h3>
+              <h3 data-i18n="b2b.f3.title" data-aos="fade-up">AtenciÃ³n directa</h3>
               <p data-i18n="b2b.f3.text">Un referente comercial dedicado a tu cuenta.</p>
             </div>
           </li>
@@ -532,22 +532,22 @@
           <a href="nuestra-historia.html" data-i18n="nav.history">Nuestra Historia</a>
         </div>
         <div class="footer__col">
-          <h4 data-i18n="footer.where" data-aos="fade-up">Dónde estamos</h4>
-          <p data-i18n="footer.where.p1">Paysandú, Uruguay</p>
+          <h4 data-i18n="footer.where" data-aos="fade-up">DÃ³nde estamos</h4>
+          <p data-i18n="footer.where.p1">PaysandÃº, Uruguay</p>
           <p data-i18n="footer.where.p2">Productores y fabricantes desde 2015</p>
         </div>
       </div>
 
       <div class="footer__base">
-        <p data-i18n="footer.copy">© 2026 JIcrea — Mates uruguayos hechos a mano</p>
+        <p data-i18n="footer.copy">Â© 2026 JIcrea â€” Mates uruguayos hechos a mano</p>
       </div>
     </div>
   </footer>
 
-  <!-- ═════════════ DRAWER + MODAL + NOTIF DEL CARRITO ═════════════
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â• DRAWER + MODAL + NOTIF DEL CARRITO â•â•â•â•â•â•â•â•â•â•â•â•â•
        Mismo markup que en tienda/producto. tienda-cart.js los maneja
        leyendo localStorage para que el carrito sea consistente entre
-       todas las páginas del sitio. -->
+       todas las pÃ¡ginas del sitio. -->
   <div class="cart-backdrop" id="cartBackdrop" aria-hidden="true"></div>
   <aside class="cart" id="cart" aria-label="Carrito de compra" aria-hidden="true">
     <div class="cart__head">
@@ -559,7 +559,7 @@
       </button>
     </div>
     <div class="cart__body" id="cartBody">
-      <p class="cart__empty" id="cartEmpty">Tu carrito está vacío.<br><span>Agregá productos para coordinar la compra por WhatsApp.</span></p>
+      <p class="cart__empty" id="cartEmpty">Tu carrito estÃ¡ vacÃ­o.<br><span>AgregÃ¡ productos para coordinar la compra por WhatsApp.</span></p>
       <ul class="cart__list" id="cartList"></ul>
     </div>
     <div class="cart__foot">
@@ -575,8 +575,8 @@
     </div>
   </aside>
 
-  <!-- Modal de cantidad (no se usa en index pero está por si el JS
-       lo necesita — algunos productos podrían linkearse desde acá) -->
+  <!-- Modal de cantidad (no se usa en index pero estÃ¡ por si el JS
+       lo necesita â€” algunos productos podrÃ­an linkearse desde acÃ¡) -->
   <div class="qty-modal" id="qtyModal" aria-hidden="true">
     <div class="qty-modal__backdrop" id="qtyModalBackdrop"></div>
     <div class="qty-modal__panel">
@@ -586,13 +586,13 @@
       <div class="qty-modal__product">
         <img loading="lazy" decoding="async" class="qty-modal__img" id="qtyModalImg" src="" alt="">
         <div>
-          <h4 class="qty-modal__name" id="qtyModalName" data-aos="fade-up">—</h4>
-          <p class="qty-modal__price" id="qtyModalPrice">—</p>
+          <h4 class="qty-modal__name" id="qtyModalName" data-aos="fade-up">â€”</h4>
+          <p class="qty-modal__price" id="qtyModalPrice">â€”</p>
         </div>
       </div>
-      <p class="qty-modal__question">¿Cuántas unidades querés agregar?</p>
+      <p class="qty-modal__question">Â¿CuÃ¡ntas unidades querÃ©s agregar?</p>
       <div class="qty-modal__qty">
-        <button class="qty-modal__btn" id="qtyMinus">−</button>
+        <button class="qty-modal__btn" id="qtyMinus">âˆ’</button>
         <span class="qty-modal__value" id="qtyValue">1</span>
         <button class="qty-modal__btn" id="qtyPlus">+</button>
       </div>
@@ -601,21 +601,21 @@
     </div>
   </div>
 
-  <!-- Notificación -->
+  <!-- NotificaciÃ³n -->
   <div class="cart-notif" id="cartNotif" aria-live="polite">
     <div class="cart-notif__row">
-      <span class="cart-notif__check" aria-hidden="true">✓</span>
+      <span class="cart-notif__check" aria-hidden="true">âœ“</span>
       <div class="cart-notif__thumb" aria-hidden="true"><img decoding="async" id="notifImg" src="" alt="" loading="lazy"></div>
       <div class="cart-notif__text">
         <p class="cart-notif__title" id="notifTitle">Agregado al carrito</p>
-        <p class="cart-notif__detail" id="notifDetail">—</p>
+        <p class="cart-notif__detail" id="notifDetail">â€”</p>
       </div>
     </div>
     <div class="cart-notif__sep"></div>
     <div class="cart-notif__total"><span>Total carrito:</span> <strong id="notifTotal">$0</strong></div>
     <div class="cart-notif__actions">
       <button class="cart-notif__btn cart-notif__btn--ghost" id="notifKeep">Seguir mirando</button>
-      <button class="cart-notif__btn cart-notif__btn--solid" id="notifCheckout">Finalizar compra →</button>
+      <button class="cart-notif__btn cart-notif__btn--solid" id="notifCheckout">Finalizar compra â†’</button>
     </div>
   </div>
 
@@ -625,7 +625,7 @@
   </a>
 
   <!-- Lenis smooth scroll (CDN, fallback silencioso) -->
-  <script defer src="https://unpkg.com/lenis@1.0.42/dist/lenis.min.js" onerror="console.info('[JIcrea] Lenis CDN no disponible — scroll nativo')"></script>
+  <script defer src="https://unpkg.com/lenis@1.0.42/dist/lenis.min.js" onerror="console.info('[JIcrea] Lenis CDN no disponible â€” scroll nativo')"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script defer src="js/i18n.js?v=5"></script>

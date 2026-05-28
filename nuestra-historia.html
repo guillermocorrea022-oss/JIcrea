@@ -1,45 +1,45 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#140C06">
-  <meta name="description" content="JIcrea — Nuestra historia. Productores uruguayos de mates desde 2015, en Paysandú. Del campo a tus manos.">
-  <title>JIcrea — Nuestra Historia</title>
+  <meta name="description" content="JIcrea â€” Nuestra historia. Productores uruguayos de mates desde 2015, en PaysandÃº. Del campo a tus manos.">
+  <title>JIcrea â€” Nuestra Historia</title>
 
   <link rel="icon" type="image/png" href="img/favicon.png?v=2">
 
-  <!-- PRELOAD assets críticos — logo curtain + hero historia + fuentes. -->
+  <!-- PRELOAD assets crÃ­ticos â€” logo curtain + hero historia + fuentes. -->
   <link rel="preload" as="image" href="img/logos_jlcrea_sin_fondo/08_logo_completo_blanco.png" fetchpriority="high">
   <link rel="preload" as="image" href="img/momento1.jpg" fetchpriority="high">
   <link rel="preload" as="font" type="font/woff2" href="fonts/super-med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="fonts/super-reg.woff2" crossorigin>
 
   <meta property="og:type" content="website">
-  <meta property="og:title" content="JIcrea — Nuestra Historia">
+  <meta property="og:title" content="JIcrea â€” Nuestra Historia">
   <meta property="og:description" content="Productores uruguayos de mates desde 2015. Del campo a tus manos.">
   <meta property="og:locale" content="es_UY">
 
-  <link rel="stylesheet" href="css/jicrea-pro.css?v=143">
+  <link rel="stylesheet" href="css/jicrea-pro.css?v=144">
   <link rel="stylesheet" href="css/tienda-cart.css?v=33">
   <link rel="stylesheet" href="css/historia.css?v=10">
 </head>
 <body class="page-historia page-index-v2">
-  <!-- PAGE CURTAIN — mismo overlay cuero del resto del sitio para que la
+  <!-- PAGE CURTAIN â€” mismo overlay cuero del resto del sitio para que la
        entrada sea coherente. -->
   <div class="page-curtain" id="pageCurtain" aria-hidden="true">
     <img class="page-curtain__logo" src="img/logos_jlcrea_sin_fondo/08_logo_completo_blanco.png" alt="">
   </div>
 
-  <!-- HEADER V2 — logo apilado centrado, sin placa cuero. -->
+  <!-- HEADER V2 â€” logo apilado centrado, sin placa cuero. -->
   <header class="header header--v2" id="header">
-    <!-- HAMBURGER — solo visible en mobile (≤900px). Abre overlay full-screen. -->
-    <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
+    <!-- HAMBURGER â€” solo visible en mobile (â‰¤900px). Abre overlay full-screen. -->
+    <button class="hamburger" id="hamburger" aria-label="Abrir menÃº" aria-expanded="false" aria-controls="mobileMenu">
       <span></span>
       <span></span>
       <span></span>
     </button>
-    <nav class="header__nav header__nav--left" aria-label="Navegación izquierda">
+    <nav class="header__nav header__nav--left" aria-label="NavegaciÃ³n izquierda">
       <a href="index.html" data-i18n="nav.home">Inicio</a>
       <a href="tienda.html" data-i18n="nav.shop">Tienda</a>
     </nav>
@@ -51,7 +51,7 @@
       </a>
     </div>
 
-    <nav class="header__nav header__nav--right" aria-label="Navegación derecha">
+    <nav class="header__nav header__nav--right" aria-label="NavegaciÃ³n derecha">
       <a href="index.html#manos" data-i18n="nav.process">Proceso</a>
       <a href="nuestra-historia.html" class="is-current" data-i18n="nav.history">Nuestra Historia</a>
       <button type="button" id="i18nToggle" class="i18n-toggle" data-current="es" aria-label="Switch to English">EN</button>
@@ -66,10 +66,10 @@
     </nav>
   </header>
 
-  <!-- MOBILE MENU OVERLAY — fullscreen drawer al tocar hamburger. -->
+  <!-- MOBILE MENU OVERLAY â€” fullscreen drawer al tocar hamburger. -->
   <aside class="mobile-menu" id="mobileMenu" aria-hidden="true" inert>
     <div class="mobile-menu__bg" aria-hidden="true"></div>
-    <button class="mobile-menu__close" id="mobileMenuClose" aria-label="Cerrar menú">
+    <button class="mobile-menu__close" id="mobileMenuClose" aria-label="Cerrar menÃº">
       <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
       </svg>
@@ -90,53 +90,53 @@
 
   <main>
 
-    <!-- HERO — pantalla completa con título grande tipo el hero del index.
-         Foto de fondo: momento1.jpg (mate cinematográfico). -->
+    <!-- HERO â€” pantalla completa con tÃ­tulo grande tipo el hero del index.
+         Foto de fondo: momento1.jpg (mate cinematogrÃ¡fico). -->
     <section class="hero hero--cinema historia-hero" data-bg="dark">
       <div class="hero__media historia-hero__media" aria-hidden="true"></div>
       <div class="hero__inner hero__inner--left">
-        <span class="historia-hero__eyebrow" data-i18n="history.hero.eyebrow">— Desde 2015</span>
+        <span class="historia-hero__eyebrow" data-i18n="history.hero.eyebrow">â€” Desde 2015</span>
         <h1 class="hero__title" aria-label="Nuestra historia">
           <span class="line" data-text="NUESTRA" data-i18n="history.hero.title.l1"></span>
           <span class="line" data-text="HISTORIA" data-i18n="history.hero.title.l2"></span>
         </h1>
         <div class="hero__rule" aria-hidden="true"></div>
-        <p class="hero__subtitle" data-i18n="history.hero.subtitle">Productores uruguayos. Hecho a mano en Paysandú, <em class="text-accent-green">con los tiempos que pide el oficio</em>.</p>
+        <p class="hero__subtitle" data-i18n="history.hero.subtitle">Productores uruguayos. Hecho a mano en PaysandÃº, <em class="text-accent-green">con los tiempos que pide el oficio</em>.</p>
         <a class="hero__cta" href="#hist-origen">
-          <span data-i18n="history.hero.cta">Conocé el origen</span>
+          <span data-i18n="history.hero.cta">ConocÃ© el origen</span>
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
         </a>
       </div>
     </section>
 
-    <!-- BLOQUE 1 — EL ORIGEN. Leather con título serif XL + 3 párrafos
-         narrando la historia: arranque (2015), formalización (2017),
-         escala actual (1.000–1.500 mates/mes, 100+ mayoristas). -->
+    <!-- BLOQUE 1 â€” EL ORIGEN. Leather con tÃ­tulo serif XL + 3 pÃ¡rrafos
+         narrando la historia: arranque (2015), formalizaciÃ³n (2017),
+         escala actual (1.000â€“1.500 mates/mes, 100+ mayoristas). -->
     <section class="hist-block hist-block--leather" id="hist-origen" data-bg="leather">
       <div class="hist-block__inner" data-reveal>
-        <div class="hist-diamond" aria-hidden="true">◇</div>
+        <div class="hist-diamond" aria-hidden="true">â—‡</div>
         <span class="hist-eyebrow" data-i18n="hist.origen.eyebrow">El origen</span>
-        <h2 class="hist-title" data-i18n="hist.origen.title" data-aos="fade-up">De 50 mates<br>a más de 100 clientes.</h2>
+        <h2 class="hist-title" data-i18n="hist.origen.title" data-aos="fade-up">De 50 mates<br>a mÃ¡s de 100 clientes.</h2>
 
         <div class="hist-body">
-          <p class="hist-lead" data-i18n="hist.origen.lead">JIcrea es una empresa uruguaya productora y fabricante de mates, fundada formalmente en 2017 a partir de un emprendimiento personal iniciado en 2015–2016.</p>
+          <p class="hist-lead" data-i18n="hist.origen.lead">JIcrea es una empresa uruguaya productora y fabricante de mates, fundada formalmente en 2017 a partir de un emprendimiento personal iniciado en 2015â€“2016.</p>
 
-          <p data-i18n="hist.origen.p1">Lo que comenzó con <strong>50 mates, una tabla y una lija</strong>, se transformó en una empresa con galpón propio en Paysandú, equipo de producción y más de <strong>100 clientes mayoristas</strong> en todo Uruguay.</p>
+          <p data-i18n="hist.origen.p1">Lo que comenzÃ³ con <strong>50 mates, una tabla y una lija</strong>, se transformÃ³ en una empresa con galpÃ³n propio en PaysandÃº, equipo de producciÃ³n y mÃ¡s de <strong>100 clientes mayoristas</strong> en todo Uruguay.</p>
 
-          <p data-i18n="hist.origen.p2">Hoy producimos entre 1.000 y 1.500 mates mensuales, controlando cada etapa del proceso: desde la calabaza en el campo hasta el mate terminado. Nuestro fuerte es la <em>calabaza natural</em>, pero también trabajamos con cerámica, algarrobo y una amplia gama de accesorios.</p>
+          <p data-i18n="hist.origen.p2">Hoy producimos entre 1.000 y 1.500 mates mensuales, controlando cada etapa del proceso: desde la calabaza en el campo hasta el mate terminado. Nuestro fuerte es la <em>calabaza natural</em>, pero tambiÃ©n trabajamos con cerÃ¡mica, algarrobo y una amplia gama de accesorios.</p>
 
           <p class="hist-sign" data-i18n="hist.origen.sign">JIcrea no es solo una marca.<br>Es la historia de construir algo real, con las manos, desde cero.</p>
         </div>
       </div>
     </section>
 
-    <!-- TIMELINE — recorrido cronológico de la marca. 4 puntos clave
-         conectados por una línea dorada horizontal. Light bg para que
+    <!-- TIMELINE â€” recorrido cronolÃ³gico de la marca. 4 puntos clave
+         conectados por una lÃ­nea dorada horizontal. Light bg para que
          contraste con el bloque leather de origen. -->
     <section class="hist-timeline" data-bg="light">
       <div class="hist-timeline__inner">
         <header class="hist-timeline__head" data-reveal>
-          <div class="hist-diamond" aria-hidden="true">◇</div>
+          <div class="hist-diamond" aria-hidden="true">â—‡</div>
           <span class="hist-eyebrow" data-i18n="hist.timeline.eyebrow">El recorrido</span>
           <h2 class="hist-title hist-title--dark" data-i18n="hist.timeline.title" data-aos="fade-up">De un mate a una marca.</h2>
         </header>
@@ -145,37 +145,37 @@
             <span class="hist-timeline__year">2015</span>
             <span class="hist-timeline__dot" aria-hidden="true"></span>
             <h3 class="hist-timeline__milestone" data-i18n="hist.tl1.title" data-aos="fade-up">El inicio</h3>
-            <p class="hist-timeline__text" data-i18n="hist.tl1.text">Los primeros 50 mates con una tabla, una lija y la convicción de hacer algo distinto.</p>
+            <p class="hist-timeline__text" data-i18n="hist.tl1.text">Los primeros 50 mates con una tabla, una lija y la convicciÃ³n de hacer algo distinto.</p>
           </li>
           <li class="hist-timeline__item" data-reveal data-delay="1">
             <span class="hist-timeline__year">2017</span>
             <span class="hist-timeline__dot" aria-hidden="true"></span>
-            <h3 class="hist-timeline__milestone" data-i18n="hist.tl2.title" data-aos="fade-up">Fundación formal</h3>
-            <p class="hist-timeline__text" data-i18n="hist.tl2.text">JIcrea se constituye como empresa. Galpón propio en Paysandú, equipo de producción y proceso documentado.</p>
+            <h3 class="hist-timeline__milestone" data-i18n="hist.tl2.title" data-aos="fade-up">FundaciÃ³n formal</h3>
+            <p class="hist-timeline__text" data-i18n="hist.tl2.text">JIcrea se constituye como empresa. GalpÃ³n propio en PaysandÃº, equipo de producciÃ³n y proceso documentado.</p>
           </li>
           <li class="hist-timeline__item" data-reveal data-delay="2">
             <span class="hist-timeline__year">2020</span>
             <span class="hist-timeline__dot" aria-hidden="true"></span>
             <h3 class="hist-timeline__milestone" data-i18n="hist.tl3.title" data-aos="fade-up">Escala mayorista</h3>
-            <p class="hist-timeline__text" data-i18n="hist.tl3.text">Llegamos a más de 50 comercios distribuidos en todo Uruguay. Catálogo ampliado a posa mates, materas y yerberos.</p>
+            <p class="hist-timeline__text" data-i18n="hist.tl3.text">Llegamos a mÃ¡s de 50 comercios distribuidos en todo Uruguay. CatÃ¡logo ampliado a posa mates, materas y yerberos.</p>
           </li>
           <li class="hist-timeline__item" data-reveal data-delay="3">
             <span class="hist-timeline__year" data-i18n="hist.tl4.year">Hoy</span>
             <span class="hist-timeline__dot" aria-hidden="true"></span>
             <h3 class="hist-timeline__milestone" data-i18n="hist.tl4.title" data-aos="fade-up">+100 clientes activos</h3>
-            <p class="hist-timeline__text" data-i18n="hist.tl4.text">Producimos entre 1.000 y 1.500 mates al mes. La próxima etapa: exportar la cultura del mate al mundo.</p>
+            <p class="hist-timeline__text" data-i18n="hist.tl4.text">Producimos entre 1.000 y 1.500 mates al mes. La prÃ³xima etapa: exportar la cultura del mate al mundo.</p>
           </li>
         </ol>
       </div>
     </section>
 
-    <!-- STATS STRIP — números clave de la marca. Light bg para romper el
-         ritmo cromático entre dos bloques leather. -->
+    <!-- STATS STRIP â€” nÃºmeros clave de la marca. Light bg para romper el
+         ritmo cromÃ¡tico entre dos bloques leather. -->
     <section class="hist-stats" data-bg="light">
       <div class="hist-stats__inner" data-reveal>
         <div class="hist-stats__item">
           <span class="hist-stats__num">2015</span>
-          <span class="hist-stats__label" data-i18n="hist.stats.year">Año de inicio</span>
+          <span class="hist-stats__label" data-i18n="hist.stats.year">AÃ±o de inicio</span>
         </div>
         <div class="hist-stats__item">
           <span class="hist-stats__num">1.500</span>
@@ -186,15 +186,15 @@
           <span class="hist-stats__label" data-i18n="hist.stats.clients">Clientes mayoristas</span>
         </div>
         <div class="hist-stats__item">
-          <span class="hist-stats__num">PDÚ</span>
-          <span class="hist-stats__label" data-i18n="hist.stats.where">Paysandú, Uruguay</span>
+          <span class="hist-stats__num">PDÃš</span>
+          <span class="hist-stats__label" data-i18n="hist.stats.where">PaysandÃº, Uruguay</span>
         </div>
       </div>
     </section>
 
-    <!-- SLOGAN CALLOUT — dark con la frase oficial en UNA SOLA LÍNEA.
+    <!-- SLOGAN CALLOUT â€” dark con la frase oficial en UNA SOLA LÃNEA.
          Sin <br>: el texto fluye horizontal, single statement masivo.
-         Detrás: foto del campo (proceso-fondo1.png) con overlay oscuro
+         DetrÃ¡s: foto del campo (proceso-fondo1.png) con overlay oscuro
          para grounding visual del slogan. -->
     <section class="hist-callout" data-bg="dark">
       <div class="hist-callout__bg" aria-hidden="true"></div>
@@ -204,43 +204,43 @@
       </div>
     </section>
 
-    <!-- NARRATIVA — la frase larga de marca sobre las manos. Light bg con
+    <!-- NARRATIVA â€” la frase larga de marca sobre las manos. Light bg con
          el quote en italic Garamond y un par de comillas decorativas. -->
     <section class="hist-block hist-block--light" data-bg="light">
       <div class="hist-block__inner" data-reveal>
-        <div class="hist-diamond" aria-hidden="true">◇</div>
+        <div class="hist-diamond" aria-hidden="true">â—‡</div>
         <span class="hist-eyebrow" data-i18n="hist.quote.eyebrow">La frase de la marca</span>
         <h2 class="hist-title hist-title--dark" data-i18n="hist.quote.title" data-aos="fade-up">La marca, en una sola frase.</h2>
-        <!-- Separador dorado con diamante en el medio — reemplaza el
-             carácter de comillas que el font super-med renderiza raro. -->
+        <!-- Separador dorado con diamante en el medio â€” reemplaza el
+             carÃ¡cter de comillas que el font super-med renderiza raro. -->
         <div class="hist-quote-sep" aria-hidden="true">
           <span class="hist-quote-sep__line"></span>
-          <span class="hist-quote-sep__diamond">◇</span>
+          <span class="hist-quote-sep__diamond">â—‡</span>
           <span class="hist-quote-sep__line"></span>
         </div>
         <blockquote class="hist-quote" data-i18n="hist.quote.text">
-          Se siembra, se cosecha, se procesa, se lava, se pule, se toma con las manos y se trasciende de generación en generación en una ronda de mates.
+          Se siembra, se cosecha, se procesa, se lava, se pule, se toma con las manos y se trasciende de generaciÃ³n en generaciÃ³n en una ronda de mates.
         </blockquote>
       </div>
     </section>
 
-    <!-- FILOSOFÍA — Calidad en lo sencillo. Variante LEAF (verde) para
+    <!-- FILOSOFÃA â€” Calidad en lo sencillo. Variante LEAF (verde) para
          integrar el color verde de la marca y romper el ritmo brown. -->
     <section class="hist-block hist-block--leaf" data-bg="leaf">
       <div class="hist-block__inner" data-reveal>
-        <div class="hist-diamond" aria-hidden="true">◇</div>
-        <span class="hist-eyebrow" data-i18n="hist.filo.eyebrow">Filosofía</span>
+        <div class="hist-diamond" aria-hidden="true">â—‡</div>
+        <span class="hist-eyebrow" data-i18n="hist.filo.eyebrow">FilosofÃ­a</span>
         <h2 class="hist-title hist-title--oneline" data-i18n="hist.filo.title" data-aos="fade-up">Calidad en lo sencillo.</h2>
-        <p class="hist-lead hist-lead--center" data-i18n="hist.filo.lead">No buscamos lo complejo ni lo artificioso. La calidad está en <em class="text-accent-green">la materia prima</em>, en el proceso honesto, en el producto que habla por sí solo.</p>
+        <p class="hist-lead hist-lead--center" data-i18n="hist.filo.lead">No buscamos lo complejo ni lo artificioso. La calidad estÃ¡ en <em class="text-accent-green">la materia prima</em>, en el proceso honesto, en el producto que habla por sÃ­ solo.</p>
       </div>
     </section>
 
-    <!-- 4 PILARES — light, grid de 2x2 con número grande y descripción.
-         Estética "etiqueta numerada" coherente con el resto del sitio. -->
+    <!-- 4 PILARES â€” light, grid de 2x2 con nÃºmero grande y descripciÃ³n.
+         EstÃ©tica "etiqueta numerada" coherente con el resto del sitio. -->
     <section class="hist-pillars" data-bg="light">
       <div class="hist-pillars__inner">
         <div class="hist-pillars__head" data-reveal>
-          <div class="hist-diamond" aria-hidden="true">◇</div>
+          <div class="hist-diamond" aria-hidden="true">â—‡</div>
           <span class="hist-eyebrow" data-i18n="hist.pillars.eyebrow">Identidad</span>
           <h2 class="hist-title hist-title--dark" data-i18n="hist.pillars.title" data-aos="fade-up">Cuatro pilares.</h2>
         </div>
@@ -253,7 +253,7 @@
           <div class="hist-pillar" data-reveal data-delay="1">
             <span class="hist-pillar__num">02</span>
             <h3 class="hist-pillar__name" data-i18n="hist.p2.name" data-aos="fade-up">El origen</h3>
-            <p class="hist-pillar__desc" data-i18n="hist.p2.desc">Uruguayo, del campo, con raíz cultural profunda.</p>
+            <p class="hist-pillar__desc" data-i18n="hist.p2.desc">Uruguayo, del campo, con raÃ­z cultural profunda.</p>
           </div>
           <div class="hist-pillar" data-reveal data-delay="2">
             <span class="hist-pillar__num">03</span>
@@ -269,10 +269,10 @@
       </div>
     </section>
 
-    <!-- FUNDADOR — la marca con cara. Foto del fundador + quote.
+    <!-- FUNDADOR â€” la marca con cara. Foto del fundador + quote.
          PLACEHOLDER: subir la foto a img/fundador.jpg y reemplazar el
          data-placeholder bg por la URL real. Texto: cita textual que
-         resume la filosofía del proyecto en primera persona. -->
+         resume la filosofÃ­a del proyecto en primera persona. -->
     <section class="hist-founder" data-bg="leather">
       <div class="hist-founder__inner" data-reveal>
         <div class="hist-founder__photo" data-placeholder>
@@ -282,22 +282,22 @@
           </span>
         </div>
         <div class="hist-founder__text">
-          <span class="hist-eyebrow" data-i18n="hist.founder.eyebrow">— Detrás del mate</span>
+          <span class="hist-eyebrow" data-i18n="hist.founder.eyebrow">â€” DetrÃ¡s del mate</span>
           <blockquote class="hist-founder__quote" data-i18n="hist.founder.quote">
-            Empezamos con 50 mates y una tabla. Diez años después seguimos curando cada porongo igual que el primero. Lo que sale de acá es lo mismo que tomamos en casa — por eso lo firmamos.
+            Empezamos con 50 mates y una tabla. Diez aÃ±os despuÃ©s seguimos curando cada porongo igual que el primero. Lo que sale de acÃ¡ es lo mismo que tomamos en casa â€” por eso lo firmamos.
           </blockquote>
-          <p class="hist-founder__sign" data-i18n="hist.founder.sign">— Juan Ignacio Armas, fundador de JIcrea</p>
+          <p class="hist-founder__sign" data-i18n="hist.founder.sign">â€” Juan Ignacio Armas, fundador de JIcrea</p>
         </div>
       </div>
     </section>
 
-    <!-- VISIÓN — 3 metas a futuro. Light. -->
+    <!-- VISIÃ“N â€” 3 metas a futuro. Light. -->
     <section class="hist-vision" data-bg="light">
       <div class="hist-vision__inner">
         <div class="hist-vision__head" data-reveal>
-          <div class="hist-diamond" aria-hidden="true">◇</div>
-          <span class="hist-eyebrow" data-i18n="hist.vision.eyebrow">Visión</span>
-          <h2 class="hist-title hist-title--dark" data-i18n="hist.vision.title" data-aos="fade-up">A dónde vamos.</h2>
+          <div class="hist-diamond" aria-hidden="true">â—‡</div>
+          <span class="hist-eyebrow" data-i18n="hist.vision.eyebrow">VisiÃ³n</span>
+          <h2 class="hist-title hist-title--dark" data-i18n="hist.vision.title" data-aos="fade-up">A dÃ³nde vamos.</h2>
         </div>
         <div class="hist-vision__grid">
           <div class="hist-vision__item" data-reveal>
@@ -305,8 +305,8 @@
             <p data-i18n="hist.v1.text">Consolidarnos como la marca premium de referencia en mates uruguayos.</p>
           </div>
           <div class="hist-vision__item" data-reveal data-delay="1">
-            <h3 data-i18n="hist.v2.title" data-aos="fade-up">Proveedor mayorista líder</h3>
-            <p data-i18n="hist.v2.text">Ser el proveedor mayorista más completo y confiable del mercado local.</p>
+            <h3 data-i18n="hist.v2.title" data-aos="fade-up">Proveedor mayorista lÃ­der</h3>
+            <p data-i18n="hist.v2.text">Ser el proveedor mayorista mÃ¡s completo y confiable del mercado local.</p>
           </div>
           <div class="hist-vision__item" data-reveal data-delay="2">
             <h3 data-i18n="hist.v3.title" data-aos="fade-up">Internacionalizar la cultura</h3>
@@ -316,26 +316,26 @@
       </div>
     </section>
 
-    <!-- MISIÓN FINAL — cierre dark con la misión y el slogan extendido.
-         Es el último mensaje de la página: el cierre emocional.
-         Foto de campo (hero1) detrás con overlay heavy para grounding. -->
+    <!-- MISIÃ“N FINAL â€” cierre dark con la misiÃ³n y el slogan extendido.
+         Es el Ãºltimo mensaje de la pÃ¡gina: el cierre emocional.
+         Foto de campo (hero1) detrÃ¡s con overlay heavy para grounding. -->
     <section class="hist-mision" data-bg="dark">
       <div class="hist-mision__bg" aria-hidden="true"></div>
       <div class="hist-mision__inner" data-reveal>
-        <span class="hist-eyebrow hist-eyebrow--gold" data-i18n="hist.mision.eyebrow">Nuestra misión</span>
+        <span class="hist-eyebrow hist-eyebrow--gold" data-i18n="hist.mision.eyebrow">Nuestra misiÃ³n</span>
         <p class="hist-mision__text" data-i18n="hist.mision.text">Exportar la cultura del mate<br>uruguayo al mundo.</p>
         <div class="hist-mision__sep" aria-hidden="true"></div>
         <p class="hist-mision__slogan">
           <span data-i18n="hist.mision.slogan1">Del campo a tus manos,</span>
           <span class="hist-mision__slogan-extra" data-i18n="hist.mision.slogan2">de tus manos al mundo.</span>
         </p>
-        <a class="hist-mision__cta" href="tienda.html" data-i18n="hist.mision.cta">Conocé los mates →</a>
+        <a class="hist-mision__cta" href="tienda.html" data-i18n="hist.mision.cta">ConocÃ© los mates â†’</a>
       </div>
     </section>
 
   </main>
 
-  <!-- FOOTER — mismo del resto del sitio (textura cuero) -->
+  <!-- FOOTER â€” mismo del resto del sitio (textura cuero) -->
   <footer class="footer" id="contacto" data-bg="leather">
     <div class="footer__inner">
       <div class="footer__brand">
@@ -357,21 +357,21 @@
           <a href="nuestra-historia.html" data-i18n="nav.history">Nuestra Historia</a>
         </div>
         <div class="footer__col">
-          <h4 data-i18n="footer.where" data-aos="fade-up">Dónde estamos</h4>
-          <p data-i18n="footer.where.p1">Paysandú, Uruguay</p>
+          <h4 data-i18n="footer.where" data-aos="fade-up">DÃ³nde estamos</h4>
+          <p data-i18n="footer.where.p1">PaysandÃº, Uruguay</p>
           <p data-i18n="footer.where.p2">Productores y fabricantes desde 2015</p>
         </div>
       </div>
 
       <div class="footer__base">
-        <p data-i18n="footer.copy">© 2026 JIcrea — Mates uruguayos hechos a mano</p>
+        <p data-i18n="footer.copy">Â© 2026 JIcrea â€” Mates uruguayos hechos a mano</p>
       </div>
     </div>
   </footer>
 
-  <!-- ═════════════ DRAWER + MODAL + NOTIF DEL CARRITO ═════════════
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â• DRAWER + MODAL + NOTIF DEL CARRITO â•â•â•â•â•â•â•â•â•â•â•â•â•
        Mismo markup que en tienda/producto/index. Cart consistente
-       en todas las páginas — tienda-cart.js lee localStorage. -->
+       en todas las pÃ¡ginas â€” tienda-cart.js lee localStorage. -->
   <div class="cart-backdrop" id="cartBackdrop" aria-hidden="true"></div>
   <aside class="cart" id="cart" aria-label="Carrito de compra" aria-hidden="true">
     <div class="cart__head">
@@ -383,7 +383,7 @@
       </button>
     </div>
     <div class="cart__body" id="cartBody">
-      <p class="cart__empty" id="cartEmpty"><span data-i18n="cart.empty">Tu carrito está vacío.</span><br><span data-i18n="cart.empty.sub">Agregá productos para coordinar la compra por WhatsApp.</span></p>
+      <p class="cart__empty" id="cartEmpty"><span data-i18n="cart.empty">Tu carrito estÃ¡ vacÃ­o.</span><br><span data-i18n="cart.empty.sub">AgregÃ¡ productos para coordinar la compra por WhatsApp.</span></p>
       <ul class="cart__list" id="cartList"></ul>
     </div>
     <div class="cart__foot">
@@ -408,13 +408,13 @@
       <div class="qty-modal__product">
         <img loading="lazy" decoding="async" class="qty-modal__img" id="qtyModalImg" src="" alt="">
         <div>
-          <h4 class="qty-modal__name" id="qtyModalName" data-aos="fade-up">—</h4>
-          <p class="qty-modal__price" id="qtyModalPrice">—</p>
+          <h4 class="qty-modal__name" id="qtyModalName" data-aos="fade-up">â€”</h4>
+          <p class="qty-modal__price" id="qtyModalPrice">â€”</p>
         </div>
       </div>
-      <p class="qty-modal__question">¿Cuántas unidades querés agregar?</p>
+      <p class="qty-modal__question">Â¿CuÃ¡ntas unidades querÃ©s agregar?</p>
       <div class="qty-modal__qty">
-        <button class="qty-modal__btn" id="qtyMinus">−</button>
+        <button class="qty-modal__btn" id="qtyMinus">âˆ’</button>
         <span class="qty-modal__value" id="qtyValue">1</span>
         <button class="qty-modal__btn" id="qtyPlus">+</button>
       </div>
@@ -425,18 +425,18 @@
 
   <div class="cart-notif" id="cartNotif" aria-live="polite">
     <div class="cart-notif__row">
-      <span class="cart-notif__check" aria-hidden="true">✓</span>
+      <span class="cart-notif__check" aria-hidden="true">âœ“</span>
       <div class="cart-notif__thumb" aria-hidden="true"><img decoding="async" id="notifImg" src="" alt="" loading="lazy"></div>
       <div class="cart-notif__text">
         <p class="cart-notif__title" id="notifTitle">Agregado al carrito</p>
-        <p class="cart-notif__detail" id="notifDetail">—</p>
+        <p class="cart-notif__detail" id="notifDetail">â€”</p>
       </div>
     </div>
     <div class="cart-notif__sep"></div>
     <div class="cart-notif__total"><span>Total carrito:</span> <strong id="notifTotal">$0</strong></div>
     <div class="cart-notif__actions">
       <button class="cart-notif__btn cart-notif__btn--ghost" id="notifKeep">Seguir mirando</button>
-      <button class="cart-notif__btn cart-notif__btn--solid" id="notifCheckout">Finalizar compra →</button>
+      <button class="cart-notif__btn cart-notif__btn--solid" id="notifCheckout">Finalizar compra â†’</button>
     </div>
   </div>
 
