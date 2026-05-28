@@ -58,7 +58,7 @@
       "amargor.l1":        "ES AMARGO",
       "amargor.l2":        "ES LENTO",
       "amargor.l3":        "ES NUESTRO",
-      "amargor.text":      "La primera vez no se entiende, la segunda no se comparte, y después ya es parte de todos los días.",
+      "amargor.text":      "La primera vez no se entiende, la segunda tampoco… y después ya es parte de todos los días.",
 
       // ═══ PRODUCTOS SELECTOR (index) ═══
       "productos.eyebrow":     "Calidad<br>en lo sencillo",
@@ -314,7 +314,7 @@
       "amargor.l1":        "IT'S BITTER",
       "amargor.l2":        "IT'S SLOW",
       "amargor.l3":        "IT'S OURS",
-      "amargor.text":      "The first time you don't get it. The second, you don't share it. After that, it's part of every day.",
+      "amargor.text":      "The first time you don't get it. The second time either… and after that, it's part of every day.",
 
       "productos.eyebrow":     "Quality<br>in simplicity",
       "productos.giant.l1":    "Our",
