@@ -45,6 +45,12 @@
 html {
   font-size: 62.5%;
   scroll-behavior: auto;
+  /* CRÍTICO MOBILE: el html bg es DARK EARTH (matchea el navbar y el
+     status bar de iOS). Esto resuelve el "strip transparente" que se
+     veía arriba del navbar — el safe-area de iOS muestra el bg del
+     html, así que si está oscuro queda visualmente continuo con el
+     navbar dark. El body tiene su propio bg cream para el contenido. */
+  background-color: #140C06;
 }
 
 body {
@@ -57,6 +63,11 @@ body {
   line-height: 100%;
   overflow-x: hidden;
   overscroll-behavior-x: contain;
+  /* En iOS con viewport-fit=cover el body se extiende hasta el borde
+     del notch. Dejamos que sus bordes (top + bottom) muestren el bg
+     del html (#140C06) — el navbar dark match con el status bar. */
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 a {
@@ -3397,17 +3408,17 @@ em {
     padding: 0.8rem 1.2rem !important;
   }
   .productos__desc {
-    /* Cream cálido sobre cuero oscuro — alto contraste, legible.
-       El dark-earth anterior se confundía con el fondo brown leather. */
+    /* Texto oscuro como el resto de la sección (las tabs PORONGO,
+       PORONGO C/CUERO, etc también son dark earth). El user prefiere
+       coherencia con la sección que un texto cream contrastando. */
     font-size: 1.7rem !important;
     line-height: 1.5;
     margin-top: 2rem;
-    color: #F4EBE1 !important;
-    font-weight: 400 !important;
+    color: #2A1810 !important;
+    font-weight: 500 !important;
     padding: 0 1rem;
-    font-style: italic;
-    /* Sombra sutil para extra legibilidad sobre el bg texturado */
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+    font-style: normal !important;
+    text-shadow: none !important;
   }
 
   /* ─── B2B (Para tu negocio) ─────────────────────────────────────────── */
