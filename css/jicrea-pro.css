@@ -52,40 +52,12 @@ body {
   font-family: var(--font-serif);
   font-size: max(2rem, min(2vw, 3rem));
   color: var(--c-text);
-  background-color: #140C06;
+  background-color: var(--c-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 100%;
   overflow-x: hidden;
   overscroll-behavior-x: contain;
-  min-height: 100vh;
-  min-height: 100dvh;
-}
-main {
-  background-color: var(--c-bg);
-}
-
-/* ═══════════════════════════════════════════════════════════════════
-   IOS SAFE-AREA OVERLAY — pseudo-elemento que cubre el notch zone
-   ═══════════════════════════════════════════════════════════════════
-   El navbar con padding-top env() no era suficiente en iPhone 16
-   Pro Max con Dynamic Island — iOS Safari muestra el hero detrás
-   del chrome translúcido.
-
-   Solución: pseudo-element FIJO con z-index entre contenido (default)
-   y navbar (100). Pinta una franja dark en la zona del notch SIEMPRE,
-   sin importar qué scrolleó el user ni qué sección está debajo.
-   ═══════════════════════════════════════════════════════════════════ */
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: env(safe-area-inset-top, 0px);
-  background-color: #140C06;
-  z-index: 90;
-  pointer-events: none;
 }
 
 /* Sin viewport-fit=cover el page NO se extiende al safe-area. iOS
@@ -3749,12 +3721,6 @@ body.menu-open { overflow: hidden; }
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     box-shadow: 0 1px 0 rgba(203, 160, 88, 0.22), 0 4px 16px rgba(0, 0, 0, 0.25);
-    /* CRÍTICO: extender el navbar hacia ARRIBA cubriendo el safe-area
-       del notch / Dynamic Island. Sin esto se ve un hueco transparente
-       arriba del navbar mostrando el hero detrás. */
-    padding-top: max(env(safe-area-inset-top, 0px), 0.6rem) !important;
-    height: auto !important;
-    min-height: calc(var(--header-h, 60px) + env(safe-area-inset-top, 0px)) !important;
   }
   /* Lock cream — override de TODAS las reglas dinámicas (is-scrolled
      / is-dark-bg / is-leather-bg). Cream siempre. */
