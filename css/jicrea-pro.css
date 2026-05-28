@@ -3701,15 +3701,24 @@ body.menu-open { overflow: hidden; }
     align-items: center;
   }
 
-  /* ─── NAVBAR MOBILE — sólido oscuro simple ────────────────────
-     Como antes. Sin parches con env(safe-area-inset-top) — el navbar
-     queda en su tamaño normal. iOS Safari renderiza el status bar
-     arriba con el color de la página, no del navbar. */
+  /* ─── NAVBAR MOBILE — sólido oscuro ────────────────────────────
+     IMPORTANTE: usamos el selector MISMO que la regla desktop
+     '.page-index-v2 .header--v2' (specificity 0,2,0) para GANAR el
+     cascade. Antes usábamos solo '.header' (0,1,0) que era pisado
+     por la regla desktop con !important + más specificity → navbar
+     quedaba transparente en mobile mostrando el hero detrás.
+
+     También extendemos el header con padding-top: env(safe-area-...)
+     para cubrir el notch / Dynamic Island de los iPhones. */
+  .page-index-v2 .header--v2,
   .header {
     background: #140C06 !important;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
     box-shadow: 0 1px 0 rgba(203, 160, 88, 0.22), 0 4px 16px rgba(0, 0, 0, 0.25);
+    padding-top: max(env(safe-area-inset-top, 0px), 0.6rem) !important;
+    height: auto !important;
+    min-height: calc(var(--header-h, 60px) + env(safe-area-inset-top, 0px));
   }
   /* Lock cream — override de TODAS las reglas dinámicas (is-scrolled
      / is-dark-bg / is-leather-bg). Cream siempre. */
