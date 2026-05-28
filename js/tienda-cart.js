@@ -687,15 +687,14 @@
       //   rel 1    → pos-1  (asoma derecha, "siguiente")
       //   rel n-1  → pos-3  (asoma izquierda, "anterior")
       //   resto    → pos-2  (atrás, casi oculto)
-      // IMPORTANTE: aplicamos los estilos INLINE además de la clase.
-      // Hay un bug raro en el cascade donde las clases is-active /
-      // is-pos-X no terminaban de ganar sobre el initial opacity:0
-      // a pesar del !important. Setear inline garantiza que se vea.
+      // FAN layout (cartas españolas de naipe). El user lo prefirió a
+      // un stack apilado tipo deck.
+      //   pos-3 ← active → pos-1 (centro), pos-2 atrás casi oculta
       const styles = {
-        active: { opacity: 1,    transform: "scale(1) translateX(0) rotate(0deg)",  z: 4 },
-        pos1:   { opacity: 0.82, transform: "scale(0.9) translateX(38%) rotate(8deg)", z: 3 },
+        active: { opacity: 1,    transform: "scale(1) translateX(0) rotate(0deg)",       z: 4 },
+        pos1:   { opacity: 0.82, transform: "scale(0.9) translateX(38%) rotate(8deg)",   z: 3 },
         pos3:   { opacity: 0.82, transform: "scale(0.9) translateX(-38%) rotate(-8deg)", z: 3 },
-        pos2:   { opacity: 0.35, transform: "scale(0.82) translateY(-12px)",         z: 1 },
+        pos2:   { opacity: 0.35, transform: "scale(0.82) translateY(-12px)",             z: 1 },
       };
       cards.forEach((c, i) => {
         const rel = (i - activeIdx + n) % n;
