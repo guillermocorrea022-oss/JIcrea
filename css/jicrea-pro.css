@@ -63,33 +63,9 @@ body {
   position: relative;
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   SAFE-AREA iOS — overlay fijo que cubre el chrome translúcido
-   ═══════════════════════════════════════════════════════════════════
-   iOS Safari 18 con Dynamic Island renderiza un chrome translúcido
-   arriba que blureaba el contenido del page (origen icons, hero, etc).
-   El gradient en body NO funcionaba porque los elementos absolute
-   positioned (icons) están arriba del body bg.
-
-   Fix: pseudo-elemento ::before en HTML (no body) que pinta una
-   franja fija dark. z-index 50 — DEBAJO del navbar (100) pero
-   ARRIBA del contenido del page (default 1-2). Cuando el chrome
-   translúcido de iOS blurea el contenido, encuentra dark = blurea
-   dark = continuo visual con el navbar.
-   ═══════════════════════════════════════════════════════════════════ */
-@media (max-width: 900px) {
-  html::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: max(env(safe-area-inset-top, 0px), 60px);
-    background-color: #140C06;
-    z-index: 50;
-    pointer-events: none;
-  }
-}
+/* Sin viewport-fit=cover el page NO se extiende al safe-area. iOS
+   Safari usa el theme-color del meta para tintar la status bar.
+   theme-color="#140C06" → status bar dark, sin overlays ni hacks. */
 
 /* Espacio reservado — el safe-area lo gestiona el .header directamente
    con padding-top: env(safe-area-inset-top). Ver la sección del header
