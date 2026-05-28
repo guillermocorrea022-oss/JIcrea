@@ -745,13 +745,21 @@
       if (!dotsRoot) buildDots();
       dotsRoot.style.display = "";
       applyClasses();
+      // Agregar .is-tween a los cards DESPUÉS del primer paint (2 rAFs).
+      // Esto evita el bug de Chrome donde transition + inline styles
+      // !important entran en estado raro y los styles no se aplican.
+      // Después del primer paint las animaciones funcionan normales.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          cards.forEach(c => c.classList.add("is-tween"));
+        });
+      });
       startAutoRotate();
     }
     function deactivate() {
       stopAutoRotate();
       cards.forEach(c => {
-        c.classList.remove("is-active", "is-pos-1", "is-pos-2", "is-pos-3");
-        // Limpiar inline styles que pusimos en applyClasses
+        c.classList.remove("is-active", "is-pos-1", "is-pos-2", "is-pos-3", "is-tween");
         c.style.removeProperty("opacity");
         c.style.removeProperty("transform");
         c.style.removeProperty("z-index");

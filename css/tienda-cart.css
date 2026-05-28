@@ -2247,12 +2247,14 @@
   .cards__inner--tienda {
     display: block !important;
     grid-template-columns: none !important;
-    position: relative;
-    height: clamp(420px, 92vw, 540px);
+    position: relative !important; /* override del reset .cards--tienda .cards__inner que pone static */
+    height: clamp(420px, 92vw, 540px) !important;
     margin: 1rem auto 3rem !important;
-    max-width: 280px;
+    max-width: 280px !important;
+    width: 100% !important;
     padding: 0 !important;
-    overflow: visible;
+    overflow: visible !important;
+    aspect-ratio: auto !important;
   }
   .cards__inner--tienda .tienda-card {
     position: absolute !important;
@@ -2269,12 +2271,19 @@
       0 20px 40px -12px rgba(46, 24, 12, 0.40),
       0 8px 16px -4px rgba(46, 24, 12, 0.20) !important;
     transform-origin: center center !important;
+    /* IMPORTANTE: NO usamos transition CSS aquí — el browser entra en
+       un estado raro donde no aplica los estilos inline aunque tengan
+       !important (verificado en Chrome). El JS setea inline styles
+       directamente y queremos que se apliquen instantáneamente.
+       La animación entre posiciones la hacemos vía la clase .is-tween
+       que el JS añade después de la primera aplicación. */
+  }
+  /* La clase .is-tween se agrega después del primer paint para que
+     las rotaciones subsiguientes sí animen suavemente. */
+  .cards__inner--tienda .tienda-card.is-tween {
     transition:
-      transform 0.7s cubic-bezier(0.4, 0, 0.2, 1),
-      opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-    /* NO usamos `will-change` + initial opacity:0 — Chrome compone la
-       capa con el estado inicial y queda stuck. Default: visible. JS
-       aplica inline styles vía applyClasses() según la posición. */
+      transform 0.65s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.65s cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
   .tienda-card__photo {
     aspect-ratio: 1 / 1 !important;
