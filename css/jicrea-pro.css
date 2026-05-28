@@ -64,32 +64,42 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   SAFE-AREA FILL — franja oscura FIJA arriba del navbar en iOS
+   SAFE-AREA FILL — div real en cada página (#iosSafeArea)
    ═══════════════════════════════════════════════════════════════════
-   Problema reportado 3 veces: en iPhone se veía el page bg (cream)
-   arriba del navbar dark, generando un "strip transparente" feo en
-   la zona del notch / status bar.
+   El pseudo-elemento body::before no funcionaba en iOS Safari 18 con
+   Dynamic Island — Safari ignora pseudo-elements del body para layout
+   sobre el notch zone.
 
-   Solución bullet-proof: pseudo-elemento ::before en el body que
-   pinta una franja oscura FIJA en el safe-area-inset-top (la altura
-   del notch). Como es position:fixed y top:0, está siempre presente
-   y siempre arriba del scroll. z-index 99 — debajo del navbar (100)
-   pero arriba de TODO el contenido. Cubre la franja del notch sin
-   importar qué tan abajo scrollea el usuario.
+   Solución FINAL: un <div id="iosSafeArea"> real al inicio del body,
+   posicionado FIXED al top:0, con altura calc del safe-area.
+   z-index 200 (arriba del navbar y todo). pointer-events: none para
+   que no intercepte touchs.
 
-   En devices sin notch (Android, desktop), env(safe-area-inset-top)
-   = 0, así que la franja tiene altura 0 = invisible. No molesta.
+   En desktop/Android (sin notch) el env() = 0 → height 0 → invisible.
+   En iOS con Dynamic Island, env() = 47-59px → strip dark perfecto.
    ═══════════════════════════════════════════════════════════════════ */
-body::before {
-  content: "";
+#iosSafeArea {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   height: env(safe-area-inset-top, 0px);
   background-color: #140C06;
-  z-index: 99;
+  z-index: 200;
   pointer-events: none;
+  /* iOS Safari renderiza translúcido el chrome del top — para tapar
+     el blur effect que Safari aplica sobre los contenidos blanqueados
+     atrás, usamos un dark sólido. */
+}
+/* iOS Safari específicamente — algunos devices reportan env() como 0
+   incluso teniendo notch. Forzamos mínimo 50px en iOS Safari para
+   garantizar que cubre Dynamic Island / status bar. */
+@supports (-webkit-touch-callout: none) {
+  @media (max-width: 900px) {
+    #iosSafeArea {
+      height: max(env(safe-area-inset-top, 0px), 50px);
+    }
+  }
 }
 
 a {

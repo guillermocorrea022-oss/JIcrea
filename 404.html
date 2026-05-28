@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&display=swap">
 
-  <link rel="stylesheet" href="css/jicrea-pro.css?v=128">
+  <link rel="stylesheet" href="css/jicrea-pro.css?v=129">
   <style>
     /* Página 404 — full-screen dark con la imagen del campo y un
        mensaje cálido. Sin nav (la idea es que vuelvan al inicio).
@@ -103,6 +103,8 @@
   </style>
 </head>
 <body>
+  <!-- iOS Safari safe-area filler — pinta dark sobre el notch zone -->
+  <div id="iosSafeArea" aria-hidden="true"></div>
   <main class="page-404">
     <div class="page-404__inner">
       <p class="page-404__num">404</p>
