@@ -3712,24 +3712,25 @@ body.menu-open { overflow: hidden; }
     align-items: center;
   }
 
-  /* ─── NAVBAR MOBILE — sólido oscuro ────────────────────────────
-     IMPORTANTE: usamos el selector MISMO que la regla desktop
-     '.page-index-v2 .header--v2' (specificity 0,2,0) para GANAR el
-     cascade. Antes usábamos solo '.header' (0,1,0) que era pisado
-     por la regla desktop con !important + más specificity → navbar
-     quedaba transparente en mobile mostrando el hero detrás.
+  /* ─── NAVBAR MOBILE — sólido oscuro SIEMPRE (incluso scrolled) ───
+     CRÍTICO: en desktop hay una regla '.page-index-v2 .header.is-scrolled'
+     que pone bg: rgba(10,8,7,0.55) + blur (semi-transparente). En
+     mobile NO queremos eso — queremos sólido siempre. La selector
+     '.page-index-v2 .header.is-scrolled' tiene specificity 0,3,0
+     así que necesitamos al menos esa specificity para ganar.
 
-     También extendemos el header con padding-top: env(safe-area-...)
-     para cubrir el notch / Dynamic Island de los iPhones. */
+     Listo todos los variantes posibles: con .is-scrolled, con .is-hidden,
+     con .header--v2 — todos sólidos #140C06. */
+  .page-index-v2 .header.is-scrolled,
+  .page-index-v2 .header--v2.is-scrolled,
   .page-index-v2 .header--v2,
+  .header.is-scrolled,
   .header {
     background: #140C06 !important;
+    background-color: #140C06 !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     box-shadow: 0 1px 0 rgba(203, 160, 88, 0.22), 0 4px 16px rgba(0, 0, 0, 0.25);
-    padding-top: max(env(safe-area-inset-top, 0px), 0.6rem) !important;
-    height: auto !important;
-    min-height: calc(var(--header-h, 60px) + env(safe-area-inset-top, 0px));
   }
   /* Lock cream — override de TODAS las reglas dinámicas (is-scrolled
      / is-dark-bg / is-leather-bg). Cream siempre. */
