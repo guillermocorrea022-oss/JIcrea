@@ -3382,15 +3382,17 @@ em {
     padding: 0.8rem 1.2rem !important;
   }
   .productos__desc {
-    /* Bumped from 1.4rem — el user reportó que "casi no se lee"
-       sobre el fondo cuero oscuro. Subido a 1.7rem + color más
-       opaco para mejor legibilidad. */
+    /* Cream cálido sobre cuero oscuro — alto contraste, legible.
+       El dark-earth anterior se confundía con el fondo brown leather. */
     font-size: 1.7rem !important;
     line-height: 1.5;
     margin-top: 2rem;
-    color: #2A1810 !important;
-    font-weight: 500 !important;
+    color: #F4EBE1 !important;
+    font-weight: 400 !important;
     padding: 0 1rem;
+    font-style: italic;
+    /* Sombra sutil para extra legibilidad sobre el bg texturado */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
   }
 
   /* ─── B2B (Para tu negocio) ─────────────────────────────────────────── */
