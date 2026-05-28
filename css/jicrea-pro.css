@@ -1579,6 +1579,12 @@ em {
   color: #2A1810;
   margin-bottom: max(3rem, min(4vw, 5rem));
 }
+/* En PC el i18n usa "Calidad<br>en lo sencillo" (para que en mobile
+   queden 2 líneas legibles). En desktop hay espacio de sobra y
+   queremos UNA sola línea — ocultamos el <br> via CSS. */
+@media (min-width: 641px) {
+  .productos__eyebrow br { display: none; }
+}
 .productos__stage {
   width: max(20rem, min(30vw, 40rem));
   height: max(20rem, min(30vw, 40rem));
