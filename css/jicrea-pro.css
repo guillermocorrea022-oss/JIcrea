@@ -63,6 +63,27 @@ body {
   position: relative;
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   SAFE-AREA iOS — body bg dark en el top, cream debajo
+   ═══════════════════════════════════════════════════════════════════
+   Background gradient en body: dark earth en el top (cubriendo
+   safe-area-inset-top + navbar height), cream debajo. Esto garantiza
+   que cuando iOS Safari renderice su chrome translúcido arriba, el
+   contenido behind sea dark = no muestra cream/hero blurred.
+   ═══════════════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  body {
+    background-image: linear-gradient(
+      to bottom,
+      #140C06 0,
+      #140C06 calc(env(safe-area-inset-top, 0px) + var(--header-h, 60px) + 2rem),
+      transparent calc(env(safe-area-inset-top, 0px) + var(--header-h, 60px) + 2rem)
+    );
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+  }
+}
+
 /* Espacio reservado — el safe-area lo gestiona el .header directamente
    con padding-top: env(safe-area-inset-top). Ver la sección del header
    más abajo. */
