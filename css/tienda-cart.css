@@ -2386,8 +2386,21 @@
     scroll-snap-align: start;
     border-radius: 4px !important;
     inset: auto !important;
-    /* Override del fan-style anterior */
-    height: auto !important;
+    /* ALTURA FIJA — todas las cards tienen el mismo alto sin importar
+       la longitud del texto. La descripción ya tiene -webkit-line-clamp:2
+       así que se trunca con "..." si es muy larga. El botón siempre queda
+       pegado abajo via margin-top: auto en .prod__btn. */
+    height: 460px !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  /* Botón Add to Cart pegado abajo siempre, sin importar texto desc */
+  .seccion-prod__grid > .prod .prod__btn {
+    margin-top: auto !important;
+  }
+  /* Descripción con altura uniforme — line-clamp 2 + min-height */
+  .seccion-prod__grid > .prod .prod__desc {
+    min-height: 3.6rem;
   }
   /* Cards de producto compactas (2 por fila visible) */
   .prod {

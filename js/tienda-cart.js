@@ -888,10 +888,17 @@
         if (!dotsRoot) buildDots();
         dotsRoot.style.display = "";
         currentIdx = 0;
-        // Reset scroll
-        grid.scrollLeft = 0;
+        // Reset scroll AL INICIO. requestAnimationFrame para que el layout
+        // ya esté pintado antes de scrollear (sino el grid puede no haber
+        // calculado el width y scrollLeft=0 no significa nada).
+        requestAnimationFrame(() => {
+          grid.scrollLeft = 0;
+          requestAnimationFrame(() => { grid.scrollLeft = 0; });
+        });
         updateDots();
-        startAuto();
+        // Delay del primer auto-rotate para que el user vea card[0] tranquilo
+        if (intervalId) clearInterval(intervalId);
+        setTimeout(startAuto, 1500);
       }
       function deactivate() {
         stopAuto();
