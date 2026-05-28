@@ -162,11 +162,6 @@ a {
   justify-content: space-between;
   align-items: center;
   padding: 0 var(--gutter);
-  /* En iOS extendemos el header hacia arriba para cubrir el safe-area
-     (la "isla" del notch). Sin esto el bg del page se ve arriba del
-     navbar — el user lo reportaba como "se ve transparente arriba". */
-  padding-top: env(safe-area-inset-top, 0px);
-  height: calc(var(--header-h) + env(safe-area-inset-top, 0px));
   z-index: 100;
   background-color: transparent;
   /* Smart header transition — slide cinematográfico de 0.55s con
@@ -3706,21 +3701,14 @@ body.menu-open { overflow: hidden; }
     align-items: center;
   }
 
-  /* ─── NAVBAR MOBILE — SÓLIDO + SAFE-AREA EXTENDIDO ────────────
-     El header cubre desde el top de la pantalla (incluyendo Dynamic
-     Island en iPhones) hasta la altura completa del navbar. Sin
-     parches con divs/pseudos — un solo elemento sólido.
-
-     padding-top usa max() para garantizar mínimo 50px en iOS Safari
-     incluso si env() devuelve 0 por algún bug en alguna versión. */
+  /* ─── NAVBAR MOBILE — sólido oscuro simple ────────────────────
+     Como antes. Sin parches con env(safe-area-inset-top) — el navbar
+     queda en su tamaño normal. iOS Safari renderiza el status bar
+     arriba con el color de la página, no del navbar. */
   .header {
     background: #140C06 !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    /* Forzar el padding-top y height grandes — el header sólido
-       cubre TODA la zona top incluyendo notch. */
-    padding-top: max(env(safe-area-inset-top, 0px), 50px) !important;
-    height: calc(var(--header-h) + max(env(safe-area-inset-top, 0px), 50px)) !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     box-shadow: 0 1px 0 rgba(203, 160, 88, 0.22), 0 4px 16px rgba(0, 0, 0, 0.25);
   }
   /* Lock cream — override de TODAS las reglas dinámicas (is-scrolled
