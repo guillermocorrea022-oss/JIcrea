@@ -2934,7 +2934,7 @@ em {
      solo con título + descripción centrada. */
   .b2b-v2__arrow { display: none !important; }
   .b2b-v2__feature-text { text-align: center; }
-  .b2b-v2__feature-text h3 { font-size: 1.7rem; }
+  .b2b-v2__feature-text h3 { font-size: 1.6rem; }
   .b2b-v2__feature-text p { font-size: 1.4rem; }
   .b2b-v2__cta {
     width: 100%;

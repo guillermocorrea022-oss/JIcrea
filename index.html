@@ -30,13 +30,13 @@
   <meta property="og:locale" content="es_UY">
 
   <!-- Fuentes locales de la marca -->
-  <link rel="stylesheet" href="css/jicrea-pro.css?v=121">
-  <link rel="stylesheet" href="css/tienda-cart.css?v=32">
+  <link rel="stylesheet" href="css/jicrea-pro.css?v=122">
+  <link rel="stylesheet" href="css/tienda-cart.css?v=33">
 </head>
 <body class="page-index-v2">
   <!-- PAGE CURTAIN — overlay cuero que cubre la página al cargar. -->
   <div class="page-curtain" id="pageCurtain" aria-hidden="true">
-    <img class="page-curtain__logo" src="img/logos_jlcrea_sin_fondo/08_logo_completo_blanco.png" alt="">
+    <img loading="lazy" decoding="async" class="page-curtain__logo" src="img/logos_jlcrea_sin_fondo/08_logo_completo_blanco.png" alt="">
   </div>
 
   <!-- HEADER V2 — sin placa cuero. Logo FIJO siempre arriba al centro
@@ -56,8 +56,8 @@
 
     <div class="header__center">
       <a href="#" class="header__logo header__logo--v2" aria-label="Inicio JIcrea">
-        <img class="header__v2-mate" src="img/logos_jlcrea_sin_fondo/01_mate_dorado.png" alt="" aria-hidden="true">
-        <img class="header__v2-text" src="img/logos_jlcrea_sin_fondo/02_jlcrea_texto.png" alt="JIcrea">
+        <img loading="lazy" decoding="async" class="header__v2-mate" src="img/logos_jlcrea_sin_fondo/01_mate_dorado.png" alt="" aria-hidden="true">
+        <img loading="lazy" decoding="async" class="header__v2-text" src="img/logos_jlcrea_sin_fondo/02_jlcrea_texto.png" alt="JIcrea">
       </a>
     </div>
 
@@ -583,7 +583,7 @@
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
       </button>
       <div class="qty-modal__product">
-        <img class="qty-modal__img" id="qtyModalImg" src="" alt="">
+        <img loading="lazy" decoding="async" class="qty-modal__img" id="qtyModalImg" src="" alt="">
         <div>
           <h4 class="qty-modal__name" id="qtyModalName">—</h4>
           <p class="qty-modal__price" id="qtyModalPrice">—</p>
@@ -604,7 +604,7 @@
   <div class="cart-notif" id="cartNotif" aria-live="polite">
     <div class="cart-notif__row">
       <span class="cart-notif__check" aria-hidden="true">✓</span>
-      <div class="cart-notif__thumb" aria-hidden="true"><img id="notifImg" src="" alt="" loading="lazy"></div>
+      <div class="cart-notif__thumb" aria-hidden="true"><img decoding="async" id="notifImg" src="" alt="" loading="lazy"></div>
       <div class="cart-notif__text">
         <p class="cart-notif__title" id="notifTitle">Agregado al carrito</p>
         <p class="cart-notif__detail" id="notifDetail">—</p>
@@ -624,11 +624,11 @@
   </a>
 
   <!-- Lenis smooth scroll (CDN, fallback silencioso) -->
-  <script src="https://unpkg.com/lenis@1.0.42/dist/lenis.min.js" onerror="console.info('[JIcrea] Lenis CDN no disponible — scroll nativo')"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="js/i18n.js?v=5"></script>
-  <script src="js/jicrea-pro.js?v=73"></script>
-  <script src="js/tienda-cart.js?v=17"></script>
+  <script defer src="https://unpkg.com/lenis@1.0.42/dist/lenis.min.js" onerror="console.info('[JIcrea] Lenis CDN no disponible — scroll nativo')"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script defer src="js/i18n.js?v=5"></script>
+  <script defer src="js/jicrea-pro.js?v=73"></script>
+  <script defer src="js/tienda-cart.js?v=17"></script>
 </body>
 </html>

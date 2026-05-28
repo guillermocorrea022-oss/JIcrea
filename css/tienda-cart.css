@@ -2485,8 +2485,8 @@
     border-radius: 6px;
     border-left: 3px solid var(--c-brand);
   }
-  .info-grid__title { font-size: 1.7rem !important; }
-  .info-grid__text  { font-size: 1.3rem !important; }
+  .info-grid__title { font-size: 1.6rem !important; }
+  .info-grid__text  { font-size: 1.4rem !important; }
   .info-clientes { margin: 3rem auto 3.6rem !important; padding-top: 2.4rem !important; }
   .info-clientes__label {
     font-size: 1.2rem !important;

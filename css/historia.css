@@ -846,23 +846,24 @@
   .hist-quote { padding: 0 !important; font-size: 1.55rem !important; line-height: 1.5; }
   .hist-quote-sep { max-width: 220px; margin-bottom: 2rem !important; }
 
-  /* 4 pilares — 1 columna en mobile */
+  /* 4 pilares — 1 columna en mobile. h3 estandarizado a 1.6rem
+     para coherencia con el resto del sitio. */
   .hist-pillars__grid {
     grid-template-columns: 1fr !important;
     gap: 2.4rem !important;
   }
   .hist-pillars__head { margin-bottom: 3rem !important; }
-  .hist-pillar__name { font-size: 1.7rem !important; }
+  .hist-pillar__name { font-size: 1.6rem !important; }
   .hist-pillar__desc { font-size: 1.4rem !important; }
 
-  /* Visión — 1 columna */
+  /* Visión — 1 columna. h3 estandarizado a 1.6rem (era 1.55rem). */
   .hist-vision__grid {
     grid-template-columns: 1fr !important;
     gap: 2.4rem !important;
   }
   .hist-vision__head { margin-bottom: 3rem !important; }
-  .hist-vision__item h3 { font-size: 1.55rem !important; }
-  .hist-vision__item p  { font-size: 1.35rem !important; }
+  .hist-vision__item h3 { font-size: 1.6rem !important; }
+  .hist-vision__item p  { font-size: 1.4rem !important; }
 
   /* ─── MISIÓN FINAL — slogan protagonista en mobile ─────────────────
      "Del campo a tus manos, / de tus manos al mundo." es la frase

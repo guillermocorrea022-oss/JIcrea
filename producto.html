@@ -12,8 +12,8 @@
   <link rel="preload" as="font" type="font/woff2" href="fonts/super-med.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="fonts/super-reg.woff2" crossorigin>
 
-  <link rel="stylesheet" href="css/jicrea-pro.css?v=121">
-  <link rel="stylesheet" href="css/tienda-cart.css?v=32">
+  <link rel="stylesheet" href="css/jicrea-pro.css?v=122">
+  <link rel="stylesheet" href="css/tienda-cart.css?v=33">
   <link rel="stylesheet" href="css/producto.css?v=3">
 </head>
 <body class="page-producto page-index-v2">
@@ -32,8 +32,8 @@
     </nav>
     <div class="header__center">
       <a href="index.html" class="header__logo header__logo--v2" aria-label="Inicio JIcrea">
-        <img class="header__v2-mate" src="img/logos_jlcrea_sin_fondo/01_mate_dorado.png" alt="" aria-hidden="true">
-        <img class="header__v2-text" src="img/logos_jlcrea_sin_fondo/02_jlcrea_texto.png" alt="JIcrea">
+        <img loading="lazy" decoding="async" class="header__v2-mate" src="img/logos_jlcrea_sin_fondo/01_mate_dorado.png" alt="" aria-hidden="true">
+        <img loading="lazy" decoding="async" class="header__v2-text" src="img/logos_jlcrea_sin_fondo/02_jlcrea_texto.png" alt="JIcrea">
       </a>
     </div>
     <nav class="header__nav header__nav--right" aria-label="Navegación derecha">
@@ -87,7 +87,7 @@
     <section class="producto-hero" data-bg="light">
       <div class="producto-hero__gallery">
         <div class="producto-hero__main">
-          <img id="prodMainImg" src="" alt="">
+          <img loading="lazy" decoding="async" id="prodMainImg" src="" alt="">
         </div>
         <div class="producto-hero__thumbs" id="prodThumbs">
           <!-- thumbs se inyectan vía JS -->
@@ -241,7 +241,7 @@
         </svg>
       </button>
       <div class="qty-modal__product">
-        <img class="qty-modal__img" id="qtyModalImg" src="" alt="">
+        <img loading="lazy" decoding="async" class="qty-modal__img" id="qtyModalImg" src="" alt="">
         <div>
           <h4 class="qty-modal__name" id="qtyModalName">—</h4>
           <p class="qty-modal__price" id="qtyModalPrice">—</p>
@@ -263,7 +263,7 @@
     <div class="cart-notif__row">
       <span class="cart-notif__check" aria-hidden="true">✓</span>
       <div class="cart-notif__thumb" aria-hidden="true">
-        <img id="notifImg" src="" alt="" loading="lazy">
+        <img decoding="async" id="notifImg" src="" alt="" loading="lazy">
       </div>
       <div class="cart-notif__text">
         <p class="cart-notif__title" id="notifTitle">Agregado al carrito</p>
@@ -286,13 +286,13 @@
     <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M19.05 4.91A10 10 0 0 0 12 2c-5.5 0-10 4.5-10 10 0 1.76.46 3.48 1.34 5L2 22l5.13-1.34A10 10 0 0 0 12 22c5.5 0 10-4.5 10-10 0-2.66-1.05-5.18-2.95-7.09zM12 20.13c-1.6 0-3.18-.43-4.55-1.24l-.32-.19-3.04.79.81-2.96-.21-.34A8.13 8.13 0 1 1 20.14 12 8.14 8.14 0 0 1 12 20.13z"/></svg>
   </a>
 
-  <script src="https://unpkg.com/lenis@1.0.42/dist/lenis.min.js" onerror="console.info('Lenis no')"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="js/i18n.js?v=5"></script>
-  <script src="js/jicrea-pro.js?v=73"></script>
-  <script src="js/productos-data.js?v=1"></script>
-  <script src="js/producto.js?v=4"></script>
-  <script src="js/tienda-cart.js?v=17"></script>
+  <script defer src="https://unpkg.com/lenis@1.0.42/dist/lenis.min.js" onerror="console.info('Lenis no')"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script defer src="js/i18n.js?v=5"></script>
+  <script defer src="js/jicrea-pro.js?v=73"></script>
+  <script defer src="js/productos-data.js?v=1"></script>
+  <script defer src="js/producto.js?v=4"></script>
+  <script defer src="js/tienda-cart.js?v=17"></script>
 </body>
 </html>
