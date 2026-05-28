@@ -864,15 +864,36 @@
   .hist-vision__item h3 { font-size: 1.55rem !important; }
   .hist-vision__item p  { font-size: 1.35rem !important; }
 
-  /* Misión final */
+  /* ─── MISIÓN FINAL — slogan protagonista en mobile ─────────────────
+     "Del campo a tus manos, / de tus manos al mundo." es la frase
+     identidad de la marca. En mobile la agrandamos para que sea EL
+     elemento principal de la sección, no un footer escondido. */
   .hist-mision { padding: 6rem 1.4rem !important; }
   .hist-mision__text {
     font-size: 2.4rem !important;
     line-height: 1.1 !important;
-    margin: 0 0 2.4rem !important;
+    margin: 0 0 3rem !important;
   }
-  .hist-mision__sep { margin: 0 auto 2.4rem !important; }
-  .hist-mision__slogan { font-size: 1.5rem !important; margin: 0 0 2.4rem !important; }
+  .hist-mision__sep { margin: 0 auto 3.6rem !important; }
+  .hist-mision__slogan {
+    /* Tipografía 2x más grande + Cormorant elegante + más interlineado.
+       Color cream/dorado para que destaque sobre el fondo. */
+    font-family: "Cormorant Garamond", "EB Garamond", "Times New Roman", Georgia, serif !important;
+    font-style: italic !important;
+    font-size: 2.4rem !important;
+    line-height: 1.35 !important;
+    letter-spacing: 0.005em !important;
+    color: #F4EBE1 !important;
+    margin: 0 0 3.6rem !important;
+    max-width: 28rem;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .hist-mision__slogan-extra {
+    color: var(--c-brand, #CBA058) !important;
+    margin-left: 0 !important;
+    margin-top: 0.6rem !important;
+  }
   .hist-mision__cta {
     width: 100%;
     justify-content: center;
