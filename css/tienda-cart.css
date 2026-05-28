@@ -2225,18 +2225,113 @@
     padding-top: 3rem !important;
     padding-bottom: 5rem !important;
   }
+  /* ═══════════════════════════════════════════════════════════════
+     TIENDA CATEGORÍAS — CAROUSEL STACK 3D (mobile only)
+     ═══════════════════════════════════════════════════════════════
+     Las 4 cards se vuelven un mazo de cartas apiladas:
+       · Active (front): full opacity, scale 1, sin offset
+       · #1 behind: scale 0.92, offset -22px arriba, opacity 0.7
+       · #2 behind: scale 0.84, offset -44px arriba, opacity 0.45
+       · #3 behind: scale 0.76, offset -66px arriba, opacity 0.20
+     JS rota la clase .is-active cada 2s (tienda-cart.js). El usuario
+     ve siempre 3-4 cards "asomando" detrás de la del frente — sabe
+     que hay más sin tener que scrollear. */
   .cards__inner--tienda {
-    grid-template-columns: 1fr !important;
-    gap: 2.4rem !important;
-    padding: 0 1.4rem !important;
+    display: block !important;
+    grid-template-columns: none !important;
+    position: relative;
+    height: clamp(380px, 78vw, 480px);
+    margin: 0 auto 3rem !important;
+    max-width: 320px;
+    padding: 0 !important;
+    perspective: 1000px;
+  }
+  .tienda-card {
+    position: absolute !important;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0 !important;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 24px 50px -16px rgba(46, 24, 12, 0.35);
+    background: #FAF3E8;
+    transform-origin: center bottom;
+    transition:
+      transform 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, opacity;
+    /* Default (offscreen / hidden) — solo las 4 con posición visible
+       específica se muestran. */
+    transform: scale(0.7) translateY(-90px);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  /* Active (front) */
+  .tienda-card.is-active {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 4;
+  }
+  /* 1ra atrás */
+  .tienda-card.is-pos-1 {
+    transform: scale(0.92) translateY(-22px);
+    opacity: 0.7;
+    z-index: 3;
+  }
+  /* 2da atrás */
+  .tienda-card.is-pos-2 {
+    transform: scale(0.84) translateY(-44px);
+    opacity: 0.45;
+    z-index: 2;
+  }
+  /* 3ra atrás */
+  .tienda-card.is-pos-3 {
+    transform: scale(0.76) translateY(-66px);
+    opacity: 0.20;
+    z-index: 1;
   }
   .tienda-card__photo {
-    aspect-ratio: 16 / 11 !important;
-    transform: none !important; /* Sin rotación en mobile */
+    aspect-ratio: 4 / 3 !important;
+    transform: none !important;
+    border-radius: 6px 6px 0 0;
   }
-  .tienda-card__name { font-size: 2.4rem !important; letter-spacing: 0.5px; }
-  .tienda-card__desc { font-size: 1.4rem !important; }
-  .tienda-card__num { font-size: 1.2rem !important; margin-top: 1.6rem !important; }
+  .tienda-card__name {
+    font-size: 2.4rem !important;
+    letter-spacing: 0.5px;
+    margin: 1.6rem 1.6rem 0.4rem !important;
+  }
+  .tienda-card__desc {
+    font-size: 1.35rem !important;
+    margin: 0 1.6rem 1.4rem !important;
+  }
+  .tienda-card__num {
+    font-size: 1.2rem !important;
+    margin: 1.4rem 1.6rem 0 !important;
+  }
+  /* Dots indicator (lo agregamos via JS) */
+  .cards-carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.8rem;
+    margin: 1rem 0 0;
+  }
+  .cards-carousel-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(107, 68, 35, 0.25);
+    cursor: pointer;
+    transition: background 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+    border: none;
+    padding: 0;
+  }
+  .cards-carousel-dot.is-active {
+    background: var(--c-brand, #CBA058);
+    transform: scale(1.3);
+  }
 
   /* ─── MANIFESTO INTRO DE LA TIENDA ───────────────────────────────── */
   .manifesto__title { font-size: 2.4rem !important; line-height: 1.1; }
