@@ -666,27 +666,21 @@
   }
 
   // ─────────────────────────────────────────────────────────────────
-  // CAROUSEL STACK — categorías (.tienda-card) en mobile
+  // CAROUSEL STACK genérico — categorías + secciones de productos
   // ─────────────────────────────────────────────────────────────────
-  // Las 4 cards (Mates / Posa Mates / Materas / Yerberos) se vuelven
-  // un mazo apilado en mobile. Una al frente (is-active), las otras
-  // 3 detrás (is-pos-1/2/3). Cada 2.4s rotamos: la del frente va al
-  // fondo, la #1-detrás se vuelve frente, etc. Pausa cuando el user
-  // hace touch/click (para que pueda leer la actual) y reanuda 4s después.
-  function initCategoryCarousel() {
-    const mq = window.matchMedia("(max-width: 640px)");
-    const cards = Array.from(document.querySelectorAll(".cards__inner--tienda .tienda-card"));
-    if (cards.length < 2) return;
-    const container = cards[0].parentElement;
-    const ROTATE_MS = 2400;
-    const PAUSE_AFTER_TOUCH_MS = 4000;
+  // Crea un mazo apilado: 1 card al frente (is-active), 3 detrás
+  // (is-pos-1/2/3). Cada N segundos rota: la del frente va al fondo.
+  // Pausa al touch/click + reanuda 4s después.
+  function makeStackCarousel({ cards, container, rotateMs, pauseMs }) {
+    if (!cards || cards.length < 2) return null;
+    const ROTATE_MS = rotateMs || 2400;
+    const PAUSE_AFTER_TOUCH_MS = pauseMs || 4000;
     let activeIdx = 0;
     let intervalId = null;
     let pauseTimeoutId = null;
     let dotsRoot = null;
 
     function applyClasses() {
-      // Cada card recibe la clase según su posición relativa al active
       const n = cards.length;
       cards.forEach((c, i) => {
         const rel = (i - activeIdx + n) % n;
@@ -696,51 +690,37 @@
         else if (rel === 2) c.classList.add("is-pos-2");
         else if (rel === 3) c.classList.add("is-pos-3");
       });
-      // Update dots
       if (dotsRoot) {
         Array.from(dotsRoot.children).forEach((dot, i) => {
           dot.classList.toggle("is-active", i === activeIdx);
         });
       }
     }
-    function next() {
-      activeIdx = (activeIdx + 1) % cards.length;
-      applyClasses();
-    }
-    function goTo(idx) {
-      activeIdx = idx;
-      applyClasses();
-      pauseAutoRotate();
-    }
+    function next() { activeIdx = (activeIdx + 1) % cards.length; applyClasses(); }
+    function goTo(idx) { activeIdx = idx; applyClasses(); pauseAutoRotate(); }
     function startAutoRotate() {
       stopAutoRotate();
       intervalId = setInterval(next, ROTATE_MS);
     }
-    function stopAutoRotate() {
-      if (intervalId) { clearInterval(intervalId); intervalId = null; }
-    }
+    function stopAutoRotate() { if (intervalId) { clearInterval(intervalId); intervalId = null; } }
     function pauseAutoRotate() {
       stopAutoRotate();
       if (pauseTimeoutId) clearTimeout(pauseTimeoutId);
-      pauseTimeoutId = setTimeout(() => {
-        if (mq.matches) startAutoRotate();
-      }, PAUSE_AFTER_TOUCH_MS);
+      pauseTimeoutId = setTimeout(startAutoRotate, PAUSE_AFTER_TOUCH_MS);
     }
-
     function buildDots() {
-      // Dots indicator debajo del stack
       dotsRoot = document.createElement("div");
       dotsRoot.className = "cards-carousel-dots";
       cards.forEach((_, i) => {
         const dot = document.createElement("button");
         dot.className = "cards-carousel-dot";
-        dot.setAttribute("aria-label", `Ir a categoría ${i + 1}`);
-        dot.addEventListener("click", () => goTo(i));
+        dot.type = "button";
+        dot.setAttribute("aria-label", `Ir a card ${i + 1}`);
+        dot.addEventListener("click", (e) => { e.stopPropagation(); goTo(i); });
         dotsRoot.appendChild(dot);
       });
       container.insertAdjacentElement("afterend", dotsRoot);
     }
-
     function activate() {
       if (!dotsRoot) buildDots();
       dotsRoot.style.display = "";
@@ -748,22 +728,14 @@
       startAutoRotate();
     }
     function deactivate() {
-      // En desktop: limpiar todas las clases para que el CSS original
-      // (grid 4 columnas) funcione sin overrides
       stopAutoRotate();
       cards.forEach(c => c.classList.remove("is-active", "is-pos-1", "is-pos-2", "is-pos-3"));
       if (dotsRoot) dotsRoot.style.display = "none";
     }
 
-    // Click en una card pausa la rotación 4s (que la lea tranquila)
-    cards.forEach(c => {
-      c.addEventListener("click", () => pauseAutoRotate());
-    });
-    // Touch swipe básico: swipe izq → next, swipe der → prev
+    // Touch swipe
     let touchStartX = null;
-    container.addEventListener("touchstart", (e) => {
-      touchStartX = e.touches[0].clientX;
-    }, { passive: true });
+    container.addEventListener("touchstart", (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
     container.addEventListener("touchend", (e) => {
       if (touchStartX === null) return;
       const dx = e.changedTouches[0].clientX - touchStartX;
@@ -773,15 +745,44 @@
       applyClasses();
       pauseAutoRotate();
     }, { passive: true });
+    // Click pausa
+    cards.forEach(c => c.addEventListener("click", () => pauseAutoRotate()));
 
-    // Match media listener — activa/desactiva según viewport
+    return { activate, deactivate };
+  }
+
+  // Categorías (.tienda-card en .cards__inner--tienda) — rotación 2.4s
+  function initCategoryCarousel() {
+    const mq = window.matchMedia("(max-width: 640px)");
+    const cards = Array.from(document.querySelectorAll(".cards__inner--tienda .tienda-card"));
+    if (cards.length < 2) return;
+    const container = cards[0].parentElement;
+    const carousel = makeStackCarousel({ cards, container, rotateMs: 2400, pauseMs: 4000 });
+    if (!carousel) return;
+    function handleMQ() { if (mq.matches) carousel.activate(); else carousel.deactivate(); }
+    if (mq.addEventListener) mq.addEventListener("change", handleMQ);
+    else if (mq.addListener) mq.addListener(handleMQ);
+    handleMQ();
+  }
+
+  // Productos por sección (.prod en cada .seccion-prod__grid) — rotación 4s
+  function initProductCarousels() {
+    const mq = window.matchMedia("(max-width: 640px)");
+    const grids = Array.from(document.querySelectorAll(".seccion-prod__grid"));
+    if (!grids.length) return;
+    const carousels = grids.map(grid => {
+      const cards = Array.from(grid.querySelectorAll(".prod"));
+      if (cards.length < 2) return null;
+      return makeStackCarousel({ cards, container: grid, rotateMs: 4000, pauseMs: 6000 });
+    }).filter(Boolean);
     function handleMQ() {
-      if (mq.matches) activate(); else deactivate();
+      carousels.forEach(c => { if (mq.matches) c.activate(); else c.deactivate(); });
     }
     if (mq.addEventListener) mq.addEventListener("change", handleMQ);
     else if (mq.addListener) mq.addListener(handleMQ);
     handleMQ();
   }
+
 
   // ─────────── Init ───────────
   document.addEventListener("DOMContentLoaded", () => {
@@ -798,5 +799,6 @@
     initFloatingIsland();
     initMayorista();
     initCategoryCarousel();
+    initProductCarousels();
   });
 })();

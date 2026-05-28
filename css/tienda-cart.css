@@ -2338,44 +2338,88 @@
   .manifesto__text  { font-size: 1.35rem !important; }
 
   /* ─── SECCIÓN DE PRODUCTOS POR CATEGORÍA ─────────────────────────────
-     2 columnas en mobile para que se vean varios productos a la vez,
-     en vez de scrollear infinitamente con 1 por fila. */
+     Mobile: STACK CAROUSEL — cada sección (Mates, Posa Mates, etc) se
+     vuelve un carrusel apilado. 1 card al frente, las otras detrás con
+     scale + offset + opacity decreciente. Auto-rotate cada 4s. */
   .seccion-prod {
     padding: 5rem 1.2rem !important;
   }
   .seccion-prod__head { margin-bottom: 3.2rem !important; padding-top: 2rem !important; }
   .seccion-prod__head .manifesto__title { font-size: 2.6rem !important; }
   .seccion-prod__grid {
-    gap: 1.4rem !important;
+    display: block !important;
+    position: relative;
+    height: clamp(440px, 100vw, 540px);
+    max-width: 320px;
+    margin: 0 auto !important;
+    perspective: 1000px;
+    gap: 0 !important;
   }
-  /* Mobile (≤640px): 2 columnas — cada card flex: 0 0 calc(50% - gap)
-     para que entren exactamente 2 por fila sin estirarse */
   .seccion-prod__grid > .prod {
-    flex: 0 1 calc(50% - 0.7rem) !important;
+    position: absolute !important;
+    inset: 0;
+    width: 100% !important;
+    max-width: 100% !important;
     min-width: 0 !important;
-    max-width: calc(50% - 0.7rem) !important;
+    flex: none !important;
+    margin: 0 !important;
+    transform-origin: center bottom;
+    transition:
+      transform 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, opacity;
+    /* Default oculto fuera del stack */
+    transform: scale(0.7) translateY(-90px);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .seccion-prod__grid > .prod.is-active {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 4;
+  }
+  .seccion-prod__grid > .prod.is-pos-1 {
+    transform: scale(0.92) translateY(-22px);
+    opacity: 0.65;
+    z-index: 3;
+  }
+  .seccion-prod__grid > .prod.is-pos-2 {
+    transform: scale(0.84) translateY(-44px);
+    opacity: 0.35;
+    z-index: 2;
+  }
+  .seccion-prod__grid > .prod.is-pos-3 {
+    transform: scale(0.76) translateY(-66px);
+    opacity: 0.15;
+    z-index: 1;
   }
   .prod {
     min-height: 0 !important;
-    padding: 0.8rem 0.8rem 0 !important;
+    padding: 1.2rem 1.2rem 0 !important;
   }
-  .prod::before { inset: 5px; }
-  .prod__name { font-size: 1.4rem !important; margin: 0 0.8rem 0.3rem !important; letter-spacing: 0.5px; }
+  .prod::before { inset: 6px; }
+  .prod__name { font-size: 1.7rem !important; margin: 0 1.4rem 0.4rem !important; letter-spacing: 0.5px; }
   .prod__desc {
-    font-size: 1.15rem !important;
-    margin: 0.6rem 0.8rem 1rem !important;
+    font-size: 1.3rem !important;
+    margin: 0.8rem 1.4rem 1rem !important;
     -webkit-line-clamp: 2;
   }
-  .prod__price { font-size: 1.5rem !important; margin: auto 0.8rem 0; padding-left: 1.8rem; }
-  .prod__price::before { left: 0.2rem; top: 1.3rem; width: 5px; height: 5px; }
+  .prod__price { font-size: 1.7rem !important; margin: auto 1.4rem 0; padding-left: 2rem; }
+  .prod__price::before { left: 0.2rem; top: 1.3rem; width: 6px; height: 6px; }
   .prod__price::after { left: 1.0rem; top: 1.45rem; }
   .prod__btn {
-    margin: 1.2rem 0.6rem 0.6rem !important;
-    padding: 1.2rem 1rem !important;
-    font-size: 1.05rem !important;
-    letter-spacing: 0.12em;
+    margin: 1.4rem 1rem 1rem !important;
+    padding: 1.3rem 1rem !important;
+    font-size: 1.1rem !important;
+    letter-spacing: 0.14em;
   }
-  .prod__img { margin-bottom: 1.4rem !important; }
+  .prod__img { margin-bottom: 1.4rem !important; aspect-ratio: 1 / 1 !important; }
+  /* Dots indicator de cada carousel */
+  .seccion-prod .cards-carousel-dots {
+    margin-top: 1.4rem;
+  }
 
   /* ─── SECCIÓN MAYORISTA / B2B ────────────────────────────────────────
      El manifesto banner se compacta. CTAs en columna full-width. */
@@ -2402,18 +2446,90 @@
   }
   .info-grid__title { font-size: 1.7rem !important; }
   .info-grid__text  { font-size: 1.3rem !important; }
-  .info-clientes { margin: 3rem auto 3.2rem !important; padding-top: 2.4rem !important; }
-  .info-clientes__list {
-    flex-direction: column;
-    gap: 1rem !important;
-    font-size: 1.4rem !important;
-  }
-  .info-clientes__list li:not(:last-child)::after { display: none; }
-  .cta-grande {
-    width: 100%;
-    justify-content: center;
-    padding: 1.4rem 1.6rem !important;
+  .info-clientes { margin: 3rem auto 3.6rem !important; padding-top: 2.4rem !important; }
+  .info-clientes__label {
     font-size: 1.2rem !important;
+    letter-spacing: 0.24em;
+    margin-bottom: 1.2rem !important;
+  }
+  /* "Trabajamos con" — pasa de lista vertical a párrafo fluido en
+     Garamond italic con separador "·" entre items. Se siente texto
+     editorial, no lista. */
+  .info-clientes__list {
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0 !important;
+    font-family: "EB Garamond", "Times New Roman", Georgia, serif !important;
+    font-style: italic;
+    font-weight: 400;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    font-size: 1.55rem !important;
+    line-height: 1.7;
+    padding: 0 0.8rem;
+    color: rgba(244, 235, 225, 0.88);
+  }
+  .info-clientes__list li {
+    display: inline !important;
+    gap: 0 !important;
+    padding: 0;
+  }
+  .info-clientes__list li:not(:last-child)::after {
+    content: " · " !important;
+    display: inline !important;
+    color: var(--c-brand) !important;
+    font-size: 1em !important;
+    opacity: 0.6;
+    margin: 0 0.3rem;
+  }
+
+  /* ─── CTA-ROW MAYORISTA — 3 botones rediseñados ──────────────────────
+     Antes: 3 botones de estilos distintos (gold/green/outline) con
+     widths inconsistentes. Ahora jerarquía clara:
+       1. "Armar compra" → gold sólido (acción primaria, gris claro)
+       2. "Pedir cotización" → verde WhatsApp (chat directo)
+       3. "Asesoramiento" → outline cream (acción secundaria/info)
+     Todos same width, same height, mismo radius, gap consistente. */
+  .cta-row {
+    flex-direction: column !important;
+    gap: 1.1rem !important;
+    margin-top: 3.2rem !important;
+    align-items: stretch;
+  }
+  .cta-grande {
+    width: 100% !important;
+    margin-top: 0 !important;
+    justify-content: center !important;
+    padding: 1.7rem 1.6rem !important;
+    font-size: 1.15rem !important;
+    letter-spacing: 0.2em !important;
+    border-radius: 4px !important;
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.22) !important;
+    min-height: 5.4rem;
+    gap: 1rem !important;
+  }
+  .cta-grande svg {
+    width: 18px !important;
+    height: 18px !important;
+    flex-shrink: 0;
+  }
+  /* Primary gold — alta jerarquía visual */
+  .cta-grande--gold {
+    background: var(--c-brand) !important;
+    color: #2A1810 !important;
+  }
+  /* WhatsApp green — botón secundario de contacto */
+  .cta-grande:not(.cta-grande--gold):not(.cta-grande--outline) {
+    background: #25D366 !important;
+    color: #0A0807 !important;
+  }
+  /* Outline — terciario, sin sombra (se ve diferente a los otros 2 con relleno) */
+  .cta-grande--outline {
+    background: transparent !important;
+    color: var(--c-text-alt) !important;
+    border: 1.5px solid rgba(244, 235, 225, 0.55) !important;
+    box-shadow: none !important;
   }
 
   /* ─── ISLA FLOTANTE (anchor scroll dentro de la tienda) ─────────────
