@@ -242,6 +242,77 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ─────────────────────────────────────────────────────────────────
+  // SMART HEADER (PC only) — ocultar al scroll-down, mostrar al up
+  // ─────────────────────────────────────────────────────────────────
+  // Comportamiento clásico tipo Medium/Squarespace. Solo en desktop
+  // (>900px) — mobile mantiene el header siempre visible por el blur
+  // backdrop. Excepción: cuando estamos sobre un hero (la sección
+  // .hero), el header SIEMPRE se mantiene visible — los heroes son
+  // la "primera impresión" y queremos navegación accesible ahí.
+  (function initSmartHeader(){
+    const header = document.getElementById("header");
+    if (!header) return;
+    const mqDesktop = window.matchMedia("(min-width: 901px)");
+    const SCROLL_THRESHOLD = 80;  // px que tiene que scrollear hasta empezar a esconder
+    const SCROLL_DELTA = 8;       // mínimo delta entre frames para considerar "scroll"
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+
+    function isOverHero() {
+      // Si la última sección con .hero todavía toca la zona del header
+      // (top <= header height), seguimos sobre el hero → header visible.
+      const heroes = document.querySelectorAll(".hero");
+      const headerH = header.offsetHeight || 80;
+      for (const h of heroes) {
+        const r = h.getBoundingClientRect();
+        if (r.top <= headerH && r.bottom > headerH) return true;
+      }
+      return false;
+    }
+
+    function update() {
+      ticking = false;
+      // Solo aplicamos el smart-hide en desktop
+      if (!mqDesktop.matches) {
+        header.classList.remove("is-hidden");
+        lastScrollY = window.scrollY;
+        return;
+      }
+      const currentY = window.scrollY;
+      const delta = currentY - lastScrollY;
+      // No reaccionar a micro-scrolls (jitter)
+      if (Math.abs(delta) < SCROLL_DELTA) {
+        lastScrollY = currentY;
+        return;
+      }
+      // Cerca del top o sobre un hero → siempre visible
+      if (currentY < SCROLL_THRESHOLD || isOverHero()) {
+        header.classList.remove("is-hidden");
+      } else if (delta > 0) {
+        // Scroll DOWN → ocultar
+        header.classList.add("is-hidden");
+      } else {
+        // Scroll UP → mostrar
+        header.classList.remove("is-hidden");
+      }
+      lastScrollY = currentY;
+    }
+
+    window.addEventListener("scroll", () => {
+      if (!ticking) {
+        requestAnimationFrame(update);
+        ticking = true;
+      }
+    }, { passive: true });
+    // Cuando cambia el viewport (resize / rotación), reset
+    function handleMQ() {
+      if (!mqDesktop.matches) header.classList.remove("is-hidden");
+    }
+    if (mqDesktop.addEventListener) mqDesktop.addEventListener("change", handleMQ);
+    else if (mqDesktop.addListener) mqDesktop.addListener(handleMQ);
+  })();
+
+  // ─────────────────────────────────────────────────────────────────
   // PROCESO VIDEO — swap mobile/desktop via JS
   // ─────────────────────────────────────────────────────────────────
   // Chrome no respeta <source media> en <video> de forma confiable

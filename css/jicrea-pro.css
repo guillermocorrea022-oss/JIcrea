@@ -156,8 +156,17 @@ a {
   padding: 0 var(--gutter);
   z-index: 100;
   background-color: transparent;
-  transition: background-color 0.4s var(--ease-out), height 0.4s var(--ease-out);
+  transition:
+    background-color 0.4s var(--ease-out),
+    height 0.4s var(--ease-out),
+    transform 0.45s cubic-bezier(0.33, 1, 0.68, 1);
   pointer-events: none; /* Let clicks pass through transparent areas */
+}
+/* SMART HEADER (PC only ≥901px) — se oculta al scroll-down, vuelve
+   al scroll-up. NO se oculta cuando estamos sobre un hero (los heroes
+   siempre tienen header visible — el JS lo gestiona). */
+.header.is-hidden {
+  transform: translateY(-100%);
 }
 
 .header__nav, .header__center {
@@ -3373,9 +3382,15 @@ em {
     padding: 0.8rem 1.2rem !important;
   }
   .productos__desc {
-    font-size: 1.4rem !important;
+    /* Bumped from 1.4rem — el user reportó que "casi no se lee"
+       sobre el fondo cuero oscuro. Subido a 1.7rem + color más
+       opaco para mejor legibilidad. */
+    font-size: 1.7rem !important;
     line-height: 1.5;
-    margin-top: 1.6rem;
+    margin-top: 2rem;
+    color: #2A1810 !important;
+    font-weight: 500 !important;
+    padding: 0 1rem;
   }
 
   /* ─── B2B (Para tu negocio) ─────────────────────────────────────────── */
@@ -3668,15 +3683,16 @@ body.menu-open { overflow: hidden; }
 
   /* ─── NAVBAR MOBILE — COLOR FIJO CREAM ─────────────────────────
      En mobile NO usamos el color dinámico — el user pidió que los
-     iconos sean siempre claros porque quedan mejor visualmente y
-     son más consistentes. Para garantizar legibilidad sobre fondos
-     light agregamos un backdrop oscuro sutil con gradiente que
-     se desvanece hacia abajo + blur sutil — patrón estándar de
-     navbars premium en apps móviles. */
+     iconos sean siempre claros. Para garantizar legibilidad sobre
+     fondos light usamos un backdrop SÓLIDO oscuro (no gradient
+     fade) — antes el bottom era transparente y los iconos quedaban
+     "colgados" sobre el contenido detrás. */
   .header {
-    background: linear-gradient(180deg, rgba(20, 12, 6, 0.55) 0%, rgba(20, 12, 6, 0.20) 70%, transparent 100%) !important;
-    backdrop-filter: blur(6px) saturate(120%);
-    -webkit-backdrop-filter: blur(6px) saturate(120%);
+    background: rgba(20, 12, 6, 0.78) !important;
+    backdrop-filter: blur(8px) saturate(130%);
+    -webkit-backdrop-filter: blur(8px) saturate(130%);
+    /* Borde sutil abajo para separar visualmente del contenido */
+    box-shadow: 0 1px 0 rgba(203, 160, 88, 0.18);
   }
   /* Lock cream — override de TODAS las reglas dinámicas (is-scrolled
      / is-dark-bg / is-leather-bg). Cream siempre. */
