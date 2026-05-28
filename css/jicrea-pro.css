@@ -3731,6 +3731,12 @@ body.menu-open { overflow: hidden; }
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     box-shadow: 0 1px 0 rgba(203, 160, 88, 0.22), 0 4px 16px rgba(0, 0, 0, 0.25);
+    /* CRÍTICO: extender el navbar hacia ARRIBA cubriendo el safe-area
+       del notch / Dynamic Island. Sin esto se ve un hueco transparente
+       arriba del navbar mostrando el hero detrás. */
+    padding-top: max(env(safe-area-inset-top, 0px), 0.6rem) !important;
+    height: auto !important;
+    min-height: calc(var(--header-h, 60px) + env(safe-area-inset-top, 0px)) !important;
   }
   /* Lock cream — override de TODAS las reglas dinámicas (is-scrolled
      / is-dark-bg / is-leather-bg). Cream siempre. */
