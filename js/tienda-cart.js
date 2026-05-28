@@ -799,42 +799,92 @@
     handleMQ();
   }
 
-  // Productos por sección — CAROUSEL CLÁSICO (scroll horizontal con
-  // 2 cards visibles a la vez). Diferente del fan-style de categorías:
-  // este usa scroll-snap nativo del browser + auto-advance cada 4s.
+  // Productos por sección — CAROUSEL CLÁSICO con LOOP INFINITO.
+  // Para que SIEMPRE se vean 2 cards (sin momento de 1 sola al "wrap"
+  // al inicio), clonamos las primeras 2 cards al final del grid. Cuando
+  // el scroll llega a los clones, hacemos un jump INSTANTÁNEO al inicio
+  // (visualmente idéntico → el user no nota el reseteo).
   function initProductCarousels() {
     const mq = window.matchMedia("(max-width: 640px)");
     const grids = Array.from(document.querySelectorAll(".seccion-prod__grid"));
     if (!grids.length) return;
     const ROTATE_MS = 4000;
     const PAUSE_AFTER_TOUCH_MS = 6000;
+    const TRANSITION_MS = 700;  // duración del smooth scroll
+    const CLONES_COUNT = 2;     // # de cards clonadas al final (= cards visibles)
+
     const carousels = grids.map(grid => {
-      const cards = Array.from(grid.querySelectorAll(".prod"));
-      if (cards.length < 2) return null;
+      const originalCards = Array.from(grid.querySelectorAll(".prod"));
+      if (originalCards.length < 2) return null;
+      const totalOriginal = originalCards.length;
+      let cloned = false;
       let currentIdx = 0;
       let intervalId = null;
       let pauseTimeoutId = null;
-      let userScrolling = false;
       let dotsRoot = null;
+      let isResetting = false;
 
-      function scrollToCard(idx) {
-        const card = cards[idx];
-        if (!card) return;
-        // Calcular el scroll left: card.offsetLeft relativo al grid
-        const left = card.offsetLeft - grid.offsetLeft - parseInt(getComputedStyle(grid).paddingLeft || 0);
-        grid.scrollTo({ left, behavior: "smooth" });
+      function ensureClones() {
+        if (cloned) return;
+        originalCards.slice(0, CLONES_COUNT).forEach(c => {
+          const clone = c.cloneNode(true);
+          clone.setAttribute("data-carousel-clone", "true");
+          // No queremos que los clones disparen "agregar al carrito"
+          // duplicado. Quitamos el [data-add].
+          clone.querySelectorAll("[data-add]").forEach(btn => {
+            btn.removeAttribute("data-add");
+          });
+          // Tampoco el link wrapper de la card (que va a producto.html)
+          // — los clones son sólo visuales.
+          clone.removeAttribute("href");
+          grid.appendChild(clone);
+        });
+        cloned = true;
+      }
+      function removeClones() {
+        Array.from(grid.querySelectorAll('[data-carousel-clone="true"]')).forEach(c => c.remove());
+        cloned = false;
+      }
+
+      function allCardsList() {
+        return Array.from(grid.querySelectorAll(".prod"));
+      }
+
+      function scrollToIdx(idx, smooth) {
+        const cards = allCardsList();
+        const target = cards[idx];
+        if (!target) return;
+        const left = target.offsetLeft - grid.offsetLeft;
+        if (smooth) {
+          grid.style.scrollBehavior = "smooth";
+          grid.scrollTo({ left });
+        } else {
+          grid.style.scrollBehavior = "auto";
+          grid.scrollLeft = left;
+        }
         currentIdx = idx;
         updateDots();
       }
+
       function next() {
-        // Avanzamos de a 1 card. Cuando el currentIdx alcanza
-        // length-2, volvemos al inicio (la última pareja ya se vio
-        // y el último jump volvería a mostrar las 2 mismas cards).
-        const maxIdx = Math.max(0, cards.length - 2);
-        let nextIdx = currentIdx + 1;
-        if (nextIdx > maxIdx) nextIdx = 0;
-        scrollToCard(nextIdx);
+        if (isResetting) return;
+        currentIdx++;
+        // Smooth scroll a la siguiente posición
+        scrollToIdx(currentIdx, true);
+        // Si la siguiente posición está EN los clones (currentIdx >=
+        // totalOriginal), después de la transición saltamos
+        // INSTANTÁNEAMENTE al equivalente original (sin animación).
+        // El user ve los clones (idénticos a los originales) durante
+        // la transición, después salta sin que se note.
+        if (currentIdx >= totalOriginal) {
+          isResetting = true;
+          setTimeout(() => {
+            scrollToIdx(currentIdx - totalOriginal, false);
+            isResetting = false;
+          }, TRANSITION_MS + 50);
+        }
       }
+
       function startAuto() {
         stopAuto();
         intervalId = setInterval(next, ROTATE_MS);
@@ -845,42 +895,48 @@
         if (pauseTimeoutId) clearTimeout(pauseTimeoutId);
         pauseTimeoutId = setTimeout(() => { if (mq.matches) startAuto(); }, PAUSE_AFTER_TOUCH_MS);
       }
+
       function updateDots() {
         if (!dotsRoot) return;
+        // El dot active es el equivalente del currentIdx en el rango original
+        const realIdx = currentIdx % totalOriginal;
         Array.from(dotsRoot.children).forEach((dot, i) => {
-          dot.classList.toggle("is-active", i === currentIdx);
+          dot.classList.toggle("is-active", i === realIdx);
         });
       }
       function buildDots() {
         dotsRoot = document.createElement("div");
         dotsRoot.className = "cards-carousel-dots";
-        // 1 dot por card (no por par). Usuario ve cuál está al frente.
-        cards.forEach((_, i) => {
+        // 1 dot por card ORIGINAL (no por clones)
+        originalCards.forEach((_, i) => {
           const dot = document.createElement("button");
           dot.className = "cards-carousel-dot";
           dot.type = "button";
           dot.setAttribute("aria-label", `Ir a producto ${i + 1}`);
           dot.addEventListener("click", (e) => {
             e.stopPropagation();
-            scrollToCard(i);
+            scrollToIdx(i, true);
             pauseAuto();
           });
           dotsRoot.appendChild(dot);
         });
         grid.insertAdjacentElement("afterend", dotsRoot);
       }
-      // Detect user scroll → pausar auto
+
+      // Touch del usuario → pausa el auto
+      grid.addEventListener("touchstart", pauseAuto, { passive: true });
+      // Manual scroll del usuario actualiza el dot activo
       let scrollDebounce = null;
       grid.addEventListener("scroll", () => {
-        if (!mq.matches) return;
+        if (!mq.matches || isResetting) return;
         clearTimeout(scrollDebounce);
         scrollDebounce = setTimeout(() => {
-          // Detectar cuál card está a la izquierda (el active)
+          const cards = allCardsList();
           const scrollL = grid.scrollLeft;
           let closest = 0;
           let minDiff = Infinity;
           cards.forEach((c, i) => {
-            const left = c.offsetLeft - grid.offsetLeft - parseInt(getComputedStyle(grid).paddingLeft || 0);
+            const left = c.offsetLeft - grid.offsetLeft;
             const diff = Math.abs(left - scrollL);
             if (diff < minDiff) { minDiff = diff; closest = i; }
           });
@@ -888,49 +944,45 @@
           updateDots();
         }, 120);
       }, { passive: true });
-      // Touch → pausar
-      grid.addEventListener("touchstart", pauseAuto, { passive: true });
 
       function activate() {
+        ensureClones();
         if (!dotsRoot) buildDots();
         dotsRoot.style.display = "";
         currentIdx = 0;
-        // Reset scroll al inicio. Lo hacemos varias veces porque el
-        // layout puede no estar pintado completamente (fuentes,
-        // imágenes lazy) y scrollLeft=0 antes del layout no significa
-        // nada. También usamos behavior: "instant" para que no haya
-        // animación al setear la posición inicial.
+        // Reset scroll instantáneo al inicio (sin animación)
         const forceReset = () => {
-          try { grid.scrollTo({ left: 0, top: 0, behavior: "instant" }); }
-          catch (e) { grid.scrollLeft = 0; }
+          grid.style.scrollBehavior = "auto";
+          grid.scrollLeft = 0;
         };
         forceReset();
         requestAnimationFrame(() => {
           forceReset();
           requestAnimationFrame(forceReset);
         });
-        // Después de que se carguen las imágenes (que podrían cambiar
-        // las dimensiones del grid) volvemos a forzar scrollLeft=0
+        // Reset también después de que carguen las imágenes (que
+        // pueden cambiar offsetLeft de cada card)
         const imgs = grid.querySelectorAll("img");
-        let imgsRemaining = imgs.length;
-        if (imgsRemaining > 0) {
+        let remaining = imgs.length;
+        if (remaining > 0) {
           imgs.forEach(img => {
-            if (img.complete) imgsRemaining--;
+            if (img.complete) remaining--;
             else img.addEventListener("load", () => {
-              imgsRemaining--;
-              if (imgsRemaining === 0) forceReset();
+              remaining--;
+              if (remaining === 0) forceReset();
             }, { once: true });
           });
-          if (imgsRemaining === 0) forceReset();
+          if (remaining === 0) forceReset();
         }
         updateDots();
-        // Delay del primer auto-rotate para que el user vea card[0] tranquilo
-        if (intervalId) clearInterval(intervalId);
+        // Delay del primer auto para que el user vea card[0] tranquilo
         setTimeout(startAuto, 2500);
       }
       function deactivate() {
         stopAuto();
+        removeClones();
         if (dotsRoot) dotsRoot.style.display = "none";
+        grid.style.scrollBehavior = "auto";
         grid.scrollLeft = 0;
       }
       return { activate, deactivate };
