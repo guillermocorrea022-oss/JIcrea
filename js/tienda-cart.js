@@ -895,17 +895,38 @@
         if (!dotsRoot) buildDots();
         dotsRoot.style.display = "";
         currentIdx = 0;
-        // Reset scroll AL INICIO. requestAnimationFrame para que el layout
-        // ya esté pintado antes de scrollear (sino el grid puede no haber
-        // calculado el width y scrollLeft=0 no significa nada).
+        // Reset scroll al inicio. Lo hacemos varias veces porque el
+        // layout puede no estar pintado completamente (fuentes,
+        // imágenes lazy) y scrollLeft=0 antes del layout no significa
+        // nada. También usamos behavior: "instant" para que no haya
+        // animación al setear la posición inicial.
+        const forceReset = () => {
+          try { grid.scrollTo({ left: 0, top: 0, behavior: "instant" }); }
+          catch (e) { grid.scrollLeft = 0; }
+        };
+        forceReset();
         requestAnimationFrame(() => {
-          grid.scrollLeft = 0;
-          requestAnimationFrame(() => { grid.scrollLeft = 0; });
+          forceReset();
+          requestAnimationFrame(forceReset);
         });
+        // Después de que se carguen las imágenes (que podrían cambiar
+        // las dimensiones del grid) volvemos a forzar scrollLeft=0
+        const imgs = grid.querySelectorAll("img");
+        let imgsRemaining = imgs.length;
+        if (imgsRemaining > 0) {
+          imgs.forEach(img => {
+            if (img.complete) imgsRemaining--;
+            else img.addEventListener("load", () => {
+              imgsRemaining--;
+              if (imgsRemaining === 0) forceReset();
+            }, { once: true });
+          });
+          if (imgsRemaining === 0) forceReset();
+        }
         updateDots();
         // Delay del primer auto-rotate para que el user vea card[0] tranquilo
         if (intervalId) clearInterval(intervalId);
-        setTimeout(startAuto, 1500);
+        setTimeout(startAuto, 2500);
       }
       function deactivate() {
         stopAuto();
