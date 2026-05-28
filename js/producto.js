@@ -73,7 +73,7 @@
     const doubtsBtn = document.getElementById("prodDoubtsBtn");
     if (doubtsBtn) {
       const msg = `Hola JIcrea, tengo una consulta sobre el ${prod.name}.`;
-      doubtsBtn.href = "https://wa.me/59898507241?text=" + encodeURIComponent(msg);
+      doubtsBtn.href = "https://wa.me/59891063779?text=" + encodeURIComponent(msg);
     }
 
     // Botones de compartir

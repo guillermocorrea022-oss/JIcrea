@@ -3035,15 +3035,21 @@ em {
     width: 100%;
   }
   .hero--cinema .hero__title {
-    /* En mobile el Cormorant respira más con un letter-spacing 0
-       y un tamaño un poco mayor proporcionalmente. */
-    font-size: clamp(4.4rem, 14vw, 7.8rem) !important;
-    line-height: 0.95 !important;
+    /* En mobile el título tiene que quedar SIEMPRE en 2 líneas
+       ("DEL CAMPO" / "A TUS MANOS", "PIEZAS" / "HECHAS A MANO",
+       "NUESTRA" / "HISTORIA"). El font-size es lo suficientemente
+       chico para que ambas líneas entren en 1 sola línea cada una. */
+    font-size: clamp(3.4rem, 10vw, 5.6rem) !important;
+    line-height: 1.0 !important;
     letter-spacing: 0 !important;
   }
-  /* Permitir que las líneas del título wrappeen naturalmente si no
-     entran. white-space:nowrap por default sale del estilo desktop. */
-  .hero--cinema .line { white-space: normal !important; }
+  /* Cada .line ES una línea entera del título — nowrap para que NO
+     wrappee dentro de sí misma. El font-size de arriba garantiza que
+     "A TUS MANOS" (la más larga) entre en 1 sola línea a 360px. */
+  .hero--cinema .line {
+    white-space: nowrap !important;
+    display: block;
+  }
   .hero--cinema .hero__subtitle {
     font-size: 1.4rem !important;
     line-height: 1.5 !important;
