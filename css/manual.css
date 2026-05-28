@@ -1,0 +1,674 @@
+/* ════════════════════════════════════════════════════════════════════════
+   MANUAL DEL SITIO — JIcrea
+   ════════════════════════════════════════════════════════════════════════
+   Estilo "brand manual" editorial — referencia visual: manuales de marca
+   tipo Squarespace/Cartapani pero con la identidad JIcrea (cream + cuero
+   + dorado + verde tierra, Cormorant Garamond + super-med).
+
+   Layout: secciones a pantalla completa (min-h: 100vh en desktop, auto
+   en mobile) alternando bg cream y bg leather/dark-leaf para ritmo.
+   Cada sección es "una página del manual" — el dueño scrollea de arriba
+   abajo revisando todo lo que tiene el sitio.
+   ════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --m-cream: #EFE5D5;
+  --m-cream-warm: #FAF3E8;
+  --m-earth: #2A1810;
+  --m-leather: #6B4423;
+  --m-gold: #CBA058;
+  --m-gold-soft: #d8b070;
+  --m-green: #2B3A2C;
+  --m-green-dark: #1f2b1f;
+  --m-shadow: rgba(46, 24, 12, 0.18);
+  --m-gutter: clamp(2rem, 5vw, 6rem);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  background: var(--m-cream);
+  color: var(--m-earth);
+  line-height: 1.6;
+  font-size: 17px;
+  overflow-x: hidden;
+}
+
+/* ─── HEADER MINIMAL — sólo link de vuelta + branding ─────────────── */
+.m-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.4rem var(--m-gutter);
+  background: rgba(239, 229, 213, 0.85);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  border-bottom: 1px solid rgba(107, 68, 35, 0.15);
+}
+.m-header__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.04em;
+  color: var(--m-earth);
+  text-decoration: none;
+}
+.m-header__brand img { height: 26px; width: auto; }
+.m-header__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-sans, "Inter", system-ui, sans-serif);
+  font-size: 1.1rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--m-earth);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+.m-header__back:hover { color: var(--m-gold); }
+
+/* ─── SECCIONES BASE ──────────────────────────────────────────────── */
+.m-section {
+  min-height: 100vh;
+  padding: clamp(8rem, 12vw, 14rem) var(--m-gutter) clamp(6rem, 10vw, 10rem);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.m-section--cream { background: var(--m-cream); color: var(--m-earth); }
+.m-section--cream-warm { background: var(--m-cream-warm); color: var(--m-earth); }
+.m-section--leather {
+  background:
+    radial-gradient(ellipse at 30% 30%, rgba(255, 230, 200, 0.10), transparent 60%),
+    linear-gradient(135deg, #5a3a1d 0%, #3d2614 100%);
+  color: #F4EBE1;
+}
+.m-section--green {
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(203, 160, 88, 0.10), transparent 60%),
+    linear-gradient(135deg, var(--m-green) 0%, var(--m-green-dark) 100%);
+  color: #F4EBE1;
+}
+.m-section--dark {
+  background: #1a1a1a;
+  color: #F4EBE1;
+}
+
+/* Eyebrow + numeración + título grande */
+.m-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+  font-family: "Cormorant Garamond", "EB Garamond", serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--m-gold);
+  margin: 0 0 2rem;
+  font-weight: 500;
+}
+.m-eyebrow::before {
+  content: "";
+  width: 36px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.6;
+}
+.m-section--leather .m-eyebrow,
+.m-section--green .m-eyebrow,
+.m-section--dark .m-eyebrow {
+  color: var(--m-gold);
+}
+
+.m-title {
+  font-family: "Cormorant Garamond", "EB Garamond", serif;
+  font-weight: 500;
+  font-size: clamp(4rem, 9vw, 9rem);
+  line-height: 0.95;
+  letter-spacing: -0.005em;
+  margin: 0 0 2rem;
+  color: var(--m-earth);
+}
+.m-title em {
+  font-style: italic;
+  color: var(--m-gold);
+}
+.m-section--leather .m-title,
+.m-section--green .m-title,
+.m-section--dark .m-title { color: #F4EBE1; }
+
+.m-subtitle {
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(1.5rem, 1.8vw, 2.1rem);
+  line-height: 1.5;
+  color: rgba(42, 24, 16, 0.75);
+  max-width: 60ch;
+  margin: 0 0 3rem;
+}
+.m-section--leather .m-subtitle,
+.m-section--green .m-subtitle,
+.m-section--dark .m-subtitle { color: rgba(244, 235, 225, 0.78); }
+
+.m-body p {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  margin: 0 0 1.4rem;
+  max-width: 65ch;
+}
+
+/* ─── PORTADA ──────────────────────────────────────────────────────── */
+.m-cover {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(6rem, 8vw, 10rem) var(--m-gutter) clamp(3rem, 5vw, 5rem);
+  background: var(--m-cream);
+  position: relative;
+  overflow: hidden;
+}
+.m-cover__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-family: var(--font-sans, "Inter", system-ui, sans-serif);
+  font-size: 1.1rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--m-earth);
+  font-weight: 600;
+}
+.m-cover__center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 2rem;
+  flex: 1;
+  justify-content: center;
+}
+.m-cover__title {
+  font-family: "Cormorant Garamond", "EB Garamond", serif;
+  font-weight: 500;
+  font-size: clamp(5rem, 13vw, 14rem);
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  color: var(--m-earth);
+  margin: 0;
+}
+.m-cover__title em {
+  font-style: italic;
+  color: var(--m-gold);
+}
+.m-cover__sep {
+  width: 80px;
+  height: 1px;
+  background: var(--m-gold);
+}
+.m-cover__lead {
+  font-family: "EB Garamond", serif;
+  font-style: italic;
+  font-size: clamp(1.6rem, 2vw, 2.2rem);
+  color: rgba(42, 24, 16, 0.65);
+  max-width: 50ch;
+  margin: 0;
+}
+.m-cover__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-family: var(--font-sans, "Inter", system-ui, sans-serif);
+  font-size: 1.05rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--m-earth);
+  font-weight: 600;
+}
+.m-cover__footer a { color: inherit; text-decoration: none; }
+.m-cover__footer a:hover { color: var(--m-gold); }
+
+/* Mate dorado decorativo flotante en la portada */
+.m-cover__mate {
+  position: absolute;
+  right: -8%;
+  bottom: -10%;
+  width: 60%;
+  max-width: 700px;
+  opacity: 0.08;
+  pointer-events: none;
+  filter: sepia(0.3);
+}
+
+/* ─── ÍNDICE ──────────────────────────────────────────────────────── */
+.m-index__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  border-top: 1px solid rgba(107, 68, 35, 0.2);
+}
+.m-index__list li {
+  border-bottom: 1px solid rgba(107, 68, 35, 0.2);
+}
+.m-index__list a {
+  display: grid;
+  grid-template-columns: 4rem 1fr auto;
+  align-items: center;
+  padding: 1.8rem 0;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(1.8rem, 2.5vw, 2.6rem);
+  color: var(--m-earth);
+  text-decoration: none;
+  transition: color 0.3s ease, padding-left 0.3s ease;
+  letter-spacing: 0.005em;
+}
+.m-index__list a:hover {
+  color: var(--m-gold);
+  padding-left: 1rem;
+}
+.m-index__num {
+  font-family: "EB Garamond", serif;
+  font-style: italic;
+  font-size: 0.6em;
+  color: var(--m-gold);
+  font-weight: 400;
+}
+.m-index__arrow {
+  font-family: "EB Garamond", serif;
+  font-style: italic;
+  font-size: 0.5em;
+  color: rgba(42, 24, 16, 0.4);
+  transition: transform 0.3s ease;
+}
+.m-index__list a:hover .m-index__arrow {
+  transform: translateX(8px);
+  color: var(--m-gold);
+}
+
+/* ─── GRID HELPERS ────────────────────────────────────────────────── */
+.m-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3rem; }
+.m-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; }
+.m-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+@media (max-width: 800px) {
+  .m-grid-2, .m-grid-3, .m-grid-4 { grid-template-columns: 1fr !important; gap: 2rem; }
+}
+
+/* ─── PALETA DE COLORES ───────────────────────────────────────────── */
+.m-palette { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.6rem; margin-top: 3rem; }
+@media (max-width: 800px) {
+  .m-palette { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+}
+.m-swatch {
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px var(--m-shadow);
+}
+.m-swatch__color {
+  height: 180px;
+  position: relative;
+}
+.m-swatch__info {
+  padding: 1.4rem 1.4rem 1.6rem;
+  background: var(--m-cream-warm);
+  color: var(--m-earth);
+}
+.m-swatch__name {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin: 0 0 0.4rem;
+}
+.m-swatch__hex {
+  font-family: "Courier New", monospace;
+  font-size: 1.1rem;
+  letter-spacing: 0.06em;
+  color: rgba(42, 24, 16, 0.65);
+  margin: 0 0 0.6rem;
+}
+.m-swatch__use {
+  font-family: "EB Garamond", serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: rgba(42, 24, 16, 0.7);
+  line-height: 1.4;
+}
+
+/* ─── TIPOGRAFÍA ──────────────────────────────────────────────────── */
+.m-font-sample {
+  padding: 2.4rem 0;
+  border-bottom: 1px solid rgba(107, 68, 35, 0.18);
+}
+.m-font-sample:last-child { border-bottom: none; }
+.m-font-sample__name {
+  display: flex;
+  align-items: baseline;
+  gap: 1.6rem;
+  margin-bottom: 1.4rem;
+  font-family: "EB Garamond", serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--m-gold);
+}
+.m-font-sample__name strong {
+  font-family: "Cormorant Garamond", serif;
+  font-style: normal;
+  font-size: 1.4rem;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: var(--m-earth);
+  font-weight: 500;
+}
+.m-font-sample__alphabet {
+  font-size: clamp(2.4rem, 4vw, 4.6rem);
+  line-height: 1.05;
+  letter-spacing: 0;
+  margin: 0 0 1rem;
+  color: var(--m-earth);
+}
+.m-font-sample__caption {
+  font-size: 1rem;
+  color: rgba(42, 24, 16, 0.6);
+  margin: 0;
+}
+
+/* ─── LOGO SHOWCASE ───────────────────────────────────────────────── */
+.m-logo-showcase {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 3rem;
+}
+@media (max-width: 800px) {
+  .m-logo-showcase { grid-template-columns: repeat(2, 1fr); }
+}
+.m-logo-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  background: var(--m-cream-warm);
+  border-radius: 4px;
+  min-height: 220px;
+  border: 1px solid rgba(107, 68, 35, 0.15);
+}
+.m-logo-card--dark { background: #1a1a1a; }
+.m-logo-card--leather {
+  background:
+    radial-gradient(ellipse at 30% 30%, rgba(255, 230, 200, 0.12), transparent 60%),
+    linear-gradient(135deg, #5a3a1d 0%, #3d2614 100%);
+}
+.m-logo-card img {
+  max-width: 70%;
+  max-height: 100px;
+  object-fit: contain;
+}
+.m-logo-card__label {
+  margin-top: 1.4rem;
+  font-family: "EB Garamond", serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(42, 24, 16, 0.55);
+}
+.m-logo-card--dark .m-logo-card__label,
+.m-logo-card--leather .m-logo-card__label {
+  color: rgba(244, 235, 225, 0.65);
+}
+
+/* ─── PÁGINAS DEL SITIO ───────────────────────────────────────────── */
+.m-page-card {
+  background: var(--m-cream-warm);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 12px 32px var(--m-shadow);
+  display: flex;
+  flex-direction: column;
+}
+.m-page-card__preview {
+  aspect-ratio: 16 / 9;
+  background-size: cover;
+  background-position: top;
+  background-color: var(--m-leather);
+  position: relative;
+  overflow: hidden;
+}
+.m-page-card__info {
+  padding: 1.8rem 2rem 2rem;
+}
+.m-page-card__title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2rem;
+  font-weight: 500;
+  margin: 0 0 0.8rem;
+  color: var(--m-earth);
+}
+.m-page-card__desc {
+  font-family: "EB Garamond", serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: rgba(42, 24, 16, 0.7);
+  margin: 0 0 1rem;
+}
+.m-page-card__features {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.m-page-card__features li {
+  font-family: var(--font-sans, "Inter", system-ui, sans-serif);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  background: rgba(203, 160, 88, 0.15);
+  color: var(--m-gold);
+  border-radius: 2px;
+}
+.m-page-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.2rem;
+  font-family: var(--font-sans, "Inter", system-ui, sans-serif);
+  font-size: 0.95rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--m-gold);
+  text-decoration: none;
+  transition: gap 0.3s ease;
+}
+.m-page-card__link:hover { gap: 1rem; }
+
+/* ─── CATÁLOGO DE PRODUCTOS ───────────────────────────────────────── */
+.m-catalog-cat {
+  margin-bottom: 3rem;
+}
+.m-catalog-cat__name {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2.4rem;
+  font-weight: 500;
+  margin: 0 0 1rem;
+  color: #F4EBE1;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid rgba(203, 160, 88, 0.35);
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+.m-catalog-cat__count {
+  font-family: "EB Garamond", serif;
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--m-gold);
+  font-weight: 400;
+}
+.m-catalog-items {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.6rem;
+}
+@media (max-width: 1000px) { .m-catalog-items { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 700px)  { .m-catalog-items { grid-template-columns: repeat(2, 1fr); } }
+.m-catalog-item {
+  background: rgba(255, 250, 235, 0.06);
+  border: 1px solid rgba(203, 160, 88, 0.20);
+  border-radius: 4px;
+  padding: 1.4rem 1.4rem 1.6rem;
+}
+.m-catalog-item__name {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin: 0 0 0.4rem;
+  color: #F4EBE1;
+}
+.m-catalog-item__price {
+  font-family: "Courier New", monospace;
+  font-size: 1.1rem;
+  color: var(--m-gold);
+  font-weight: 700;
+}
+
+/* ─── FEATURES (funcionalidades) ─────────────────────────────────── */
+.m-features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin-top: 2rem;
+}
+@media (max-width: 800px) { .m-features { grid-template-columns: 1fr; } }
+.m-feature {
+  padding: 2rem;
+  background: var(--m-cream-warm);
+  border: 1px solid rgba(107, 68, 35, 0.15);
+  border-left: 3px solid var(--m-gold);
+  border-radius: 4px;
+}
+.m-feature__title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.7rem;
+  font-weight: 500;
+  margin: 0 0 0.8rem;
+  color: var(--m-earth);
+}
+.m-feature__desc {
+  font-family: "EB Garamond", serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: rgba(42, 24, 16, 0.72);
+  margin: 0;
+}
+
+/* ─── CONTACTO ────────────────────────────────────────────────────── */
+.m-contact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3rem;
+  margin-top: 3rem;
+}
+@media (max-width: 800px) { .m-contact-grid { grid-template-columns: 1fr; } }
+.m-contact-item {
+  padding: 2rem 0;
+  border-top: 1px solid rgba(203, 160, 88, 0.3);
+}
+.m-contact-item__label {
+  font-family: "EB Garamond", serif;
+  font-style: italic;
+  font-size: 1rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--m-gold);
+  margin-bottom: 0.6rem;
+}
+.m-contact-item__value {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.8rem;
+  color: #F4EBE1;
+  text-decoration: none;
+  display: block;
+}
+.m-contact-item__value:hover { color: var(--m-gold); }
+
+/* ─── FOOTER ──────────────────────────────────────────────────────── */
+.m-footer {
+  padding: 4rem var(--m-gutter);
+  background: #0A0807;
+  color: rgba(244, 235, 225, 0.6);
+  text-align: center;
+  font-family: "EB Garamond", serif;
+  font-style: italic;
+  font-size: 1rem;
+}
+.m-footer a { color: var(--m-gold); text-decoration: none; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   MOBILE — secciones más compactas pero manteniendo la jerarquía
+   ═══════════════════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+  :root { --m-gutter: 1.4rem; }
+  .m-header { padding: 1rem 1.4rem; }
+  .m-header__brand { font-size: 1.2rem; }
+  .m-header__brand img { height: 22px; }
+  .m-header__back { font-size: 0.95rem; letter-spacing: 0.12em; }
+
+  .m-section {
+    min-height: auto;
+    padding: 6rem 1.4rem 5rem;
+  }
+  .m-cover {
+    min-height: 90vh;
+    padding: 7rem 1.4rem 4rem;
+  }
+  .m-cover__title { font-size: 5.4rem; line-height: 0.92; }
+  .m-cover__lead  { font-size: 1.4rem; }
+  .m-cover__meta, .m-cover__footer { font-size: 0.85rem; gap: 0.4rem; flex-wrap: wrap; }
+
+  .m-title { font-size: 3.4rem; line-height: 1; }
+  .m-subtitle { font-size: 1.4rem; }
+  .m-eyebrow { font-size: 1rem; gap: 1rem; }
+
+  .m-index__list a {
+    grid-template-columns: 2.6rem 1fr 1.6rem;
+    padding: 1.4rem 0;
+    font-size: 1.7rem;
+  }
+
+  .m-swatch__color { height: 130px; }
+  .m-font-sample__alphabet { font-size: 2.4rem; }
+
+  .m-catalog-cat__name { font-size: 1.9rem; }
+  .m-catalog-item__name { font-size: 1.2rem; }
+
+  .m-feature__title { font-size: 1.4rem; }
+  .m-feature__desc { font-size: 1rem; }
+
+  .m-contact-item__value { font-size: 1.5rem; }
+}
