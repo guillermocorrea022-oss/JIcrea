@@ -1,5 +1,39 @@
 document.addEventListener("DOMContentLoaded", () => {
   // ═══════════════════════════════════════════════════════════════════
+  // ░░░░░░░░░░░░░ AOS — Entry animations site-wide ░░░░░░░░░░░░░░░░░░
+  // ═══════════════════════════════════════════════════════════════════
+  // Sistema AOS-like nativo con IntersectionObserver. Aplica .aos-in
+  // a cualquier elemento con [data-aos] cuando entra al viewport.
+  // El CSS hace el resto (transforms + opacity transition).
+  // Soporta data-aos-delay="ms" para escalonar grupos.
+  (function initAOS(){
+    const items = document.querySelectorAll("[data-aos]");
+    if (!items.length || !("IntersectionObserver" in window)) {
+      // Fallback: mostrar todo de una si no hay IO support
+      items.forEach(el => el.classList.add("aos-in"));
+      return;
+    }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const delay = parseInt(el.getAttribute("data-aos-delay") || "0", 10);
+          if (delay > 0) {
+            setTimeout(() => el.classList.add("aos-in"), delay);
+          } else {
+            el.classList.add("aos-in");
+          }
+          io.unobserve(el);  // un solo trigger, no se re-ejecuta al volver
+        }
+      });
+    }, {
+      rootMargin: "0px 0px -10% 0px",  // dispara un poco antes del bottom
+      threshold: 0.05
+    });
+    items.forEach(el => io.observe(el));
+  })();
+
+  // ═══════════════════════════════════════════════════════════════════
   // ░░░░░░░░░░░░░ 0. PAGE CURTAIN TRANSITION ░░░░░░░░░░░░░░░░░░░░░░░░
   // ═══════════════════════════════════════════════════════════════════
   // Sustituye la transición vieja que animaba width/height del header

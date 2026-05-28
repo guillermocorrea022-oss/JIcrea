@@ -154,19 +154,28 @@ a {
   justify-content: space-between;
   align-items: center;
   padding: 0 var(--gutter);
+  /* En iOS extendemos el header hacia arriba para cubrir el safe-area
+     (la "isla" del notch). Sin esto el bg del page se ve arriba del
+     navbar — el user lo reportaba como "se ve transparente arriba". */
+  padding-top: env(safe-area-inset-top, 0px);
+  height: calc(var(--header-h) + env(safe-area-inset-top, 0px));
   z-index: 100;
   background-color: transparent;
+  /* Smart header transition — slide cinematográfico de 0.55s con
+     curve ease-out-cubic para "deceleration" suave. */
   transition:
     background-color 0.4s var(--ease-out),
-    height 0.4s var(--ease-out),
-    transform 0.45s cubic-bezier(0.33, 1, 0.68, 1);
+    transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity 0.4s ease;
   pointer-events: none; /* Let clicks pass through transparent areas */
 }
 /* SMART HEADER (PC only ≥901px) — se oculta al scroll-down, vuelve
    al scroll-up. NO se oculta cuando estamos sobre un hero (los heroes
    siempre tienen header visible — el JS lo gestiona). */
 .header.is-hidden {
-  transform: translateY(-100%);
+  transform: translateY(-105%);
+  opacity: 0;
+  pointer-events: none !important;
 }
 
 .header__nav, .header__center {
@@ -3683,18 +3692,17 @@ body.menu-open { overflow: hidden; }
     align-items: center;
   }
 
-  /* ─── NAVBAR MOBILE — COLOR FIJO CREAM ─────────────────────────
-     En mobile NO usamos el color dinámico — el user pidió que los
-     iconos sean siempre claros. Para garantizar legibilidad sobre
-     fondos light usamos un backdrop SÓLIDO oscuro (no gradient
-     fade) — antes el bottom era transparente y los iconos quedaban
-     "colgados" sobre el contenido detrás. */
+  /* ─── NAVBAR MOBILE — SÓLIDO + SAFE-AREA ────────────────────────
+     Color fijo cream para los iconos + backdrop SÓLIDO oscuro
+     (no transparente). El header se extiende hacia arriba para
+     cubrir el safe-area de iOS (la isla del notch) usando
+     padding-top: env(safe-area-inset-top). */
   .header {
-    background: rgba(20, 12, 6, 0.78) !important;
-    backdrop-filter: blur(8px) saturate(130%);
-    -webkit-backdrop-filter: blur(8px) saturate(130%);
-    /* Borde sutil abajo para separar visualmente del contenido */
-    box-shadow: 0 1px 0 rgba(203, 160, 88, 0.18);
+    background: #140C06 !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    /* Borde sutil abajo dorado para separar visualmente del contenido */
+    box-shadow: 0 1px 0 rgba(203, 160, 88, 0.22), 0 4px 16px rgba(0, 0, 0, 0.25);
   }
   /* Lock cream — override de TODAS las reglas dinámicas (is-scrolled
      / is-dark-bg / is-leather-bg). Cream siempre. */
@@ -3737,4 +3745,50 @@ body.menu-open { overflow: hidden; }
 
   /* Logo central sigue centrado — el grid de 3 columnas auto del
      .page-index-v2 lo respeta. */
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   ENTRY ANIMATIONS — sistema AOS-like nativo (IntersectionObserver)
+   ════════════════════════════════════════════════════════════════════════
+   Aplicar [data-aos="fade-up"] (o variantes) a cualquier elemento. El JS
+   en jicrea-pro.js detecta cuando entra al viewport y agrega .aos-in.
+   ECONOMÍA: solo opacity + transform (GPU-friendly). NO se usa intersection
+   ratio threshold para evitar jitter — basta con "está visible" / "no está".
+
+   Variantes disponibles:
+     data-aos="fade-up"     → desde abajo, 30px (default)
+     data-aos="fade-down"   → desde arriba
+     data-aos="fade-left"   → desde la derecha hacia centro
+     data-aos="fade-right"  → desde la izquierda hacia centro
+     data-aos="scale-up"    → desde scale(0.92), opacity 0
+     data-aos="fade"        → solo opacity (sin movimiento)
+
+   Stagger: agregar data-aos-delay="100" (en ms) para escalar grupos.
+   ════════════════════════════════════════════════════════════════════════ */
+[data-aos] {
+  opacity: 0;
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: opacity, transform;
+}
+[data-aos="fade-up"]    { transform: translate3d(0, 32px, 0); }
+[data-aos="fade-down"]  { transform: translate3d(0, -32px, 0); }
+[data-aos="fade-left"]  { transform: translate3d(32px, 0, 0); }
+[data-aos="fade-right"] { transform: translate3d(-32px, 0, 0); }
+[data-aos="scale-up"]   { transform: scale(0.92); }
+[data-aos="fade"]       { transform: none; }
+/* In-view state: anulamos transforms para que llegue a su posición natural */
+[data-aos].aos-in {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+/* Reduce motion: respetar preferencias del user — sin animaciones */
+@media (prefers-reduced-motion: reduce) {
+  [data-aos] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
