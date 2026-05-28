@@ -64,23 +64,30 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   SAFE-AREA iOS — body bg dark en el top, cream debajo
+   SAFE-AREA iOS — overlay fijo que cubre el chrome translúcido
    ═══════════════════════════════════════════════════════════════════
-   Background gradient en body: dark earth en el top (cubriendo
-   safe-area-inset-top + navbar height), cream debajo. Esto garantiza
-   que cuando iOS Safari renderice su chrome translúcido arriba, el
-   contenido behind sea dark = no muestra cream/hero blurred.
+   iOS Safari 18 con Dynamic Island renderiza un chrome translúcido
+   arriba que blureaba el contenido del page (origen icons, hero, etc).
+   El gradient en body NO funcionaba porque los elementos absolute
+   positioned (icons) están arriba del body bg.
+
+   Fix: pseudo-elemento ::before en HTML (no body) que pinta una
+   franja fija dark. z-index 50 — DEBAJO del navbar (100) pero
+   ARRIBA del contenido del page (default 1-2). Cuando el chrome
+   translúcido de iOS blurea el contenido, encuentra dark = blurea
+   dark = continuo visual con el navbar.
    ═══════════════════════════════════════════════════════════════════ */
 @media (max-width: 900px) {
-  body {
-    background-image: linear-gradient(
-      to bottom,
-      #140C06 0,
-      #140C06 calc(env(safe-area-inset-top, 0px) + var(--header-h, 60px) + 2rem),
-      transparent calc(env(safe-area-inset-top, 0px) + var(--header-h, 60px) + 2rem)
-    );
-    background-attachment: fixed;
-    background-repeat: no-repeat;
+  html::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: max(env(safe-area-inset-top, 0px), 60px);
+    background-color: #140C06;
+    z-index: 50;
+    pointer-events: none;
   }
 }
 
