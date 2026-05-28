@@ -682,13 +682,20 @@
 
     function applyClasses() {
       const n = cards.length;
+      // FAN layout (cartas de naipe):
+      //   rel 0       → is-active (centro)
+      //   rel 1       → is-pos-1  (asoma derecha, "siguiente")
+      //   rel n-1     → is-pos-3  (asoma izquierda, "anterior")
+      //   resto       → is-pos-2  (atrás, casi oculto)
+      // Esto garantiza que las 2 cards laterales SIEMPRE se vean,
+      // sin importar si hay 3, 4 o 5 cards en el carousel.
       cards.forEach((c, i) => {
         const rel = (i - activeIdx + n) % n;
         c.classList.remove("is-active", "is-pos-1", "is-pos-2", "is-pos-3");
         if (rel === 0) c.classList.add("is-active");
         else if (rel === 1) c.classList.add("is-pos-1");
-        else if (rel === 2) c.classList.add("is-pos-2");
-        else if (rel === 3) c.classList.add("is-pos-3");
+        else if (rel === n - 1) c.classList.add("is-pos-3");
+        else c.classList.add("is-pos-2");
       });
       if (dotsRoot) {
         Array.from(dotsRoot.children).forEach((dot, i) => {

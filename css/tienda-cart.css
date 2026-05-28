@@ -2236,15 +2236,23 @@
      JS rota la clase .is-active cada 2s (tienda-cart.js). El usuario
      ve siempre 3-4 cards "asomando" detrás de la del frente — sabe
      que hay más sin tener que scrollear. */
+  /* ═══════════════════════════════════════════════════════════════
+     CAROUSEL FAN — estilo cartas de naipe españolas
+     ═══════════════════════════════════════════════════════════════
+     La del medio (is-active) al frente, las 2 vecinas asomando a los
+     costados rotadas, la 4ta (cuando hay 4) detrás del active media
+     oculta. El user reemplazó el stack vertical (poco visible) por
+     este fan horizontal que muestra "hay más cards" desde el primer
+     vistazo. */
   .cards__inner--tienda {
     display: block !important;
     grid-template-columns: none !important;
     position: relative;
-    height: clamp(380px, 78vw, 480px);
-    margin: 0 auto 3rem !important;
-    max-width: 320px;
+    height: clamp(420px, 92vw, 540px);
+    margin: 1rem auto 3rem !important;
+    max-width: 280px;
     padding: 0 !important;
-    perspective: 1000px;
+    overflow: visible;
   }
   .tienda-card {
     position: absolute !important;
@@ -2252,64 +2260,87 @@
     width: 100%;
     height: 100%;
     margin: 0 !important;
-    border-radius: 8px;
+    border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 24px 50px -16px rgba(46, 24, 12, 0.35);
     background: #FAF3E8;
-    transform-origin: center bottom;
+    /* Card "cuero label" — bordes finos + sombra dramática para
+       sensación de carta de naipe sobre madera. */
+    border: 1px solid rgba(107, 68, 35, 0.18);
+    box-shadow:
+      0 1px 0 rgba(255, 250, 235, 0.4) inset,
+      0 20px 40px -12px rgba(46, 24, 12, 0.40),
+      0 8px 16px -4px rgba(46, 24, 12, 0.20);
+    transform-origin: center center;
     transition:
       transform 0.7s cubic-bezier(0.4, 0, 0.2, 1),
       opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: transform, opacity;
-    /* Default (offscreen / hidden) — solo las 4 con posición visible
-       específica se muestran. */
-    transform: scale(0.7) translateY(-90px);
+    transform: scale(0.7) translateX(0);
     opacity: 0;
     pointer-events: none;
     z-index: 0;
   }
-  /* Active (front) */
+  /* Active: al frente, centro, sin rotación */
   .tienda-card.is-active {
-    transform: scale(1) translateY(0);
+    transform: scale(1) translateX(0) rotate(0deg);
     opacity: 1;
     pointer-events: auto;
     z-index: 4;
   }
-  /* 1ra atrás */
+  /* is-pos-1: la SIGUIENTE — asoma por la derecha, rotada CW */
   .tienda-card.is-pos-1 {
-    transform: scale(0.92) translateY(-22px);
-    opacity: 0.7;
+    transform: scale(0.9) translateX(38%) rotate(8deg);
+    opacity: 0.82;
     z-index: 3;
   }
-  /* 2da atrás */
+  /* is-pos-2: 4ta card escondida atrás del active (sólo asoma un
+     pelo arriba para insinuar "hay más") */
   .tienda-card.is-pos-2 {
-    transform: scale(0.84) translateY(-44px);
-    opacity: 0.45;
-    z-index: 2;
-  }
-  /* 3ra atrás */
-  .tienda-card.is-pos-3 {
-    transform: scale(0.76) translateY(-66px);
-    opacity: 0.20;
+    transform: scale(0.82) translateY(-12px) rotate(0deg);
+    opacity: 0.35;
     z-index: 1;
   }
+  /* is-pos-3: la ANTERIOR — asoma por la izquierda, rotada CCW.
+     Cuando hay rotación, la is-pos-3 se vuelve active (la is-active
+     pasa a is-pos-3 → sale por la izq). */
+  .tienda-card.is-pos-3 {
+    transform: scale(0.9) translateX(-38%) rotate(-8deg);
+    opacity: 0.82;
+    z-index: 3;
+  }
   .tienda-card__photo {
-    aspect-ratio: 4 / 3 !important;
+    aspect-ratio: 1 / 1 !important;
     transform: none !important;
-    border-radius: 6px 6px 0 0;
+    border-radius: 9px 9px 0 0;
+    background-size: cover;
+    background-position: center;
+  }
+  /* Diamante dorado más bonito + num en uppercase con letter-spacing */
+  .tienda-card__num {
+    font-size: 1.1rem !important;
+    letter-spacing: 0.32em !important;
+    margin: 1.4rem 1.8rem 0 !important;
+    color: var(--c-brand, #CBA058) !important;
+    font-style: italic;
   }
   .tienda-card__name {
-    font-size: 2.4rem !important;
-    letter-spacing: 0.5px;
-    margin: 1.6rem 1.6rem 0.4rem !important;
+    font-size: 2.6rem !important;
+    letter-spacing: 1px !important;
+    margin: 0.4rem 1.8rem 0.4rem !important;
+    line-height: 1 !important;
+    text-transform: uppercase;
+  }
+  /* Hairline dorado debajo del nombre — touch premium */
+  .tienda-card__name::after {
+    margin-top: 0.8rem !important;
+    width: 36px !important;
+    height: 1.5px !important;
   }
   .tienda-card__desc {
     font-size: 1.35rem !important;
-    margin: 0 1.6rem 1.4rem !important;
-  }
-  .tienda-card__num {
-    font-size: 1.2rem !important;
-    margin: 1.4rem 1.6rem 0 !important;
+    margin: 1.2rem 1.8rem 1.6rem !important;
+    line-height: 1.5;
+    font-style: italic;
   }
   /* Dots indicator (lo agregamos via JS) */
   .cards-carousel-dots {
@@ -2346,13 +2377,14 @@
   }
   .seccion-prod__head { margin-bottom: 3.2rem !important; padding-top: 2rem !important; }
   .seccion-prod__head .manifesto__title { font-size: 2.6rem !important; }
+  /* Productos por sección — mismo fan style que categorías */
   .seccion-prod__grid {
     display: block !important;
     position: relative;
-    height: clamp(440px, 100vw, 540px);
-    max-width: 320px;
+    height: clamp(480px, 110vw, 580px);
+    max-width: 280px;
     margin: 0 auto !important;
-    perspective: 1000px;
+    overflow: visible;
     gap: 0 !important;
   }
   .seccion-prod__grid > .prod {
@@ -2363,37 +2395,40 @@
     min-width: 0 !important;
     flex: none !important;
     margin: 0 !important;
-    transform-origin: center bottom;
+    border-radius: 10px;
+    transform-origin: center center;
     transition:
       transform 0.7s cubic-bezier(0.4, 0, 0.2, 1),
       opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: transform, opacity;
-    /* Default oculto fuera del stack */
-    transform: scale(0.7) translateY(-90px);
+    transform: scale(0.7);
     opacity: 0;
     pointer-events: none;
     z-index: 0;
   }
   .seccion-prod__grid > .prod.is-active {
-    transform: scale(1) translateY(0);
+    transform: scale(1) translateX(0) rotate(0deg);
     opacity: 1;
     pointer-events: auto;
     z-index: 4;
   }
+  /* Siguiente (derecha) */
   .seccion-prod__grid > .prod.is-pos-1 {
-    transform: scale(0.92) translateY(-22px);
-    opacity: 0.65;
+    transform: scale(0.9) translateX(38%) rotate(8deg);
+    opacity: 0.75;
     z-index: 3;
   }
+  /* 4ta atrás */
   .seccion-prod__grid > .prod.is-pos-2 {
-    transform: scale(0.84) translateY(-44px);
-    opacity: 0.35;
-    z-index: 2;
-  }
-  .seccion-prod__grid > .prod.is-pos-3 {
-    transform: scale(0.76) translateY(-66px);
-    opacity: 0.15;
+    transform: scale(0.82) translateY(-12px) rotate(0deg);
+    opacity: 0.30;
     z-index: 1;
+  }
+  /* Anterior (izquierda) */
+  .seccion-prod__grid > .prod.is-pos-3 {
+    transform: scale(0.9) translateX(-38%) rotate(-8deg);
+    opacity: 0.75;
+    z-index: 3;
   }
   .prod {
     min-height: 0 !important;
