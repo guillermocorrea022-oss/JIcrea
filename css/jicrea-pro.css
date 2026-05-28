@@ -52,12 +52,23 @@ body {
   font-family: var(--font-serif);
   font-size: max(2rem, min(2vw, 3rem));
   color: var(--c-text);
-  background-color: var(--c-bg);
+  /* Body bg DARK — mismo color que el navbar (#140C06). En iOS Safari
+     con viewport-fit=cover, el safe-area arriba del navbar muestra el
+     body bg, por eso debe coincidir con el del navbar. Idéntico approach
+     a kraftpadel.com — el truco no es cubrir el notch con CSS, sino
+     que el fondo del body match con el del navbar para que sea invisible.
+     Las secciones cream/cuero tienen su propio background-color explícito. */
+  background-color: #140C06;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 100%;
   overflow-x: hidden;
   overscroll-behavior-x: contain;
+}
+/* main es el contenedor por defecto del contenido cream — sin esto, los
+   gaps entre secciones se verían dark. */
+main {
+  background-color: var(--c-bg);
 }
 
 /* Sin viewport-fit=cover el page NO se extiende al safe-area. iOS
