@@ -2398,7 +2398,7 @@
     opacity: 1 !important;
     pointer-events: auto !important;
     z-index: auto !important;
-    scroll-snap-align: center;  /* center para que la card visible quede centrada */
+    scroll-snap-align: start;  /* start = card alineada al borde izq → exactamente 2 visibles, sin peek de la 3ra */
     border-radius: 4px !important;
     inset: auto !important;
     /* Cards compactas — el contenido define el alto pero todas
