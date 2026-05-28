@@ -45,11 +45,6 @@
 html {
   font-size: 62.5%;
   scroll-behavior: auto;
-  /* CRÍTICO MOBILE: el html bg es DARK EARTH (matchea el navbar y el
-     status bar de iOS). Esto resuelve el "strip transparente" que se
-     veía arriba del navbar — el safe-area de iOS muestra el bg del
-     html, así que si está oscuro queda visualmente continuo con el
-     navbar dark. El body tiene su propio bg cream para el contenido. */
   background-color: #140C06;
 }
 
@@ -63,11 +58,38 @@ body {
   line-height: 100%;
   overflow-x: hidden;
   overscroll-behavior-x: contain;
-  /* En iOS con viewport-fit=cover el body se extiende hasta el borde
-     del notch. Dejamos que sus bordes (top + bottom) muestren el bg
-     del html (#140C06) — el navbar dark match con el status bar. */
   min-height: 100vh;
   min-height: 100dvh;
+  position: relative;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SAFE-AREA FILL — franja oscura FIJA arriba del navbar en iOS
+   ═══════════════════════════════════════════════════════════════════
+   Problema reportado 3 veces: en iPhone se veía el page bg (cream)
+   arriba del navbar dark, generando un "strip transparente" feo en
+   la zona del notch / status bar.
+
+   Solución bullet-proof: pseudo-elemento ::before en el body que
+   pinta una franja oscura FIJA en el safe-area-inset-top (la altura
+   del notch). Como es position:fixed y top:0, está siempre presente
+   y siempre arriba del scroll. z-index 99 — debajo del navbar (100)
+   pero arriba de TODO el contenido. Cubre la franja del notch sin
+   importar qué tan abajo scrollea el usuario.
+
+   En devices sin notch (Android, desktop), env(safe-area-inset-top)
+   = 0, así que la franja tiene altura 0 = invisible. No molesta.
+   ═══════════════════════════════════════════════════════════════════ */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: env(safe-area-inset-top, 0px);
+  background-color: #140C06;
+  z-index: 99;
+  pointer-events: none;
 }
 
 a {
