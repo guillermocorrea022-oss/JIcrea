@@ -52,9 +52,6 @@ body {
   font-family: var(--font-serif);
   font-size: max(2rem, min(2vw, 3rem));
   color: var(--c-text);
-  /* Body bg DARK — para que cualquier overlay de iOS chrome
-     translúcido encuentre dark detrás. El cream del page se aplica
-     al <main> directamente. */
   background-color: #140C06;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -64,10 +61,31 @@ body {
   min-height: 100vh;
   min-height: 100dvh;
 }
-
-/* El <main> es el wrapper que tiene el bg cream del page. */
 main {
   background-color: var(--c-bg);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   IOS SAFE-AREA OVERLAY — pseudo-elemento que cubre el notch zone
+   ═══════════════════════════════════════════════════════════════════
+   El navbar con padding-top env() no era suficiente en iPhone 16
+   Pro Max con Dynamic Island — iOS Safari muestra el hero detrás
+   del chrome translúcido.
+
+   Solución: pseudo-element FIJO con z-index entre contenido (default)
+   y navbar (100). Pinta una franja dark en la zona del notch SIEMPRE,
+   sin importar qué scrolleó el user ni qué sección está debajo.
+   ═══════════════════════════════════════════════════════════════════ */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: env(safe-area-inset-top, 0px);
+  background-color: #140C06;
+  z-index: 90;
+  pointer-events: none;
 }
 
 /* Sin viewport-fit=cover el page NO se extiende al safe-area. iOS
