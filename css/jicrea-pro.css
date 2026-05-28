@@ -52,7 +52,10 @@ body {
   font-family: var(--font-serif);
   font-size: max(2rem, min(2vw, 3rem));
   color: var(--c-text);
-  background-color: var(--c-bg);
+  /* Body bg DARK — para que cualquier overlay de iOS chrome
+     translúcido encuentre dark detrás. El cream del page se aplica
+     al <main> directamente. */
+  background-color: #140C06;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 100%;
@@ -60,7 +63,11 @@ body {
   overscroll-behavior-x: contain;
   min-height: 100vh;
   min-height: 100dvh;
-  position: relative;
+}
+
+/* El <main> es el wrapper que tiene el bg cream del page. */
+main {
+  background-color: var(--c-bg);
 }
 
 /* Sin viewport-fit=cover el page NO se extiende al safe-area. iOS
