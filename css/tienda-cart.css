@@ -2377,81 +2377,82 @@
   }
   .seccion-prod__head { margin-bottom: 3.2rem !important; padding-top: 2rem !important; }
   .seccion-prod__head .manifesto__title { font-size: 2.6rem !important; }
-  /* Productos por sección — mismo fan style que categorías */
+  /* ─── PRODUCTOS — CAROUSEL CLÁSICO 2-UP ─────────────────────────────
+     Scroll horizontal con scroll-snap. 2 productos visibles lado a
+     lado. JS auto-advance cada 4s. Swipe nativo del browser.
+     A diferencia del fan style de las categorías, este es el clásico
+     carousel "deslizable" — más práctico para mostrar productos
+     comprables (precio + botón siempre visibles). */
   .seccion-prod__grid {
-    display: block !important;
-    position: relative;
-    height: clamp(480px, 110vw, 580px);
-    max-width: 280px;
-    margin: 0 auto !important;
-    overflow: visible;
-    gap: 0 !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    gap: 1.2rem !important;
+    padding: 0.6rem 0.4rem 1rem !important;
+    margin: 0 -0.4rem !important;
+    max-width: none !important;
+    height: auto !important;
+    position: static !important;
+    perspective: none !important;
   }
+  .seccion-prod__grid::-webkit-scrollbar { display: none; }
   .seccion-prod__grid > .prod {
-    position: absolute !important;
-    inset: 0;
-    width: 100% !important;
-    max-width: 100% !important;
+    /* 2 cards visibles → ~50% del container con gap. flex-basis
+       calc(50% - 0.6rem) para que 2 cards + 1.2rem gap = 100%. */
+    position: static !important;
+    flex: 0 0 calc(50% - 0.6rem) !important;
+    max-width: calc(50% - 0.6rem) !important;
     min-width: 0 !important;
-    flex: none !important;
+    width: auto !important;
     margin: 0 !important;
-    border-radius: 10px;
-    transform-origin: center center;
-    transition:
-      transform 0.7s cubic-bezier(0.4, 0, 0.2, 1),
-      opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: transform, opacity;
-    transform: scale(0.7);
-    opacity: 0;
-    pointer-events: none;
-    z-index: 0;
+    transform: none !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    z-index: auto !important;
+    scroll-snap-align: start;
+    /* Restaurar el shadow y borde original de .prod */
+    border-radius: 4px !important;
+    inset: auto !important;
   }
-  .seccion-prod__grid > .prod.is-active {
-    transform: scale(1) translateX(0) rotate(0deg);
-    opacity: 1;
-    pointer-events: auto;
-    z-index: 4;
-  }
-  /* Siguiente (derecha) */
-  .seccion-prod__grid > .prod.is-pos-1 {
-    transform: scale(0.9) translateX(38%) rotate(8deg);
-    opacity: 0.75;
-    z-index: 3;
-  }
-  /* 4ta atrás */
-  .seccion-prod__grid > .prod.is-pos-2 {
-    transform: scale(0.82) translateY(-12px) rotate(0deg);
-    opacity: 0.30;
-    z-index: 1;
-  }
-  /* Anterior (izquierda) */
-  .seccion-prod__grid > .prod.is-pos-3 {
-    transform: scale(0.9) translateX(-38%) rotate(-8deg);
-    opacity: 0.75;
-    z-index: 3;
-  }
+  /* Cards de producto compactas (2 por fila visible) */
   .prod {
     min-height: 0 !important;
-    padding: 1.2rem 1.2rem 0 !important;
+    padding: 0.8rem 0.8rem 0 !important;
   }
-  .prod::before { inset: 6px; }
-  .prod__name { font-size: 1.7rem !important; margin: 0 1.4rem 0.4rem !important; letter-spacing: 0.5px; }
+  .prod::before { inset: 5px; }
+  .prod__name {
+    font-size: 1.4rem !important;
+    margin: 0 0.8rem 0.3rem !important;
+    letter-spacing: 0.5px;
+  }
   .prod__desc {
-    font-size: 1.3rem !important;
-    margin: 0.8rem 1.4rem 1rem !important;
+    font-size: 1.15rem !important;
+    margin: 0.6rem 0.8rem 1rem !important;
     -webkit-line-clamp: 2;
   }
-  .prod__price { font-size: 1.7rem !important; margin: auto 1.4rem 0; padding-left: 2rem; }
-  .prod__price::before { left: 0.2rem; top: 1.3rem; width: 6px; height: 6px; }
+  .prod__price {
+    font-size: 1.5rem !important;
+    margin: auto 0.8rem 0;
+    padding-left: 1.8rem;
+  }
+  .prod__price::before { left: 0.2rem; top: 1.3rem; width: 5px; height: 5px; }
   .prod__price::after { left: 1.0rem; top: 1.45rem; }
   .prod__btn {
-    margin: 1.4rem 1rem 1rem !important;
-    padding: 1.3rem 1rem !important;
-    font-size: 1.1rem !important;
-    letter-spacing: 0.14em;
+    margin: 1.2rem 0.6rem 0.6rem !important;
+    padding: 1.2rem 0.8rem !important;
+    font-size: 1rem !important;
+    letter-spacing: 0.12em;
   }
-  .prod__img { margin-bottom: 1.4rem !important; aspect-ratio: 1 / 1 !important; }
-  /* Dots indicator de cada carousel */
+  .prod__img {
+    margin-bottom: 1.4rem !important;
+    aspect-ratio: 1 / 1 !important;
+  }
+  /* Dots indicator de carousel productos */
   .seccion-prod .cards-carousel-dots {
     margin-top: 1.4rem;
   }

@@ -772,15 +772,113 @@
     handleMQ();
   }
 
-  // Productos por sección (.prod en cada .seccion-prod__grid) — rotación 4s
+  // Productos por sección — CAROUSEL CLÁSICO (scroll horizontal con
+  // 2 cards visibles a la vez). Diferente del fan-style de categorías:
+  // este usa scroll-snap nativo del browser + auto-advance cada 4s.
   function initProductCarousels() {
     const mq = window.matchMedia("(max-width: 640px)");
     const grids = Array.from(document.querySelectorAll(".seccion-prod__grid"));
     if (!grids.length) return;
+    const ROTATE_MS = 4000;
+    const PAUSE_AFTER_TOUCH_MS = 6000;
     const carousels = grids.map(grid => {
       const cards = Array.from(grid.querySelectorAll(".prod"));
       if (cards.length < 2) return null;
-      return makeStackCarousel({ cards, container: grid, rotateMs: 4000, pauseMs: 6000 });
+      let currentIdx = 0;
+      let intervalId = null;
+      let pauseTimeoutId = null;
+      let userScrolling = false;
+      let dotsRoot = null;
+
+      function scrollToCard(idx) {
+        const card = cards[idx];
+        if (!card) return;
+        // Calcular el scroll left: card.offsetLeft relativo al grid
+        const left = card.offsetLeft - grid.offsetLeft - parseInt(getComputedStyle(grid).paddingLeft || 0);
+        grid.scrollTo({ left, behavior: "smooth" });
+        currentIdx = idx;
+        updateDots();
+      }
+      function next() {
+        // Avanzamos de a 1 card. Cuando el currentIdx alcanza
+        // length-2, volvemos al inicio (la última pareja ya se vio
+        // y el último jump volvería a mostrar las 2 mismas cards).
+        const maxIdx = Math.max(0, cards.length - 2);
+        let nextIdx = currentIdx + 1;
+        if (nextIdx > maxIdx) nextIdx = 0;
+        scrollToCard(nextIdx);
+      }
+      function startAuto() {
+        stopAuto();
+        intervalId = setInterval(next, ROTATE_MS);
+      }
+      function stopAuto() { if (intervalId) { clearInterval(intervalId); intervalId = null; } }
+      function pauseAuto() {
+        stopAuto();
+        if (pauseTimeoutId) clearTimeout(pauseTimeoutId);
+        pauseTimeoutId = setTimeout(() => { if (mq.matches) startAuto(); }, PAUSE_AFTER_TOUCH_MS);
+      }
+      function updateDots() {
+        if (!dotsRoot) return;
+        Array.from(dotsRoot.children).forEach((dot, i) => {
+          dot.classList.toggle("is-active", i === currentIdx);
+        });
+      }
+      function buildDots() {
+        dotsRoot = document.createElement("div");
+        dotsRoot.className = "cards-carousel-dots";
+        // 1 dot por card (no por par). Usuario ve cuál está al frente.
+        cards.forEach((_, i) => {
+          const dot = document.createElement("button");
+          dot.className = "cards-carousel-dot";
+          dot.type = "button";
+          dot.setAttribute("aria-label", `Ir a producto ${i + 1}`);
+          dot.addEventListener("click", (e) => {
+            e.stopPropagation();
+            scrollToCard(i);
+            pauseAuto();
+          });
+          dotsRoot.appendChild(dot);
+        });
+        grid.insertAdjacentElement("afterend", dotsRoot);
+      }
+      // Detect user scroll → pausar auto
+      let scrollDebounce = null;
+      grid.addEventListener("scroll", () => {
+        if (!mq.matches) return;
+        clearTimeout(scrollDebounce);
+        scrollDebounce = setTimeout(() => {
+          // Detectar cuál card está a la izquierda (el active)
+          const scrollL = grid.scrollLeft;
+          let closest = 0;
+          let minDiff = Infinity;
+          cards.forEach((c, i) => {
+            const left = c.offsetLeft - grid.offsetLeft - parseInt(getComputedStyle(grid).paddingLeft || 0);
+            const diff = Math.abs(left - scrollL);
+            if (diff < minDiff) { minDiff = diff; closest = i; }
+          });
+          currentIdx = closest;
+          updateDots();
+        }, 120);
+      }, { passive: true });
+      // Touch → pausar
+      grid.addEventListener("touchstart", pauseAuto, { passive: true });
+
+      function activate() {
+        if (!dotsRoot) buildDots();
+        dotsRoot.style.display = "";
+        currentIdx = 0;
+        // Reset scroll
+        grid.scrollLeft = 0;
+        updateDots();
+        startAuto();
+      }
+      function deactivate() {
+        stopAuto();
+        if (dotsRoot) dotsRoot.style.display = "none";
+        grid.scrollLeft = 0;
+      }
+      return { activate, deactivate };
     }).filter(Boolean);
     function handleMQ() {
       carousels.forEach(c => { if (mq.matches) c.activate(); else c.deactivate(); });
