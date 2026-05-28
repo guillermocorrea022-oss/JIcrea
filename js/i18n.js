@@ -98,8 +98,8 @@
       "b2b.cta":           "Contactar al equipo comercial",
 
       // ═══ TIENDA — HERO ═══
-      "shop.hero.title.l1":  "PIEZAS",
-      "shop.hero.title.l2":  "HECHAS A MANO",
+      "shop.hero.title.l1":  "PIEZAS HECHAS",
+      "shop.hero.title.l2":  "A MANO",
       "shop.hero.subtitle":  "Mates, posa mates, materas y yerberos. Una pieza para cada momento.",
       "shop.hero.cta":       "Ver los productos",
 
@@ -349,8 +349,8 @@
       "b2b.f3.text":       "A dedicated account manager just for you.",
       "b2b.cta":           "Contact our sales team",
 
-      "shop.hero.title.l1":  "PIECES",
-      "shop.hero.title.l2":  "MADE BY HAND",
+      "shop.hero.title.l1":  "PIECES MADE",
+      "shop.hero.title.l2":  "BY HAND",
       "shop.hero.subtitle":  "Mates, coasters, mate bags and yerba holders. A piece for every moment.",
       "shop.hero.cta":       "See the products",
 
