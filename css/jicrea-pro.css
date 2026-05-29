@@ -55,33 +55,28 @@ html {
    llegar al tope físico de la pantalla. Único elemento que iOS Safari
    no puede ignorar sin un bug en el motor de render. */
 .ios-spacer {
-  /* iOS notch cover con MASK. El elemento es height:120 (suficientemente
-     grande para que iOS NO lo descarte del compositing layer durante
-     scroll) pero el mask-image hace transparente los últimos 60px
-     visualmente — así NO tapa el navbar.
+  /* iOS notch cover — z-index BAJO del navbar.
+     Element height:120 + top:-60 cubre desde 60px arriba hasta 60px
+     abajo de top:0. El navbar position:fixed top:0 z-index:100 queda
+     ENCIMA del spacer (z-index:99), así el navbar es visible con su
+     logo, menú y carrito. La parte del spacer que queda ARRIBA del
+     navbar (la zona del notch) es donde el spacer se ve dark.
 
-     · top:-60 → element top at y=-60 viewport
-     · height:120 → element extends to y=60 viewport
-     · mask: top 60px (y=-60..0) transparent, bottom 60px (y=0..60) opaque
-     · Resultado: visible solo y=0..60 = exactamente la zona del notch
-     · Element size completo se mantiene → iOS no descarta del layer */
+     GPU compositing forzado mantiene el spacer en su propia layer
+     durante scroll, evitando que iOS lo descarte. */
   position: fixed;
   top: -60px;
   left: 0;
   right: 0;
   height: 120px;
   background: #140C06;
-  z-index: 999;
+  z-index: 99; /* DEBAJO del navbar 100 — navbar queda visible encima */
   pointer-events: none;
-  /* Mask: top 60px transparent (y=-60..0 invisible), bottom 60px opaque
-     (y=0..60 visible donde está el notch). Negro = opaco, transparent =
-     invisible. Prefijo -webkit- para Safari < 15.4. */
-  mask-image: linear-gradient(to bottom, transparent 0, transparent 60px, black 60px, black 100%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, transparent 60px, black 60px, black 100%);
-  /* GPU compositing forzado para estabilidad de rendering */
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
   will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 body {
