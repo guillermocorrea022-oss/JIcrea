@@ -3738,22 +3738,23 @@ body.menu-open { overflow: hidden; }
 
      Listo todos los variantes posibles: con .is-scrolled, con .is-hidden,
      con .header--v2 — todos sólidos #140C06. */
-  /* NAVBAR mobile — bg sólido dark en TODOS los estados con max
-     specificity (body prefix) + !important. transition:none mata
-     cualquier fade que mostraría transparencia. opacity/transform
-     forced bypass smart header hide/show. El pseudo ::before más
-     abajo extiende el bg dark 60px arriba cubriendo la zona del notch. */
-  body .page-index-v2 .header.is-scrolled,
-  body .page-index-v2 .header.is-scrolled.is-dark-bg,
-  body .page-index-v2 .header.is-scrolled.is-leather-bg,
-  body .page-index-v2 .header--v2.is-scrolled,
-  body .page-index-v2 .header--v2,
-  body .page-index-v2 .header,
-  body .header.is-scrolled,
-  body .header.is-scrolled.is-dark-bg,
-  body .header.is-scrolled.is-leather-bg,
-  body .header.is-hidden,
-  body .header {
+  /* NAVBAR mobile — BUG FIX de specificity: usar body.page-index-v2
+     (sin espacio, body TIENE la clase) en vez de body .page-index-v2
+     (con espacio, buscaría descendiente). El error hacía que la regla
+     .page-index-v2 .header.is-scrolled { background: rgba(...,0.55) }
+     ganara → navbar semi-transparente al scrollear → "hueco arriba". */
+  body.page-index-v2 .header,
+  body.page-index-v2 .header.is-scrolled,
+  body.page-index-v2 .header.is-scrolled.is-dark-bg,
+  body.page-index-v2 .header.is-scrolled.is-leather-bg,
+  body.page-index-v2 .header.is-hidden,
+  body.page-index-v2 .header--v2,
+  body.page-index-v2 .header--v2.is-scrolled,
+  html body .header,
+  html body .header.is-scrolled,
+  html body .header.is-scrolled.is-dark-bg,
+  html body .header.is-scrolled.is-leather-bg,
+  html body .header.is-hidden {
     background: #140C06 !important;
     background-color: #140C06 !important;
     backdrop-filter: none !important;
@@ -3763,11 +3764,12 @@ body.menu-open { overflow: hidden; }
     transform: none !important;
     box-shadow: 0 1px 0 rgba(203, 160, 88, 0.22), 0 4px 16px rgba(0, 0, 0, 0.25);
   }
-  /* Pseudo del navbar que extiende su bg DARK 60px hacia arriba
-     cubriendo la zona del notch. Al estar adentro del navbar, comparten
-     stacking context — imposible que se "desincronicen". */
-  body .header::before,
-  body .header--v2::before {
+  /* Pseudo del navbar extiende bg DARK 60px hacia arriba cubriendo notch.
+     Specificity fix igual que arriba: body.page-index-v2 con dot. */
+  body.page-index-v2 .header::before,
+  body.page-index-v2 .header--v2::before,
+  html body .header::before,
+  html body .header--v2::before {
     content: '';
     position: absolute;
     top: -60px;
