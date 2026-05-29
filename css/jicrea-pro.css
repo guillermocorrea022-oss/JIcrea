@@ -3768,7 +3768,16 @@ body.menu-open { overflow: hidden; }
     -webkit-backdrop-filter: none !important;
     transition: none !important;
     opacity: 1 !important;
-    transform: none !important;
+    /* GPU compositing forzado — translateZ(0) en lugar de none.
+       Esta fue la diferencia clave entre el .ios-spacer que funcionaba
+       (tenía translateZ) y el navbar que se rompe (yo le puse none).
+       En mobile el smart header no se usa así que translateZ no
+       conflictea con transform animations. */
+    transform: translateZ(0) !important;
+    -webkit-transform: translateZ(0) !important;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
     /* SHIFT + PADDING — el navbar mismo cubre el notch */
     top: -60px !important;
     padding-top: calc(1rem + 60px) !important;
