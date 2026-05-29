@@ -3767,35 +3767,36 @@ body.menu-open { overflow: hidden; }
 
      Listo todos los variantes posibles: con .is-scrolled, con .is-hidden,
      con .header--v2 — todos sólidos #140C06. */
-  .page-index-v2 .header.is-scrolled,
-  .page-index-v2 .header--v2.is-scrolled,
-  .page-index-v2 .header--v2,
-  .header.is-scrolled,
-  .header {
+  /* NAVBAR mobile DEFINITIVO — el navbar se MUEVE 60px hacia arriba
+     y compensa con padding-top extra. Así su bg dark cubre la zona
+     del notch directamente, sin necesidad de spacer ni pseudo. Es UN
+     elemento, imposible que se desincronice de sí mismo.
+     · top: -60 → shift up 60px (cubre safe-area)
+     · padding-top: calc(original + 60) → content stays en su posición visual
+     · transition: none → no animations que muestren transparencia
+     · opacity/transform forced → bypass smart header
+     · max specificity con body + !important everywhere */
+  body .page-index-v2 .header.is-scrolled,
+  body .page-index-v2 .header.is-scrolled.is-dark-bg,
+  body .page-index-v2 .header.is-scrolled.is-leather-bg,
+  body .page-index-v2 .header--v2.is-scrolled,
+  body .page-index-v2 .header--v2,
+  body .page-index-v2 .header,
+  body .header.is-scrolled,
+  body .header.is-scrolled.is-dark-bg,
+  body .header.is-scrolled.is-leather-bg,
+  body .header.is-hidden,
+  body .header {
     background: #140C06 !important;
     background-color: #140C06 !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    box-shadow: 0 1px 0 rgba(203, 160, 88, 0.22), 0 4px 16px rgba(0, 0, 0, 0.25);
-    /* Kill transitions de transform/opacity/background-color en mobile —
-       evita momentos de fade que muestran transparencia durante scroll
-       o URL bar collapse de iOS Safari. */
     transition: none !important;
-  }
-  /* Pseudo-element ::before del navbar: extiende su bg dark 60px HACIA
-     ARRIBA cubriendo la zona del notch. Al estar adentro del navbar,
-     comparten stacking context y se renderizan SIEMPRE juntos —
-     imposible que se desincronicen durante scroll. */
-  .header::before,
-  .header--v2::before {
-    content: '';
-    position: absolute;
-    top: -60px;
-    left: 0;
-    right: 0;
-    height: 60px;
-    background: #140C06;
-    pointer-events: none;
+    opacity: 1 !important;
+    transform: none !important;
+    top: -60px !important;
+    padding-top: calc(1rem + 60px) !important;
+    box-shadow: 0 1px 0 rgba(203, 160, 88, 0.22), 0 4px 16px rgba(0, 0, 0, 0.25);
   }
   /* Lock cream — override de TODAS las reglas dinámicas (is-scrolled
      / is-dark-bg / is-leather-bg). Cream siempre. */
