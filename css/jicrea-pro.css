@@ -3738,15 +3738,18 @@ body.menu-open { overflow: hidden; }
 
      Listo todos los variantes posibles: con .is-scrolled, con .is-hidden,
      con .header--v2 — todos sólidos #140C06. */
-  /* NAVBAR mobile — BUG FIX de specificity (body.page-index-v2 SIN
-     espacio, body TIENE la clase) + EXTENSION via box-shadow vertical.
+  /* NAVBAR mobile — EL NAVBAR MISMO se hace MÁS GRANDE para cubrir
+     el notch. Como sugirió el usuario: igual que el spacer que tapaba
+     todo funcionaba, el navbar TIENE QUE tapar todo también.
 
-     Antes el pseudo ::before no se renderizaba bien en iOS (position:
-     absolute en parent fixed puede tener problemas de containing block).
-     Solución: usar box-shadow con offset Y negativo + spread = 0 +
-     mismo color → dibuja un "shadow" sólido 60px ARRIBA del navbar,
-     que visualmente parece extensión del navbar bg. iOS lo renderiza
-     nativamente sin issues de stacking context. */
+     · top: -60 → shift up 60px, el navbar empieza en el notch
+     · padding-top: calc(1rem + 60px) → el contenido (logo/iconos)
+       queda exactamente en la posición visual de antes
+     · background SOLID dark en TODOS los estados
+     · transition: none → no animations que muestren transparencia
+     · opacity/transform forced → bypass smart header
+
+     El .ios-spacer está display:none, así que no hay doble. */
   body.page-index-v2 .header,
   body.page-index-v2 .header.is-scrolled,
   body.page-index-v2 .header.is-scrolled.is-dark-bg,
@@ -3766,12 +3769,10 @@ body.menu-open { overflow: hidden; }
     transition: none !important;
     opacity: 1 !important;
     transform: none !important;
-    /* box-shadow vertical: extiende bg 60px hacia arriba (cubre notch)
-       + las sombras decorativas originales debajo del navbar. */
-    box-shadow:
-      0 -60px 0 0 #140C06,
-      0 1px 0 rgba(203, 160, 88, 0.22),
-      0 4px 16px rgba(0, 0, 0, 0.25) !important;
+    /* SHIFT + PADDING — el navbar mismo cubre el notch */
+    top: -60px !important;
+    padding-top: calc(1rem + 60px) !important;
+    box-shadow: 0 1px 0 rgba(203, 160, 88, 0.22), 0 4px 16px rgba(0, 0, 0, 0.25);
   }
   /* Lock cream — override de TODAS las reglas dinámicas (is-scrolled
      / is-dark-bg / is-leather-bg). Cream siempre. */
