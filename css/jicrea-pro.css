@@ -3777,6 +3777,25 @@ body.menu-open { overflow: hidden; }
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     box-shadow: 0 1px 0 rgba(203, 160, 88, 0.22), 0 4px 16px rgba(0, 0, 0, 0.25);
+    /* Kill transitions de transform/opacity/background-color en mobile —
+       evita momentos de fade que muestran transparencia durante scroll
+       o URL bar collapse de iOS Safari. */
+    transition: none !important;
+  }
+  /* Pseudo-element ::before del navbar: extiende su bg dark 60px HACIA
+     ARRIBA cubriendo la zona del notch. Al estar adentro del navbar,
+     comparten stacking context y se renderizan SIEMPRE juntos —
+     imposible que se desincronicen durante scroll. */
+  .header::before,
+  .header--v2::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #140C06;
+    pointer-events: none;
   }
   /* Lock cream — override de TODAS las reglas dinámicas (is-scrolled
      / is-dark-bg / is-leather-bg). Cream siempre. */
