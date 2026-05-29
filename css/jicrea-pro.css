@@ -50,7 +50,15 @@ html {
 /* iOS notch — el theme-color del meta tag tinta la status bar dark.
    El navbar y body son #140C06 también, así que la zona del notch
    queda visualmente coherente. No usamos viewport-fit=cover para
-   mantener el viewport constraint estándar. */
+   mantener el viewport constraint estándar.
+
+   .ios-spacer (oculto en desktop, visible en mobile) abajo en la media
+   query empuja el contenido 60px hacia abajo para evitar bleed en
+   webviews embedded (WhatsApp, Instagram, Facebook, etc) que no
+   respetan el viewport meta como Safari. */
+.ios-spacer {
+  display: none;
+}
 
 body {
   font-family: var(--font-serif);
@@ -3700,17 +3708,16 @@ body.menu-open { overflow: hidden; }
    ocultan, y el layout se reordena para que el cart quede a la derecha
    sin importar el viewport. */
 @media (max-width: 900px) {
-  /* iOS notch fix: empuja TODO el contenido del body 60px hacia abajo,
-     hardcoded sin env(). El navbar position:fixed top:0 NO se ve afectado
-     (los fixed ignoran padding del padre). El body bg #140C06 dark llena
-     ese spacer. Resultado: ninguna sección llega al tope físico de la
-     pantalla, no puede haber bleed en la zona del notch.
-
-     Trade-off: en Android sin notch hay 60px de body bg dark al tope,
-     pero como el navbar lo cubre todo (también 70px dark), visualmente
-     no se percibe el extra. */
-  body {
-    padding-top: 60px;
+  /* iOS / WhatsApp webview spacer: bloque DOM físico de 60px al inicio
+     del body. Reemplaza al padding CSS (que iOS/WKWebView ignoraban). El
+     spacer ocupa espacio real en el flujo del documento — imposible que
+     un browser embedded lo ignore. Resultado: ninguna sección llega al
+     tope, no hay bleed posible. */
+  .ios-spacer {
+    display: block;
+    width: 100%;
+    height: 60px;
+    background: #140C06;
   }
 
   /* Mostrar hamburger */
