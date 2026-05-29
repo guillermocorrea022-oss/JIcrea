@@ -47,15 +47,15 @@ html {
   scroll-behavior: auto;
   background-color: #140C06;
 }
-/* iOS SAFE-AREA FIX TARGETEADO ────────────────────────────────────────
-   Aún sin viewport-fit=cover, iOS Safari permite que elementos absolute
-   con inset:0 (como hero__media y proceso-3d__video) se extiendan al
-   tope físico del visual viewport, atravesando la zona del notch. Fix:
-   forzar top env() en estos elementos full-bleed para empujarlos abajo
-   del safe-area. */
-.hero__media,
-.proceso-3d__video {
-  top: env(safe-area-inset-top, 0px) !important;
+/* iOS SAFE-AREA — combo definitivo ────────────────────────────────────
+   viewport-fit=cover (en meta HTML) habilita env(safe-area-inset-top).
+   body padding-top empuja TODO el contenido hacia abajo por la altura
+   del notch. El navbar position:fixed top:0 NO se ve afectado por el
+   padding (fixed ignora padding del padre). El body bg dark llena la
+   zona del notch. Resultado: navbar al tope físico, debajo el contenido,
+   notch zone con body bg dark coincidente con el navbar. */
+body {
+  padding-top: env(safe-area-inset-top, 0px) !important;
 }
 
 body {
