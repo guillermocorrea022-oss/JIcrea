@@ -47,12 +47,16 @@ html {
   scroll-behavior: auto;
   background-color: #140C06;
 }
-/* iOS Safari sin viewport-fit=cover: el viewport queda CONSTRIÑIDO al
-   safe-area boundary. La zona del notch / Dynamic Island queda fuera
-   del viewport y iOS la rellena con el color de theme-color (#140C06).
-   Resultado: nada del body puede dibujarse en esa zona — es imposible
-   que asome contenido. Approach idéntico a la mayoría de los sitios
-   web profesionales que NO requieren full-bleed visual al notch. */
+/* iOS SAFE-AREA FIX TARGETEADO ────────────────────────────────────────
+   Aún sin viewport-fit=cover, iOS Safari permite que elementos absolute
+   con inset:0 (como hero__media y proceso-3d__video) se extiendan al
+   tope físico del visual viewport, atravesando la zona del notch. Fix:
+   forzar top env() en estos elementos full-bleed para empujarlos abajo
+   del safe-area. */
+.hero__media,
+.proceso-3d__video {
+  top: env(safe-area-inset-top, 0px) !important;
+}
 
 body {
   font-family: var(--font-serif);
