@@ -47,15 +47,17 @@ html {
   scroll-behavior: auto;
   background-color: #140C06;
 }
-/* iOS SAFE-AREA — combo definitivo ────────────────────────────────────
-   viewport-fit=cover (en meta HTML) habilita env(safe-area-inset-top).
-   body padding-top empuja TODO el contenido hacia abajo por la altura
-   del notch. El navbar position:fixed top:0 NO se ve afectado por el
-   padding (fixed ignora padding del padre). El body bg dark llena la
-   zona del notch. Resultado: navbar al tope físico, debajo el contenido,
-   notch zone con body bg dark coincidente con el navbar. */
-body {
-  padding-top: env(safe-area-inset-top, 0px) !important;
+/* iOS SAFE-AREA — fallback hardcoded para Safari iOS específicamente.
+   `env(safe-area-inset-top)` debería devolver ~59px en iPhone con notch
+   pero en algunos setups devuelve 0 (Safari iOS quirk). Solución dual:
+   `max(env(), 47px)` garantiza un mínimo de 47px (alto típico del notch
+   en iPhones modernos) aunque env() falle. Limitado a iOS via @supports
+   (-webkit-touch-callout: none) — feature exclusivo de iOS Safari.
+   Resto de browsers (PC, Android) no aplica este padding. */
+@supports (-webkit-touch-callout: none) {
+  body {
+    padding-top: max(env(safe-area-inset-top, 0px), 47px) !important;
+  }
 }
 
 body {
