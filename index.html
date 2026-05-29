@@ -31,7 +31,7 @@
   <meta property="og:locale" content="es_UY">
 
   <!-- Fuentes locales de la marca -->
-  <link rel="stylesheet" href="css/jicrea-pro.css?v=147">
+  <link rel="stylesheet" href="css/jicrea-pro.css?v=148">
   <link rel="stylesheet" href="css/tienda-cart.css?v=33">
 </head>
 <body class="page-index-v2">  <!-- PAGE CURTAIN â€” overlay cuero que cubre la pÃ¡gina al cargar. -->
@@ -206,114 +206,7 @@
           <span class="proceso-3d__title-eyebrow" data-i18n="proceso.eyebrow">El oficio</span>
           <h2 class="proceso-3d__title-text" data-i18n="proceso.title" data-aos="fade-up">Las manos<br>que le dan vida<br>a la cultura</h2>
         </div>
-
-        <!-- [DESHABILITADO â€” mute toggle del video proceso].
-             Se retirÃ³ por decisiÃ³n del cliente. El video corre muted en
-             loop sin opciÃ³n de activar sonido. Para reactivar:
-             descomentar este bloque + el handler en jicrea-pro.js.
-        <button class="proceso-3d__mute-toggle" id="procesoMuteToggle"
-                type="button" aria-label="Activar sonido" aria-pressed="false">
-          <svg class="proceso-3d__mute-icon proceso-3d__mute-icon--off" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-            <line x1="23" y1="9" x2="17" y2="15"/>
-            <line x1="17" y1="9" x2="23" y2="15"/>
-          </svg>
-          <svg class="proceso-3d__mute-icon proceso-3d__mute-icon--on" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-          </svg>
-          <span class="proceso-3d__mute-label">Activar sonido</span>
-        </button>
-        -->
-
-
-        <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-             [DESHABILITADO â€” sistema 3D + fotos cross-fade]
-             Estaba acÃ¡ el sistema viejo con 6 capas de fondo y 3 mate 3D
-             (model-viewer GLBs). Se reemplazÃ³ por el video de arriba.
-             Para revertir: descomentar este bloque y comentar el <video>.
-             â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
-        <!--
-        <div class="proceso-3d__bg" id="procesoBg" aria-hidden="true">
-          <div class="proceso-3d__bg-layer" data-step="0" style="opacity:1"></div>
-          <div class="proceso-3d__bg-layer" data-step="1"></div>
-          <div class="proceso-3d__bg-layer" data-step="1-mate"></div>
-          <div class="proceso-3d__bg-layer" data-step="2"></div>
-          <div class="proceso-3d__bg-layer" data-step="2-mate"></div>
-          <div class="proceso-3d__bg-layer" data-step="2-final"></div>
-        </div>
-
-        <div class="proceso-3d__viewer" id="procesoViewer">
-          <div class="proceso-3d__spin" id="procesoSpin">
-            <model-viewer
-              class="proceso-3d__model is-visible" data-step="0"
-              src="img/mate-3d-1-torno.glb"
-              disable-zoom disable-pan interaction-prompt="none" loading="eager"
-              shadow-intensity="0.9" shadow-softness="0.8" exposure="1.05"
-              environment-image="img/golden_gate_hills_2k.hdr"
-              skybox-image=""
-              camera-orbit="0deg 78deg auto" field-of-view="28deg"
-              tone-mapping="aces" alt="Mate torno"
-            ></model-viewer>
-            <model-viewer
-              class="proceso-3d__model" data-step="1"
-              src="img/mate-3d-2-lija.glb"
-              disable-zoom disable-pan interaction-prompt="none" loading="eager"
-              shadow-intensity="0.9" shadow-softness="0.8" exposure="1.05"
-              environment-image="img/golden_gate_hills_2k.hdr"
-              skybox-image=""
-              camera-orbit="0deg 78deg auto" field-of-view="28deg"
-              tone-mapping="aces" alt="Mate lija"
-            ></model-viewer>
-            <model-viewer
-              class="proceso-3d__model" data-step="2"
-              src="img/mate-meshy-amber.glb"
-              disable-zoom disable-pan interaction-prompt="none" loading="eager"
-              shadow-intensity="0.9" shadow-softness="0.8" exposure="1.05"
-              environment-image="img/golden_gate_hills_2k.hdr"
-              skybox-image=""
-              camera-orbit="0deg 78deg auto" field-of-view="28deg"
-              tone-mapping="aces" alt="Mate terminado"
-            ></model-viewer>
-          </div>
-        </div>
-        -->
-
-        <!-- [DESHABILITADO â€” overlay de texto explicativo].
-             El video ya muestra todo el proceso en modo cine, no hace
-             falta texto encima. Se mantiene comentado por si mÃ¡s adelante
-             se decide volver a poner algÃºn overlay sutil.
-        <div class="proceso-3d__overlay">
-          <div class="proceso-3d__copy-left">
-            <span class="eyebrow proceso-3d__eyebrow">El proceso</span>
-            <div class="proceso-3d__text" id="procesoText">
-              <span class="reveal"><span class="reveal-inner proceso-3d__num">01</span></span>
-              <span class="reveal"><h2 class="reveal-inner proceso-3d__title" data-aos="fade-up">Corte<br>y lavado</h2></span>
-              <span class="reveal"><p class="reveal-inner proceso-3d__desc">La calabaza se corta a la altura justa y se lava por fuera. Queda lista, limpia, sin la cÃ¡scara de campo.</p></span>
-            </div>
-          </div>
-
-          <div class="proceso-3d__copy-right">
-            <div class="proceso-3d__indicator">
-              <div class="proceso-3d__bar"><span class="proceso-3d__bar-fill" id="procesoBar"></span></div>
-              <span class="proceso-3d__count" id="procesoCount">1 / 3</span>
-            </div>
-          </div>
-        </div>
-        -->
-
       </div>
-
-      <!-- [DESHABILITADO â€” datos de steps del overlay].
-      <script type="application/json" id="procesoSteps">
-        [
-          { "src": "img/mate-3d-1-torno.glb",  "num": "01", "title": "Corte<br>y lavado",     "desc": "La calabaza se corta a la altura justa y se lava por fuera. Queda lista, limpia, sin la cÃ¡scara de campo." },
-          { "src": "img/mate-3d-2-lija.glb",   "num": "02", "title": "El torno<br>y la lija", "desc": "En el torno se ajusta la boca y se da la forma final. La lija busca la textura, sin apuro, hasta que la madera respira." },
-          { "src": "img/mate-meshy-amber.glb", "num": "03", "title": "Barnizado<br>y virola", "desc": "Un barniz natural protege la calabaza sin taparla. Se engarza la virola y se cuidan los detalles. Cada mate sale con identidad propia." }
-        ]
-      </script>
-      -->
     </section>
 
     <!-- MANIFESTO ROJO â€” tÃ­tulo chico + texto grande terracotta -->
