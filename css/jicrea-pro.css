@@ -47,41 +47,12 @@ html {
   scroll-behavior: auto;
   background-color: #140C06;
 }
-/* iOS notch fix — .ios-spacer INCONDICIONAL.
-   Bloque DOM físico 60px tall, bg #140C06 dark, primer hijo del body.
-   Como el navbar position:fixed top:0 lo cubre por encima (también dark,
-   también ~70px alto), visualmente NO se nota ni en PC ni en mobile —
-   pero garantiza que ninguna sección del flujo del documento puede
-   llegar al tope físico de la pantalla. Único elemento que iOS Safari
-   no puede ignorar sin un bug en el motor de render. */
-/* .ios-spacer default: invisible.
-   Solo aplica en mobile (≤900px) para evitar romper layout PC. */
+/* .ios-spacer — DEPRECATED, always hidden. El fix del notch lo hace
+   directamente el .header::before pseudo en la media query mobile más
+   abajo. Se mantiene la regla por si quedó algún <div class="ios-spacer">
+   en algún HTML, pero no se renderiza. */
 .ios-spacer {
-  display: none;
-}
-@media (max-width: 900px) {
-  .ios-spacer {
-    /* iOS notch cover SOLO en mobile portrait. Element height:120 +
-       top:-60 cubre desde 60px arriba hasta 60px abajo de top:0. El
-       navbar (z-index 100) queda ENCIMA del spacer (z-index 99) →
-       navbar visible con logo, menú y carrito. La parte arriba del
-       navbar (zona del notch) es donde el spacer se ve dark.
-       GPU compositing forzado evita que iOS lo descarte durante scroll. */
-    display: block;
-    position: fixed;
-    top: -60px;
-    left: 0;
-    right: 0;
-    height: 120px;
-    background: #140C06;
-    z-index: 99;
-    pointer-events: none;
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
-    will-change: transform;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-  }
+  display: none !important;
 }
 
 body {
@@ -3767,15 +3738,11 @@ body.menu-open { overflow: hidden; }
 
      Listo todos los variantes posibles: con .is-scrolled, con .is-hidden,
      con .header--v2 — todos sólidos #140C06. */
-  /* NAVBAR mobile DEFINITIVO — el navbar se MUEVE 60px hacia arriba
-     y compensa con padding-top extra. Así su bg dark cubre la zona
-     del notch directamente, sin necesidad de spacer ni pseudo. Es UN
-     elemento, imposible que se desincronice de sí mismo.
-     · top: -60 → shift up 60px (cubre safe-area)
-     · padding-top: calc(original + 60) → content stays en su posición visual
-     · transition: none → no animations que muestren transparencia
-     · opacity/transform forced → bypass smart header
-     · max specificity con body + !important everywhere */
+  /* NAVBAR mobile — bg sólido dark en TODOS los estados con max
+     specificity (body prefix) + !important. transition:none mata
+     cualquier fade que mostraría transparencia. opacity/transform
+     forced bypass smart header hide/show. El pseudo ::before más
+     abajo extiende el bg dark 60px arriba cubriendo la zona del notch. */
   body .page-index-v2 .header.is-scrolled,
   body .page-index-v2 .header.is-scrolled.is-dark-bg,
   body .page-index-v2 .header.is-scrolled.is-leather-bg,
@@ -3794,9 +3761,21 @@ body.menu-open { overflow: hidden; }
     transition: none !important;
     opacity: 1 !important;
     transform: none !important;
-    top: -60px !important;
-    padding-top: calc(1rem + 60px) !important;
     box-shadow: 0 1px 0 rgba(203, 160, 88, 0.22), 0 4px 16px rgba(0, 0, 0, 0.25);
+  }
+  /* Pseudo del navbar que extiende su bg DARK 60px hacia arriba
+     cubriendo la zona del notch. Al estar adentro del navbar, comparten
+     stacking context — imposible que se "desincronicen". */
+  body .header::before,
+  body .header--v2::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #140C06 !important;
+    pointer-events: none;
   }
   /* Lock cream — override de TODAS las reglas dinámicas (is-scrolled
      / is-dark-bg / is-leather-bg). Cream siempre. */
