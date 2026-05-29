@@ -3738,11 +3738,15 @@ body.menu-open { overflow: hidden; }
 
      Listo todos los variantes posibles: con .is-scrolled, con .is-hidden,
      con .header--v2 — todos sólidos #140C06. */
-  /* NAVBAR mobile — BUG FIX de specificity: usar body.page-index-v2
-     (sin espacio, body TIENE la clase) en vez de body .page-index-v2
-     (con espacio, buscaría descendiente). El error hacía que la regla
-     .page-index-v2 .header.is-scrolled { background: rgba(...,0.55) }
-     ganara → navbar semi-transparente al scrollear → "hueco arriba". */
+  /* NAVBAR mobile — BUG FIX de specificity (body.page-index-v2 SIN
+     espacio, body TIENE la clase) + EXTENSION via box-shadow vertical.
+
+     Antes el pseudo ::before no se renderizaba bien en iOS (position:
+     absolute en parent fixed puede tener problemas de containing block).
+     Solución: usar box-shadow con offset Y negativo + spread = 0 +
+     mismo color → dibuja un "shadow" sólido 60px ARRIBA del navbar,
+     que visualmente parece extensión del navbar bg. iOS lo renderiza
+     nativamente sin issues de stacking context. */
   body.page-index-v2 .header,
   body.page-index-v2 .header.is-scrolled,
   body.page-index-v2 .header.is-scrolled.is-dark-bg,
@@ -3762,22 +3766,12 @@ body.menu-open { overflow: hidden; }
     transition: none !important;
     opacity: 1 !important;
     transform: none !important;
-    box-shadow: 0 1px 0 rgba(203, 160, 88, 0.22), 0 4px 16px rgba(0, 0, 0, 0.25);
-  }
-  /* Pseudo del navbar extiende bg DARK 60px hacia arriba cubriendo notch.
-     Specificity fix igual que arriba: body.page-index-v2 con dot. */
-  body.page-index-v2 .header::before,
-  body.page-index-v2 .header--v2::before,
-  html body .header::before,
-  html body .header--v2::before {
-    content: '';
-    position: absolute;
-    top: -60px;
-    left: 0;
-    right: 0;
-    height: 60px;
-    background: #140C06 !important;
-    pointer-events: none;
+    /* box-shadow vertical: extiende bg 60px hacia arriba (cubre notch)
+       + las sombras decorativas originales debajo del navbar. */
+    box-shadow:
+      0 -60px 0 0 #140C06,
+      0 1px 0 rgba(203, 160, 88, 0.22),
+      0 4px 16px rgba(0, 0, 0, 0.25) !important;
   }
   /* Lock cream — override de TODAS las reglas dinámicas (is-scrolled
      / is-dark-bg / is-leather-bg). Cream siempre. */
