@@ -55,12 +55,12 @@ html {
    llegar al tope físico de la pantalla. Único elemento que iOS Safari
    no puede ignorar sin un bug en el motor de render. */
 .ios-spacer {
-  /* iOS notch cover EXACTO. top:-60 + height:60 → cubre desde 60px
-     arriba del borde inferior del safe-area HASTA ese mismo borde.
-     Resultado: tapa exactamente la zona del notch (donde iOS dibuja
-     el status bar) sin extenderse abajo al navbar — logo, menú y
-     carrito quedan visibles. z-index 999 garantiza que el spacer no
-     se pierda durante scroll. */
+  /* iOS notch cover EXACTO con GPU compositing forzado.
+     top:-60 + height:60 → cubre exactamente la zona del notch sin
+     extenderse al navbar. transform: translateZ(0) + will-change
+     fuerzan al spacer a renderizarse en su propia layer GPU, lo que
+     EVITA el flicker / desaparición durante scroll en iOS Safari
+     (bug clásico con fixed + negative top + compositing). */
   position: fixed;
   top: -60px;
   left: 0;
@@ -69,6 +69,11 @@ html {
   background: #140C06;
   z-index: 999;
   pointer-events: none;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 body {
