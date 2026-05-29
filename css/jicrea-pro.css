@@ -47,17 +47,24 @@ html {
   scroll-behavior: auto;
   background-color: #140C06;
 }
-/* ─── iOS SAFE-AREA: PADDING-TOP en BODY ──────────────────────────────
-   iOS Safari (incluso con viewport-fit=cover) posiciona los elementos
-   position:fixed con top:0 en el BORDE INFERIOR del safe-area, no en
-   el tope físico de la pantalla. Pero el body en flujo normal SÍ se
-   extiende al tope físico — por eso las secciones internas se ven en
-   la franja del notch arriba del navbar.
-
-   Solución: empujar TODO el contenido del body hacia abajo por env(),
-   así la zona del notch queda solo body bg (dark, #140C06). El navbar
-   fixed sigue en su posición top:0 (=safe-area boundary), tapando el
-   resto. Resultado: safe-area dark uniforme, sin contenido bleeding. */
+/* ─── iOS SAFE-AREA: APPROACH DUAL ────────────────────────────────────
+   1) body padding-top env() empuja el contenido del body hacia abajo
+   2) #iosSafeCap es un div real en el HTML (al inicio del body) con
+      doble posicionamiento (top:0 + margin negativo + height 2*env)
+      para CUBRIR el safe-area en cualquier interpretación de iOS Safari. */
+#iosSafeCap {
+  position: fixed;
+  /* Cubrir DESDE arriba del safe-area boundary HASTA debajo, por si
+     iOS interpreta top:0 como safe-area top (en vez de physical top).
+     Combinando ambos extremos garantizamos cobertura. */
+  top: calc(-1 * env(safe-area-inset-top, 0px));
+  left: 0;
+  right: 0;
+  height: calc(2 * env(safe-area-inset-top, 0px));
+  background: #140C06;
+  z-index: 9999;
+  pointer-events: none;
+}
 
 body {
   font-family: var(--font-serif);
