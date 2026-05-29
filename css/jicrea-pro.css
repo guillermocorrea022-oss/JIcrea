@@ -536,7 +536,11 @@ a {
 /* HERO */
 .hero {
   position: relative;
-  height: 100vh;
+  /* 100vh causa "temblor" en iOS Safari porque la URL bar al colapsar
+     recalcula viewport height y el cover-bg redibuja. 100dvh (dynamic
+     viewport height) es estable — no recalcula durante el scroll. */
+  height: 100vh; /* fallback browsers viejos */
+  height: 100dvh;
   width: 100%;
   display: flex;
   align-items: center;
@@ -873,7 +877,9 @@ em {
 /* PILLARS */
 .pillar {
   position: relative;
+  /* dvh evita el temblor en iOS Safari al colapsar URL bar */
   height: 100vh;
+  height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1033,10 +1039,11 @@ em {
    detalle. Textura sutil de noise para que no quede plano. */
 .proceso-3d {
   position: relative;
-  /* Cinematic video natural — 100vh (no sticky pin). El video se reproduce
-     auto cuando entra al viewport. Si querés más "peso" de scroll, subí
-     esto a 120vh o 140vh — el contenedor pin sigue ocupando 100vh. */
+  /* dvh evita el temblor de iOS Safari al colapsar URL bar (vs vh que
+     recalcula durante scroll y hace que el video con object-fit:cover
+     redibuje). */
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   background: #0A0807;
   color: #F4EBE1;
@@ -1060,10 +1067,11 @@ em {
 .proceso-3d__pin {
   /* Antes sticky (para scroll-scrub). Ahora el video se reproduce solo,
      no necesita pin — el pin queda simple full-bleed dentro de la
-     sección 100vh. */
+     sección 100vh. dvh evita el temblor del video en iOS. */
   position: relative;
   width: 100%;
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
 }
 
