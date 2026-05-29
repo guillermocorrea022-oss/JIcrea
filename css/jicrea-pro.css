@@ -54,29 +54,34 @@ html {
    pero garantiza que ninguna sección del flujo del documento puede
    llegar al tope físico de la pantalla. Único elemento que iOS Safari
    no puede ignorar sin un bug en el motor de render. */
+/* .ios-spacer default: invisible.
+   Solo aplica en mobile (≤900px) para evitar romper layout PC. */
 .ios-spacer {
-  /* iOS notch cover — z-index BAJO del navbar.
-     Element height:120 + top:-60 cubre desde 60px arriba hasta 60px
-     abajo de top:0. El navbar position:fixed top:0 z-index:100 queda
-     ENCIMA del spacer (z-index:99), así el navbar es visible con su
-     logo, menú y carrito. La parte del spacer que queda ARRIBA del
-     navbar (la zona del notch) es donde el spacer se ve dark.
-
-     GPU compositing forzado mantiene el spacer en su propia layer
-     durante scroll, evitando que iOS lo descarte. */
-  position: fixed;
-  top: -60px;
-  left: 0;
-  right: 0;
-  height: 120px;
-  background: #140C06;
-  z-index: 99; /* DEBAJO del navbar 100 — navbar queda visible encima */
-  pointer-events: none;
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
-  will-change: transform;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+  display: none;
+}
+@media (max-width: 900px) {
+  .ios-spacer {
+    /* iOS notch cover SOLO en mobile portrait. Element height:120 +
+       top:-60 cubre desde 60px arriba hasta 60px abajo de top:0. El
+       navbar (z-index 100) queda ENCIMA del spacer (z-index 99) →
+       navbar visible con logo, menú y carrito. La parte arriba del
+       navbar (zona del notch) es donde el spacer se ve dark.
+       GPU compositing forzado evita que iOS lo descarte durante scroll. */
+    display: block;
+    position: fixed;
+    top: -60px;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: #140C06;
+    z-index: 99;
+    pointer-events: none;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
 }
 
 body {
