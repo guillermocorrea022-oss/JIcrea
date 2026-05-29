@@ -55,17 +55,17 @@ html {
    llegar al tope físico de la pantalla. Único elemento que iOS Safari
    no puede ignorar sin un bug en el motor de render. */
 .ios-spacer {
-  /* FIXED EXTENDIDO HACIA ARRIBA con z-index ALTO. iOS Safari posiciona
-     los fixed top:0 al borde inferior del safe-area. Para cubrir el
-     notch: top:-60 + height:120 → cubre desde 60px arriba del borde
-     hasta 60px abajo. z-index 999 (encima del navbar 100) garantiza
-     que el spacer siempre se vea, incluso durante scroll cuando otros
-     elementos cambian de estado (transitions, stacking contexts). */
+  /* iOS notch cover EXACTO. top:-60 + height:60 → cubre desde 60px
+     arriba del borde inferior del safe-area HASTA ese mismo borde.
+     Resultado: tapa exactamente la zona del notch (donde iOS dibuja
+     el status bar) sin extenderse abajo al navbar — logo, menú y
+     carrito quedan visibles. z-index 999 garantiza que el spacer no
+     se pierda durante scroll. */
   position: fixed;
   top: -60px;
   left: 0;
   right: 0;
-  height: 120px;
+  height: 60px;
   background: #140C06;
   z-index: 999;
   pointer-events: none;
