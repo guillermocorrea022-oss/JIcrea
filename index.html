@@ -31,10 +31,26 @@
   <meta property="og:locale" content="es_UY">
 
   <!-- Fuentes locales de la marca -->
-  <link rel="stylesheet" href="css/jicrea-pro.css?v=151">
+  <link rel="stylesheet" href="css/jicrea-pro.css?v=152">
   <link rel="stylesheet" href="css/tienda-cart.css?v=33">
 </head>
-<body class="page-index-v2">  <!-- PAGE CURTAIN â€” overlay cuero que cubre la pÃ¡gina al cargar. -->
+<body class="page-index-v2">
+  <script>
+  // iOS SAFE-AREA — inline para que ejecute antes de pintar contenido.
+  // Detecta iPhone/iPad/iPod (Safari/WKWebView) y aplica padding-top
+  // inline con !important al body para empujar todo abajo del notch.
+  // Bypassea cualquier conflicto CSS porque inline style con !important
+  // gana siempre. En PC/Android no aplica.
+  (function(){
+    if (!/iPhone|iPad|iPod/.test(navigator.userAgent) || window.MSStream) return;
+    function apply(){
+      if (!document.body) return;
+      document.body.style.setProperty('padding-top', '47px', 'important');
+    }
+    if (document.body) apply();
+    else document.addEventListener('DOMContentLoaded', apply, { once: true });
+  })();
+  </script>  <!-- PAGE CURTAIN â€” overlay cuero que cubre la pÃ¡gina al cargar. -->
   <div class="page-curtain" id="pageCurtain" aria-hidden="true">
     <img class="page-curtain__logo" src="img/logos_jlcrea_sin_fondo/08_logo_completo_blanco.png" alt="">
   </div>
