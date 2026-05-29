@@ -47,24 +47,12 @@ html {
   scroll-behavior: auto;
   background-color: #140C06;
 }
-/* ─── iOS SAFE-AREA: APPROACH DUAL ────────────────────────────────────
-   1) body padding-top env() empuja el contenido del body hacia abajo
-   2) #iosSafeCap es un div real en el HTML (al inicio del body) con
-      doble posicionamiento (top:0 + margin negativo + height 2*env)
-      para CUBRIR el safe-area en cualquier interpretación de iOS Safari. */
-#iosSafeCap {
-  position: fixed;
-  /* Cubrir DESDE arriba del safe-area boundary HASTA debajo, por si
-     iOS interpreta top:0 como safe-area top (en vez de physical top).
-     Combinando ambos extremos garantizamos cobertura. */
-  top: calc(-1 * env(safe-area-inset-top, 0px));
-  left: 0;
-  right: 0;
-  height: calc(2 * env(safe-area-inset-top, 0px));
-  background: #140C06;
-  z-index: 9999;
-  pointer-events: none;
-}
+/* iOS Safari sin viewport-fit=cover: el viewport queda CONSTRIÑIDO al
+   safe-area boundary. La zona del notch / Dynamic Island queda fuera
+   del viewport y iOS la rellena con el color de theme-color (#140C06).
+   Resultado: nada del body puede dibujarse en esa zona — es imposible
+   que asome contenido. Approach idéntico a la mayoría de los sitios
+   web profesionales que NO requieren full-bleed visual al notch. */
 
 body {
   font-family: var(--font-serif);
@@ -82,12 +70,6 @@ body {
   line-height: 100%;
   overflow-x: hidden;
   overscroll-behavior-x: contain;
-  /* Empuja el contenido del body hacia abajo por la altura del safe-area.
-     En desktop/Android sin notch env() = 0 (sin efecto). En iPhone con
-     notch ≈ 59px → el contenido empieza debajo del notch y la zona del
-     notch muestra solo el body bg dark. El navbar (position:fixed) NO
-     se ve afectado por padding (los fixed ignoran padding del padre). */
-  padding-top: env(safe-area-inset-top);
 }
 /* main es el contenedor por defecto del contenido cream — sin esto, los
    gaps entre secciones se verían dark. */
