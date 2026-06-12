@@ -47,13 +47,20 @@ html {
   scroll-behavior: auto;
   background-color: #140C06;
 }
-/* .ios-spacer — BACKUP detrás del navbar.
-   PC: display:none (no se necesita, no hay notch).
-   Mobile: position:fixed cubriendo la zona del notch + área del navbar
-   con z-index 99 (DEBAJO del navbar 100). Si iOS Safari "pierde" un
-   frame del navbar durante scroll/URL bar collapse, el spacer cubre
-   la misma zona con dark — invisible al usuario. Es redundancia
-   visual: spacer + navbar = 2 capas de bg dark, imposible gap. */
+/* .ios-spacer — CORTINA del notch (mobile only).
+   MECÁNICA del bug: al scrollear, iOS Safari entra en "minimal UI" —
+   la página se dibuja bajo el status bar pero el viewport de layout
+   (al que se anclan los position:fixed) queda DESPLAZADO hacia abajo.
+   La franja física entre el tope de pantalla y el navbar muestra el
+   contenido de la página = el "hueco".
+
+   El spacer cubre esa franja: va de -80px a +4px en coords de layout.
+   · En reposo (layout top = tope físico): solo asoman 4px dark sobre
+     el bg dark del navbar → invisible.
+   · Scrolleado (layout corrido ~60px abajo): cubre exactamente la
+     franja física 0..64 donde aparecía el hueco.
+   z-index 9999 = encima de todo (config probada que "nunca se va").
+   GPU-pinned con translateZ para que el compositor no lo descarte. */
 .ios-spacer {
   display: none;
 }
@@ -61,12 +68,12 @@ html {
   .ios-spacer {
     display: block;
     position: fixed;
-    top: -60px;
+    top: -80px;
     left: 0;
     right: 0;
-    height: 120px;
+    height: 84px;
     background: #140C06;
-    z-index: 99;
+    z-index: 9999;
     pointer-events: none;
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
@@ -3785,18 +3792,21 @@ body.menu-open { overflow: hidden; }
 
      Listo todos los variantes posibles: con .is-scrolled, con .is-hidden,
      con .header--v2 — todos sólidos #140C06. */
-  /* NAVBAR mobile — EL NAVBAR MISMO se hace MÁS GRANDE para cubrir
-     el notch. Como sugirió el usuario: igual que el spacer que tapaba
-     todo funcionaba, el navbar TIENE QUE tapar todo también.
+  /* NAVBAR mobile LIMPIO — top:0 natural, bg sólido dark en TODOS los
+     estados, sin transforms.
 
-     · top: -60 → shift up 60px, el navbar empieza en el notch
-     · padding-top: calc(1rem + 60px) → el contenido (logo/iconos)
-       queda exactamente en la posición visual de antes
-     · background SOLID dark en TODOS los estados
-     · transition: none → no animations que muestren transparencia
-     · opacity/transform forced → bypass smart header
+     IMPORTANTE: NADA de transform/will-change acá. Transform sobre un
+     position:fixed es un bug conocido de iOS Safari — al recomponer
+     (URL bar collapse, blend groups) el elemento puede quedar anclado
+     a la página en vez del viewport. Ese era uno de los dos bugs que
+     teníamos (el otro: mix-blend-mode sin isolation, ya arreglado).
 
-     El .ios-spacer está display:none, así que no hay doble. */
+     La cobertura del notch la hace el .ios-spacer (arriba del archivo),
+     que es un bloque simple sin clases dinámicas — config probada.
+
+     transition: none mata cualquier fade que muestre transparencia.
+     Specificity body.page-index-v2 (sin espacio) le gana a la regla
+     desktop .page-index-v2 .header.is-scrolled { rgba(...) blur }. */
   body.page-index-v2 .header,
   body.page-index-v2 .header.is-scrolled,
   body.page-index-v2 .header.is-scrolled.is-dark-bg,
@@ -3815,19 +3825,10 @@ body.menu-open { overflow: hidden; }
     -webkit-backdrop-filter: none !important;
     transition: none !important;
     opacity: 1 !important;
-    /* GPU compositing forzado — translateZ(0) en lugar de none.
-       Esta fue la diferencia clave entre el .ios-spacer que funcionaba
-       (tenía translateZ) y el navbar que se rompe (yo le puse none).
-       En mobile el smart header no se usa así que translateZ no
-       conflictea con transform animations. */
-    transform: translateZ(0) !important;
-    -webkit-transform: translateZ(0) !important;
-    will-change: transform;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    /* SHIFT + PADDING — el navbar mismo cubre el notch */
-    top: -60px !important;
-    padding-top: calc(1rem + 60px) !important;
+    transform: none !important;
+    -webkit-transform: none !important;
+    will-change: auto;
+    top: 0 !important;
     box-shadow: 0 1px 0 rgba(203, 160, 88, 0.22), 0 4px 16px rgba(0, 0, 0, 0.25);
   }
   /* Lock cream — override de TODAS las reglas dinámicas (is-scrolled
