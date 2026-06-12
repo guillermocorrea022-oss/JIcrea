@@ -47,12 +47,33 @@ html {
   scroll-behavior: auto;
   background-color: #140C06;
 }
-/* .ios-spacer — DEPRECATED, always hidden. El fix del notch lo hace
-   directamente el .header::before pseudo en la media query mobile más
-   abajo. Se mantiene la regla por si quedó algún <div class="ios-spacer">
-   en algún HTML, pero no se renderiza. */
+/* .ios-spacer — BACKUP detrás del navbar.
+   PC: display:none (no se necesita, no hay notch).
+   Mobile: position:fixed cubriendo la zona del notch + área del navbar
+   con z-index 99 (DEBAJO del navbar 100). Si iOS Safari "pierde" un
+   frame del navbar durante scroll/URL bar collapse, el spacer cubre
+   la misma zona con dark — invisible al usuario. Es redundancia
+   visual: spacer + navbar = 2 capas de bg dark, imposible gap. */
 .ios-spacer {
-  display: none !important;
+  display: none;
+}
+@media (max-width: 900px) {
+  .ios-spacer {
+    display: block;
+    position: fixed;
+    top: -60px;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: #140C06;
+    z-index: 99;
+    pointer-events: none;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
 }
 
 body {
@@ -76,6 +97,32 @@ body {
    gaps entre secciones se verían dark. */
 main {
   background-color: var(--c-bg);
+}
+
+/* ═══ FIX CRÍTICO iOS Safari: mix-blend-mode rompe position:fixed ═══
+   Bug documentado de WebKit: cuando un elemento con mix-blend-mode
+   (las ilustraciones multiply del origen-museo, los noise overlays de
+   proceso/productos/stats/b2b/ig-gallery/footer) entra al viewport y
+   su sección padre NO crea un stacking context, Safari arma el
+   "blending group" contra la RAÍZ de la página. Eso obliga a aplanar
+   las layers del compositor — incluyendo la del navbar fixed — que
+   pierde su render: se ve transparente / desaparece media barra / el
+   contenido se ve por encima. Era EXACTAMENTE lo que pasaba al salir
+   del hero (ahí entran las ilustraciones multiply del origen-museo).
+
+   isolation: isolate en cada sección contenedora limita el blend a la
+   propia sección: Safari ya no toca la raíz y el navbar queda intacto.
+   CERO cambio visual — los blends están diseñados para mezclar con el
+   fondo de su PROPIA sección, que sigue dentro del grupo aislado. */
+main,
+.footer,
+.origen-museo,
+.proceso-3d,
+.productos,
+.ig-gallery,
+.stats-v2,
+.b2b-v2 {
+  isolation: isolate;
 }
 
 /* Sin viewport-fit=cover el page NO se extiende al safe-area. iOS
