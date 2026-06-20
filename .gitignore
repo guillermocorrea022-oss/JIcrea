@@ -11,3 +11,4 @@ api/sql/seed.sql
 api/config.php
 _*.js
 _*.txt
+_*.py
