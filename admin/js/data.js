@@ -3,7 +3,9 @@
 //  estas funciones (no llaman a fetch directamente).
 // ════════════════════════════════════════════════════════════════════════
 import { api } from './api.js';
+import { state } from './state.js';
 
+const biz = () => 'business=' + state.business;
 const qs = (obj) => {
   const p = Object.entries(obj).filter(([, v]) => v !== undefined && v !== null && v !== '');
   return p.length ? '?' + p.map(([k, v]) => `${k}=${encodeURIComponent(v)}`).join('&') : '';
@@ -13,9 +15,9 @@ const withSupplier = (rows) => rows.map(r => ({ ...r, suppliers: r.supplier_name
 const withClient = (rows) => rows.map(r => ({ ...r, clients: r.client_db_name ? { name: r.client_db_name } : null }));
 
 export const Products = {
-  list: (activeOnly = false) => api.get('/products' + (activeOnly ? '?active=1' : '')),
-  stock: () => api.get('/product_stock'),
-  create: (p) => api.post('/products', p),
+  list: (activeOnly = false) => api.get('/products?' + biz() + (activeOnly ? '&active=1' : '')),
+  stock: () => api.get('/product_stock?' + biz()),
+  create: (p) => api.post('/products', { business: state.business, ...p }),
   update: (id, p) => api.patch('/products/' + id, p),
   recipe: (id) => api.get('/products/' + id + '/recipe'),
   setRecipe: (id, rows) => api.put('/products/' + id + '/recipe', { rows }),
@@ -46,13 +48,13 @@ export const Clients = {
 export const Sales = {
   list: (filters = {}) => api.get('/sales' + qs({
     status: filters.status, source: filters.source, sale_type: filters.sale_type,
-    from: filters.from, to: filters.to,
+    from: filters.from, to: filters.to, business: state.business,
     paid: filters.paid === undefined ? undefined : (filters.paid ? 'true' : 'false'),
   })).then(withClient),
   pendingWeb: () => api.get('/sales/pending'),
   items: (id) => api.get('/sales/' + id + '/items'),
-  recent: (n = 12) => api.get('/sales/recent?n=' + n).then(withClient),
-  create: (sale, items) => api.post('/sales', { sale, items }),
+  recent: (n = 12) => api.get('/sales/recent?n=' + n + '&' + biz()).then(withClient),
+  create: (sale, items) => api.post('/sales', { sale: { business: state.business, ...sale }, items }),
   setStatus: (id, status) => api.patch('/sales/' + id, {
     status,
     confirmed_at: ['confirmado', 'entregado', 'en_proceso'].includes(status) ? new Date().toISOString().slice(0, 19).replace('T', ' ') : null,
@@ -61,8 +63,8 @@ export const Sales = {
     paid: paid ? 1 : 0, paid_date: paid ? (paid_date || new Date().toISOString().slice(0, 10)) : null,
   }),
   update: (id, s) => api.patch('/sales/' + id, s),
-  receivable: () => api.get('/receivable'),
-  margins: () => api.get('/product_margins'),
+  receivable: () => api.get('/receivable?' + biz()),
+  margins: () => api.get('/product_margins?' + biz()),
 };
 
 export const Purchases = {

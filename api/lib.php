@@ -41,9 +41,9 @@ function is_owner() { $u = current_user(); return $u && $u['role'] === 'dueno'; 
 $GLOBALS['COLS'] = [
   'suppliers' => ['name','supply_type','zone','contact','notes','is_active'],
   'supplies'  => ['name','supplier_id','unit_cost','unit','stock_inicial','low_stock_threshold','is_active'],
-  'products'  => ['name','category','cost','price_mayor_a','price_mayor_b','price_minorista','labor_cost','is_st','is_combo','stock_inicial','low_stock_threshold','is_active'],
+  'products'  => ['name','category','cost','price_mayor_a','price_mayor_b','price_minorista','labor_cost','is_st','is_combo','business','stock_inicial','low_stock_threshold','is_active'],
   'clients'   => ['name','client_type','locality','zone','responsible','category','contact','notes','last_contact','weekly_contact','is_active'],
-  'sales'     => ['client_id','client_name','client_contact','sale_type','channel','source','status','order_date','delivery_date','paid','paid_date','zone','shipping_info','company','commission_amount','notes','total','total_minorista_ref','total_cost','confirmed_at'],
+  'sales'     => ['client_id','client_name','client_contact','sale_type','business','channel','source','status','order_date','delivery_date','paid','paid_date','zone','shipping_info','company','commission_amount','notes','total','total_minorista_ref','total_cost','confirmed_at'],
   'sale_items'=> ['sale_id','product_id','product_name','qty','unit_price','unit_cost'],
   'purchases' => ['module','supplier_id','supply_id','supply_name','qty','unit_price','total','order_number','status','paid','purchase_date','received_date','notes'],
   'production' => ['module','product_id','product_name','qty','labor_unit_cost','labor_total','prod_date','operator','notes'],
@@ -91,4 +91,25 @@ function db_all($sql, $params = []) {
   $st = db()->prepare($sql);
   $st->execute($params);
   return $st->fetchAll();
+}
+
+// Flujo de caja por negocio. Para 'alpargatas' no se imputan costos fijos /
+// mano de obra / compras (esos pertenecen a la operación de mates).
+function cash_flow($bz) {
+  $bizW = ($bz === 'mates' || $bz === 'alpargatas') ? " AND business='$bz'" : '';
+  $m = [];
+  $base = function($p) { return ['period' => $p, 'ingresos' => 0.0, 'egresos_fijos' => 0.0, 'mano_obra' => 0.0, 'compras_insumos' => 0.0]; };
+  foreach (db_all("SELECT DATE_FORMAT(order_date,'%Y-%m-01') period, SUM(total) v FROM sales
+                   WHERE status IN ('confirmado','en_proceso','entregado')$bizW GROUP BY 1") as $r) {
+    $m[$r['period']] = $base($r['period']); $m[$r['period']]['ingresos'] = (float)$r['v'];
+  }
+  if ($bz !== 'alpargatas') {
+    foreach (db_all("SELECT period, costos_fijos v FROM v_fixed_costs_monthly") as $r) { $m[$r['period']] = $m[$r['period']] ?? $base($r['period']); $m[$r['period']]['egresos_fijos'] = (float)$r['v']; }
+    foreach (db_all("SELECT period, mano_obra v FROM v_labor_monthly") as $r) { $m[$r['period']] = $m[$r['period']] ?? $base($r['period']); $m[$r['period']]['mano_obra'] = (float)$r['v']; }
+    foreach (db_all("SELECT period, compras_insumos v FROM v_purchases_monthly") as $r) { $m[$r['period']] = $m[$r['period']] ?? $base($r['period']); $m[$r['period']]['compras_insumos'] = (float)$r['v']; }
+  }
+  $out = array_values($m);
+  foreach ($out as &$r) $r['saldo_mensual'] = $r['ingresos'] - $r['egresos_fijos'] - $r['mano_obra'] - $r['compras_insumos'];
+  usort($out, fn($a, $b) => strcmp($a['period'], $b['period']));
+  return $out;
 }

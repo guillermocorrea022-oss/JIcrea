@@ -84,11 +84,20 @@ code { background: rgba(20,12,6,.08); padding: 2px 6px; border-radius: 5px; font
 
 .main { flex: 1; margin-left: 240px; min-width: 0; display: flex; flex-direction: column; }
 .topbar {
-  display: none; align-items: center; gap: 1rem; padding: .8rem 1rem;
+  display: flex; align-items: center; gap: 1rem; padding: .7rem 1.4rem;
   background: var(--earth); color: var(--cream); position: sticky; top: 0; z-index: 30;
 }
-.topbar__burger { background: none; border: 0; color: var(--cream); font-size: 1.5rem; cursor: pointer; }
+.topbar__burger { display: none; background: none; border: 0; color: var(--cream); font-size: 1.5rem; cursor: pointer; }
 .topbar__brand { font-family: var(--serif); font-size: 1.2rem; font-weight: 600; }
+
+/* Selector de negocio (segmented control) */
+.bizswitch { margin-left: auto; display: inline-flex; background: rgba(255,255,255,.08); border: 1px solid rgba(203,160,88,.3); border-radius: 100px; padding: 3px; }
+.bizswitch__opt { background: none; border: 0; color: rgba(244,235,225,.7); font-family: var(--sans); font-weight: 600; font-size: .82rem; padding: .4rem 1.1rem; border-radius: 100px; cursor: pointer; transition: all .15s; }
+.bizswitch__opt:hover { color: var(--cream); }
+.bizswitch__opt.is-active { background: var(--brand); color: var(--earth); }
+/* Acento visual distinto cuando estás en Alpargatas */
+body[data-business="alpargatas"] .sidebar__brand-text { color: #7FB069; }
+body[data-business="alpargatas"] .navlink.is-active { background: #7FB069; color: #0e1a0c; }
 .content { padding: 1.8rem 2rem 4rem; flex: 1; min-width: 0; }
 .content.is-loading { opacity: .5; pointer-events: none; }
 .nav-overlay { display: none; }
@@ -258,7 +267,8 @@ textarea.input { resize: vertical; }
   .sidebar { transform: translateX(-100%); transition: transform .25s; box-shadow: 8px 0 30px rgba(0,0,0,.3); }
   body.nav-open .sidebar { transform: translateX(0); }
   .main { margin-left: 0; }
-  .topbar { display: flex; }
+  .topbar__burger { display: inline-block; }
+  .bizswitch__opt { padding: .4rem .8rem; font-size: .78rem; }
   .nav-overlay { display: block; position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 35; opacity: 0; pointer-events: none; transition: opacity .25s; }
   body.nav-open .nav-overlay { opacity: 1; pointer-events: auto; }
   .content { padding: 1.2rem 1rem 3rem; }

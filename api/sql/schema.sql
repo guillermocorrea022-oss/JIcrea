@@ -59,6 +59,7 @@ CREATE TABLE IF NOT EXISTS products (
   labor_cost          DECIMAL(12,2) NOT NULL DEFAULT 0,
   is_st               TINYINT(1) NOT NULL DEFAULT 0,
   is_combo            TINYINT(1) NOT NULL DEFAULT 0,
+  business            ENUM('mates','alpargatas') NOT NULL DEFAULT 'mates',
   stock_inicial       DECIMAL(14,2) NOT NULL DEFAULT 0,
   low_stock_threshold DECIMAL(14,2) NOT NULL DEFAULT 0,
   is_active           TINYINT(1) NOT NULL DEFAULT 1,
@@ -107,6 +108,7 @@ CREATE TABLE IF NOT EXISTS sales (
   client_name         VARCHAR(190),
   client_contact      VARCHAR(190),
   sale_type           ENUM('mayor_a','mayor_b','minorista') NOT NULL DEFAULT 'minorista',
+  business            ENUM('mates','alpargatas') NOT NULL DEFAULT 'mates',
   channel             VARCHAR(60),
   source              ENUM('manual','web') NOT NULL DEFAULT 'manual',
   status              ENUM('pendiente','confirmado','en_proceso','entregado','cancelado') NOT NULL DEFAULT 'confirmado',
@@ -242,7 +244,7 @@ CREATE OR REPLACE VIEW v_product_sales_out AS
 
 CREATE OR REPLACE VIEW v_product_stock AS
 SELECT
-  p.id, p.name, p.category, p.cost, p.price_mayor_a, p.price_mayor_b,
+  p.id, p.name, p.category, p.business, p.cost, p.price_mayor_a, p.price_mayor_b,
   p.price_minorista, p.is_st, p.is_active, p.low_stock_threshold, p.stock_inicial,
   p.stock_inicial
     + COALESCE((SELECT SUM(qty) FROM production pr WHERE pr.product_id = p.id), 0)
@@ -267,13 +269,14 @@ FROM supplies su;
 CREATE OR REPLACE VIEW v_sales_monthly AS
 SELECT
   DATE_FORMAT(order_date, '%Y-%m-01') AS period,
+  business,
   SUM(total) AS facturacion,
   SUM(total - total_cost) AS margen_bruto,
   SUM(total_cost) AS costo_ventas,
   COUNT(*) AS cantidad_ventas
 FROM sales
 WHERE status IN ('confirmado','en_proceso','entregado')
-GROUP BY DATE_FORMAT(order_date, '%Y-%m-01');
+GROUP BY DATE_FORMAT(order_date, '%Y-%m-01'), business;
 
 CREATE OR REPLACE VIEW v_labor_monthly AS
 SELECT DATE_FORMAT(prod_date, '%Y-%m-01') AS period, SUM(labor_total) AS mano_obra
@@ -309,7 +312,7 @@ LEFT JOIN v_purchases_monthly pu ON pu.period = m.period
 ORDER BY m.period;
 
 CREATE OR REPLACE VIEW v_accounts_receivable AS
-SELECT s.id, s.client_name, s.client_id, s.order_date, s.total,
+SELECT s.id, s.client_name, s.client_id, s.order_date, s.total, s.business,
   DATEDIFF(CURDATE(), s.order_date) AS days_outstanding
 FROM sales s
 WHERE s.status IN ('confirmado','en_proceso','entregado') AND s.paid = 0;
@@ -325,13 +328,13 @@ LEFT JOIN sales s ON s.client_id = c.id
 GROUP BY c.id, c.name;
 
 CREATE OR REPLACE VIEW v_product_margins AS
-SELECT si.product_id, si.product_name,
+SELECT si.product_id, si.product_name, s.business,
   SUM(si.qty) AS unidades_vendidas,
   SUM(si.qty * si.unit_price) AS facturado,
   SUM(si.qty * (si.unit_price - si.unit_cost)) AS margen_total
 FROM sale_items si
 JOIN sales s ON s.id = si.sale_id
 WHERE s.status IN ('confirmado','en_proceso','entregado')
-GROUP BY si.product_id, si.product_name;
+GROUP BY si.product_id, si.product_name, s.business;
 
 -- FIN. Ejecutá seed.sql para cargar el catálogo.

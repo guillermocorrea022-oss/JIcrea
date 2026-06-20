@@ -5,6 +5,7 @@ import { CONFIGURED } from './api.js';
 import { loadSession, signIn, signOut, setupOwner, session } from './auth.js';
 import { defineRoutes, render, go } from './router.js';
 import { el, clear, toast, loader } from './ui.js';
+import { state, setBusiness, BUSINESS_LABEL } from './state.js';
 
 import dashboard from './modules/dashboard.js';
 import sales from './modules/sales.js';
@@ -130,9 +131,19 @@ function shell() {
 
   const burger = el('button', { class: 'topbar__burger', html: '☰',
     onClick: () => document.body.classList.toggle('nav-open') });
+  // Selector de negocio: Mates / Alpargatas
+  const mkBiz = (key) => el('button', {
+    class: 'bizswitch__opt' + (state.business === key ? ' is-active' : ''),
+    text: BUSINESS_LABEL[key],
+    onClick: () => { if (state.business === key) return; setBusiness(key); render(); rebuildSwitch(); },
+  });
+  const bizSwitch = el('div', { class: 'bizswitch' });
+  function rebuildSwitch() { clear(bizSwitch); bizSwitch.append(mkBiz('mates'), mkBiz('alpargatas')); document.body.dataset.business = state.business; }
+  rebuildSwitch();
   const topbar = el('header', { class: 'topbar' }, [
     burger,
     el('div', { class: 'topbar__brand', text: 'JIcrea · Gestión' }),
+    bizSwitch,
   ]);
 
   const overlay = el('div', { class: 'nav-overlay', onClick: () => document.body.classList.remove('nav-open') });

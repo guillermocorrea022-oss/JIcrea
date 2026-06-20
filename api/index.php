@@ -91,27 +91,34 @@ try {
   }
 
   // ═══ LECTURAS (requieren login) ═══════════════════════════════════════════
-  $reads = [
-    'product_stock' => "SELECT * FROM v_product_stock ORDER BY name",
-    'supply_stock'  => "SELECT * FROM v_supply_stock ORDER BY name",
-    'client_history'=> "SELECT * FROM v_client_history",
-    'product_margins'=> "SELECT * FROM v_product_margins",
-    'cash_flow'     => "SELECT * FROM v_cash_flow ORDER BY period",
-    'sales_monthly' => "SELECT * FROM v_sales_monthly ORDER BY period",
-    'receivable'    => "SELECT * FROM v_accounts_receivable ORDER BY days_outstanding DESC",
-    'suppliers'     => "SELECT * FROM suppliers ORDER BY name",
-    'engraving'     => "SELECT * FROM engraving_orders ORDER BY entry_date DESC",
-    'company_payments' => "SELECT * FROM company_payments ORDER BY period_month DESC",
-  ];
-  if (isset($reads[$r0]) && $method === 'GET' && !$r1) { require_login(); json(db_all($reads[$r0])); }
+  // Negocio (mates / alpargatas) — filtro opcional, validado a enum.
+  $bz = $q('business');
+  $bz = in_array($bz, ['mates', 'alpargatas'], true) ? $bz : null;
+  $bizW = $bz ? " WHERE business='$bz'" : '';   // $bz ya validado, seguro
 
-  // Finanzas / reportes: solo dueño
-  if (in_array($r0, ['cash_flow','sales_monthly','product_margins']) && $method === 'GET') require_owner();
+  if ($method === 'GET' && !$r1) {
+    // Lecturas simples (cualquier autenticado)
+    $simple = [
+      'supply_stock'  => "SELECT * FROM v_supply_stock ORDER BY name",
+      'client_history'=> "SELECT * FROM v_client_history",
+      'suppliers'     => "SELECT * FROM suppliers ORDER BY name",
+      'engraving'     => "SELECT * FROM engraving_orders ORDER BY entry_date DESC",
+      'company_payments' => "SELECT * FROM company_payments ORDER BY period_month DESC",
+    ];
+    if (isset($simple[$r0])) { require_login(); json(db_all($simple[$r0])); }
+    // Lecturas con filtro de negocio
+    if ($r0 === 'product_stock') { require_login(); json(db_all("SELECT * FROM v_product_stock$bizW ORDER BY name")); }
+    if ($r0 === 'receivable')    { require_login(); json(db_all("SELECT * FROM v_accounts_receivable$bizW ORDER BY days_outstanding DESC")); }
+    // Finanzas y reportes: solo dueño
+    if ($r0 === 'product_margins') { require_owner(); json(db_all("SELECT * FROM v_product_margins$bizW")); }
+    if ($r0 === 'sales_monthly')   { require_owner(); json(db_all("SELECT * FROM v_sales_monthly$bizW ORDER BY period")); }
+    if ($r0 === 'cash_flow')       { require_owner(); json(cash_flow($bz)); }
+  }
 
   // ── products ──────────────────────────────────────────────────────────────
   if ($r0 === 'products') {
     if ($method === 'GET' && !$r1) { require_login();
-      $rows = db_all("SELECT * FROM products ORDER BY category, name");
+      $rows = db_all("SELECT * FROM products$bizW ORDER BY category, name");
       if ($q('active')) $rows = array_values(array_filter($rows, fn($p) => $p['is_active']));
       json($rows);
     }
@@ -173,7 +180,8 @@ try {
       json(db_all("SELECT * FROM sales WHERE status='pendiente' ORDER BY created_at DESC"));
     if ($r1 === 'recent' && $method === 'GET')
       json(db_all("SELECT s.*, c.name AS client_db_name FROM sales s LEFT JOIN clients c ON c.id=s.client_id
-        WHERE s.status IN ('confirmado','en_proceso','entregado') ORDER BY s.created_at DESC LIMIT " . (int)($q('n', 12))));
+        WHERE s.status IN ('confirmado','en_proceso','entregado')" . ($bz ? " AND s.business='$bz'" : "") .
+        " ORDER BY s.created_at DESC LIMIT " . (int)($q('n', 12))));
     if ($method === 'GET' && !$r1) {
       $w = ["1=1"]; $p = [];
       foreach (['status' => 'status', 'source' => 'source', 'sale_type' => 'sale_type'] as $k => $col)
@@ -181,6 +189,7 @@ try {
       if ($q('from')) { $w[] = "order_date>=?"; $p[] = $q('from'); }
       if ($q('to')) { $w[] = "order_date<=?"; $p[] = $q('to'); }
       if ($q('paid') !== null && $q('paid') !== '') { $w[] = "paid=?"; $p[] = $q('paid') === 'true' ? 1 : 0; }
+      if ($bz) { $w[] = "business=?"; $p[] = $bz; }
       json(db_all("SELECT s.*, c.name AS client_db_name FROM sales s LEFT JOIN clients c ON c.id=s.client_id
         WHERE " . implode(' AND ', $w) . " ORDER BY order_date DESC, s.id DESC", $p));
     }
