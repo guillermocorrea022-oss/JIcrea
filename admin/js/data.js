@@ -1,150 +1,108 @@
 // ════════════════════════════════════════════════════════════════════════
-//  Capa de datos — todas las consultas y operaciones contra Supabase.
-//  Los módulos de la app usan estas funciones, nunca el cliente directo.
+//  Capa de datos — todas las consultas contra la API PHP. Los módulos usan
+//  estas funciones (no llaman a fetch directamente).
 // ════════════════════════════════════════════════════════════════════════
-import { supabase } from './supabaseClient.js';
+import { api } from './api.js';
 
-const ok = ({ data, error }) => { if (error) throw error; return data; };
+const qs = (obj) => {
+  const p = Object.entries(obj).filter(([, v]) => v !== undefined && v !== null && v !== '');
+  return p.length ? '?' + p.map(([k, v]) => `${k}=${encodeURIComponent(v)}`).join('&') : '';
+};
+// Da forma { suppliers:{name} } / { clients:{name} } para compatibilidad con los módulos.
+const withSupplier = (rows) => rows.map(r => ({ ...r, suppliers: r.supplier_name ? { name: r.supplier_name } : null }));
+const withClient = (rows) => rows.map(r => ({ ...r, clients: r.client_db_name ? { name: r.client_db_name } : null }));
 
-// ── Catálogo / Listas Oficial ───────────────────────────────────────────
 export const Products = {
-  list: (activeOnly = false) => supabase.from('products').select('*')
-    .order('category').order('name').then(r => (ok(r) || []).filter(p => !activeOnly || p.is_active)),
-  stock: () => supabase.from('v_product_stock').select('*').order('name').then(ok),
-  create: (p) => supabase.from('products').insert(p).select().single().then(ok),
-  update: (id, p) => supabase.from('products').update(p).eq('id', id).select().single().then(ok),
-  recipe: (productId) => supabase.from('product_recipe').select('*').eq('product_id', productId).then(ok),
-  setRecipe: async (productId, rows) => {
-    await supabase.from('product_recipe').delete().eq('product_id', productId);
-    if (rows.length) ok(await supabase.from('product_recipe').insert(
-      rows.map(r => ({ product_id: productId, supply_id: r.supply_id, qty: r.qty }))));
-  },
-  comboComponents: (comboId) => supabase.from('combo_components').select('*').eq('combo_id', comboId).then(ok),
-  setComboComponents: async (comboId, rows) => {
-    await supabase.from('combo_components').delete().eq('combo_id', comboId);
-    if (rows.length) ok(await supabase.from('combo_components').insert(
-      rows.map(r => ({ combo_id: comboId, component_id: r.component_id, qty: r.qty }))));
-  },
+  list: (activeOnly = false) => api.get('/products' + (activeOnly ? '?active=1' : '')),
+  stock: () => api.get('/product_stock'),
+  create: (p) => api.post('/products', p),
+  update: (id, p) => api.patch('/products/' + id, p),
+  recipe: (id) => api.get('/products/' + id + '/recipe'),
+  setRecipe: (id, rows) => api.put('/products/' + id + '/recipe', { rows }),
+  comboComponents: (id) => api.get('/products/' + id + '/combo'),
+  setComboComponents: (id, rows) => api.put('/products/' + id + '/combo', { rows }),
 };
 
-// ── Insumos ──────────────────────────────────────────────────────────────
 export const Supplies = {
-  list: () => supabase.from('supplies').select('*, suppliers(name)').order('name').then(ok),
-  stock: () => supabase.from('v_supply_stock').select('*').order('name').then(ok),
-  create: (s) => supabase.from('supplies').insert(s).select().single().then(ok),
-  update: (id, s) => supabase.from('supplies').update(s).eq('id', id).select().single().then(ok),
+  list: () => api.get('/supplies').then(withSupplier),
+  stock: () => api.get('/supply_stock'),
+  create: (s) => api.post('/supplies', s),
+  update: (id, s) => api.patch('/supplies/' + id, s),
 };
 
-// ── Proveedores ──────────────────────────────────────────────────────────
 export const Suppliers = {
-  list: () => supabase.from('suppliers').select('*').order('name').then(ok),
-  create: (s) => supabase.from('suppliers').insert(s).select().single().then(ok),
-  update: (id, s) => supabase.from('suppliers').update(s).eq('id', id).select().single().then(ok),
+  list: () => api.get('/suppliers'),
+  create: (s) => api.post('/suppliers', s),
+  update: (id, s) => api.patch('/suppliers/' + id, s),
 };
 
-// ── Clientes (CRM) ───────────────────────────────────────────────────────
 export const Clients = {
-  list: () => supabase.from('clients').select('*').order('name').then(ok),
-  create: (c) => supabase.from('clients').insert(c).select().single().then(ok),
-  update: (id, c) => supabase.from('clients').update(c).eq('id', id).select().single().then(ok),
-  history: () => supabase.from('v_client_history').select('*').then(ok),
+  list: () => api.get('/clients'),
+  create: (c) => api.post('/clients', c),
+  update: (id, c) => api.patch('/clients/' + id, c),
+  history: () => api.get('/client_history'),
 };
 
-// ── Ventas ───────────────────────────────────────────────────────────────
 export const Sales = {
-  list: (filters = {}) => {
-    let q = supabase.from('sales').select('*, clients(name)').order('order_date', { ascending: false });
-    if (filters.status) q = q.eq('status', filters.status);
-    if (filters.source) q = q.eq('source', filters.source);
-    if (filters.sale_type) q = q.eq('sale_type', filters.sale_type);
-    if (filters.from) q = q.gte('order_date', filters.from);
-    if (filters.to) q = q.lte('order_date', filters.to);
-    if (filters.paid != null) q = q.eq('paid', filters.paid);
-    return q.then(ok);
-  },
-  pendingWeb: () => supabase.from('sales').select('*').eq('status', 'pendiente')
-    .order('created_at', { ascending: false }).then(ok),
-  items: (saleId) => supabase.from('sale_items').select('*').eq('sale_id', saleId).then(ok),
-  recent: (n = 12) => supabase.from('sales').select('*, clients(name)')
-    .in('status', ['confirmado', 'en_proceso', 'entregado'])
-    .order('created_at', { ascending: false }).limit(n).then(ok),
-  // Crea una venta con sus ítems. Calcula totales.
-  create: async (sale, items) => {
-    const total = items.reduce((s, i) => s + i.qty * i.unit_price, 0);
-    const total_cost = items.reduce((s, i) => s + i.qty * i.unit_cost, 0);
-    const row = ok(await supabase.from('sales').insert({ ...sale, total, total_cost })
-      .select().single());
-    if (items.length) ok(await supabase.from('sale_items').insert(
-      items.map(i => ({ sale_id: row.id, product_id: i.product_id, product_name: i.product_name,
-        qty: i.qty, unit_price: i.unit_price, unit_cost: i.unit_cost }))));
-    return row;
-  },
-  setStatus: (id, status) => supabase.from('sales')
-    .update({ status, confirmed_at: ['confirmado','entregado','en_proceso'].includes(status) ? new Date().toISOString() : null })
-    .eq('id', id).select().single().then(ok),
-  setPaid: (id, paid, paid_date) => supabase.from('sales')
-    .update({ paid, paid_date: paid ? (paid_date || new Date().toISOString().slice(0,10)) : null })
-    .eq('id', id).then(ok),
-  update: (id, s) => supabase.from('sales').update(s).eq('id', id).then(ok),
-  receivable: () => supabase.from('v_accounts_receivable').select('*')
-    .order('days_outstanding', { ascending: false }).then(ok),
-  margins: () => supabase.from('v_product_margins').select('*').then(ok),
+  list: (filters = {}) => api.get('/sales' + qs({
+    status: filters.status, source: filters.source, sale_type: filters.sale_type,
+    from: filters.from, to: filters.to,
+    paid: filters.paid === undefined ? undefined : (filters.paid ? 'true' : 'false'),
+  })).then(withClient),
+  pendingWeb: () => api.get('/sales/pending'),
+  items: (id) => api.get('/sales/' + id + '/items'),
+  recent: (n = 12) => api.get('/sales/recent?n=' + n).then(withClient),
+  create: (sale, items) => api.post('/sales', { sale, items }),
+  setStatus: (id, status) => api.patch('/sales/' + id, {
+    status,
+    confirmed_at: ['confirmado', 'entregado', 'en_proceso'].includes(status) ? new Date().toISOString().slice(0, 19).replace('T', ' ') : null,
+  }),
+  setPaid: (id, paid, paid_date) => api.patch('/sales/' + id, {
+    paid: paid ? 1 : 0, paid_date: paid ? (paid_date || new Date().toISOString().slice(0, 10)) : null,
+  }),
+  update: (id, s) => api.patch('/sales/' + id, s),
+  receivable: () => api.get('/receivable'),
+  margins: () => api.get('/product_margins'),
 };
 
-// ── Compras de insumos ───────────────────────────────────────────────────
 export const Purchases = {
-  list: (module) => { let q = supabase.from('purchases').select('*, suppliers(name)')
-    .order('purchase_date', { ascending: false });
-    if (module) q = q.eq('module', module); return q.then(ok); },
-  create: (p) => supabase.from('purchases').insert({ ...p, total: (p.qty||0)*(p.unit_price||0) })
-    .select().single().then(ok),
-  setStatus: (id, status) => supabase.from('purchases')
-    .update({ status, received_date: status === 'recibido' ? new Date().toISOString().slice(0,10) : null })
-    .eq('id', id).then(ok),
-  setPaid: (id, paid) => supabase.from('purchases').update({ paid }).eq('id', id).then(ok),
+  list: (module) => api.get('/purchases' + (module ? '?module=' + module : '')).then(withSupplier),
+  create: (p) => api.post('/purchases', p),
+  setStatus: (id, status) => api.patch('/purchases/' + id, {
+    status, received_date: status === 'recibido' ? new Date().toISOString().slice(0, 10) : null,
+  }),
+  setPaid: (id, paid) => api.patch('/purchases/' + id, { paid: paid ? 1 : 0 }),
 };
 
-// ── Producción (productos terminados) ─────────────────────────────────────
 export const Production = {
-  list: (module) => { let q = supabase.from('production').select('*')
-    .order('prod_date', { ascending: false });
-    if (module) q = q.eq('module', module); return q.then(ok); },
-  create: (p) => supabase.from('production').insert({ ...p, labor_total: (p.qty||0)*(p.labor_unit_cost||0) })
-    .select().single().then(ok),
+  list: (module) => api.get('/production' + (module ? '?module=' + module : '')),
+  create: (p) => api.post('/production', p),
 };
 
-// ── Grabados ─────────────────────────────────────────────────────────────
 export const Engraving = {
-  list: () => supabase.from('engraving_orders').select('*').order('entry_date', { ascending: false }).then(ok),
-  create: (e) => supabase.from('engraving_orders').insert(e).select().single().then(ok),
-  setStatus: (id, status) => supabase.from('engraving_orders').update({ status }).eq('id', id).then(ok),
+  list: () => api.get('/engraving'),
+  create: (e) => api.post('/engraving', e),
+  setStatus: (id, status) => api.patch('/engraving/' + id, { status }),
 };
 
-// ── Mermas / ajustes ─────────────────────────────────────────────────────
 export const Adjustments = {
-  create: (a) => supabase.from('inventory_adjustments').insert(a).select().single().then(ok),
-  list: () => supabase.from('inventory_adjustments')
-    .select('*, products(name), supplies(name)').order('adj_date', { ascending: false }).then(ok),
+  create: (a) => api.post('/adjustments', a),
+  list: () => api.get('/adjustments'),
 };
 
-// ── Pagos Empresa ────────────────────────────────────────────────────────
 export const CompanyPayments = {
-  list: () => supabase.from('company_payments').select('*')
-    .order('period_month', { ascending: false }).then(ok),
-  create: (p) => supabase.from('company_payments').insert(p).select().single().then(ok),
-  remove: (id) => supabase.from('company_payments').delete().eq('id', id).then(ok),
+  list: () => api.get('/company_payments'),
+  create: (p) => api.post('/company_payments', p),
+  remove: (id) => api.del('/company_payments/' + id),
 };
 
-// ── Finanzas (vistas) ────────────────────────────────────────────────────
 export const Finance = {
-  salesMonthly: () => supabase.from('v_sales_monthly').select('*').order('period').then(ok),
-  cashFlow: () => supabase.from('v_cash_flow').select('*').order('period').then(ok),
+  salesMonthly: () => api.get('/sales_monthly'),
+  cashFlow: () => api.get('/cash_flow'),
 };
 
-// ── Realtime ─────────────────────────────────────────────────────────────
-export function subscribe(table, cb) {
-  const ch = supabase.channel('rt-' + table + '-' + Math.random().toString(36).slice(2))
-    .on('postgres_changes', { event: '*', schema: 'public', table }, cb)
-    .subscribe();
-  return () => supabase.removeChannel(ch);
+// Sin realtime nativo: refresco por polling. cb se llama cada ~18s.
+export function subscribe(_table, cb) {
+  const id = setInterval(() => { try { cb(); } catch (_) {} }, 18000);
+  return () => clearInterval(id);
 }

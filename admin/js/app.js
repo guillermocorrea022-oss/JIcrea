@@ -1,8 +1,8 @@
 // ════════════════════════════════════════════════════════════════════════
 //  JICREA Gestión — punto de entrada. Gate de configuración + auth + shell.
 // ════════════════════════════════════════════════════════════════════════
-import { CONFIGURED } from './supabaseClient.js';
-import { loadSession, signIn, signOut, session, onAuthChange } from './auth.js';
+import { CONFIGURED } from './api.js';
+import { loadSession, signIn, signOut, setupOwner, session } from './auth.js';
 import { defineRoutes, render, go } from './router.js';
 import { el, clear, toast, loader } from './ui.js';
 
@@ -29,19 +29,50 @@ const NAV = [
   { route: 'admin',      label: 'Administración', icon: '⚙',  ownerOnly: true },
 ];
 
-// ── 1. Gate de configuración ─────────────────────────────────────────────
-function setupScreen() {
+// ── Pantalla de error de conexión a la base ──────────────────────────────
+function connectionScreen() {
   return el('div', { class: 'auth-screen' }, [
     el('div', { class: 'auth-card' }, [
       el('div', { class: 'auth-logo', text: 'JIcrea' }),
-      el('h2', { text: 'Configuración requerida' }),
+      el('h2', { text: 'No se pudo conectar' }),
       el('p', { class: 'auth-sub', html:
-        'Antes de usar el sistema hay que conectar la base de datos. Editá ' +
-        '<code>admin/js/config.js</code> con los datos de tu proyecto Supabase ' +
-        '(ver <code>config.example.js</code>) y ejecutá el esquema SQL. ' +
-        'El README tiene el paso a paso.' }),
+        'No se pudo conectar con la base de datos. Verificá que ejecutaste ' +
+        '<code>api/sql/schema.sql</code> en tu MySQL y que <code>api/config.php</code> ' +
+        'tenga los datos correctos. El README tiene el paso a paso.' }),
+      el('button', { class: 'btn btn--ghost btn--block', text: 'Reintentar', onClick: () => init() }),
     ]),
   ]);
+}
+
+// ── Primera vez: crear usuario dueño ──────────────────────────────────────
+function setupOwnerScreen() {
+  const name = el('input', { class: 'input', placeholder: 'Tu nombre', autocomplete: 'name' });
+  const email = el('input', { type: 'email', class: 'input', placeholder: 'tu@email.com', autocomplete: 'username' });
+  const pass = el('input', { type: 'password', class: 'input', placeholder: 'Contraseña (6+ caracteres)', autocomplete: 'new-password' });
+  const btn = el('button', { class: 'btn btn--primary btn--block', text: 'Crear cuenta de dueño' });
+  const err = el('div', { class: 'auth-error' });
+  const submit = async (e) => {
+    e?.preventDefault(); err.textContent = '';
+    btn.disabled = true; btn.textContent = 'Creando…';
+    try {
+      await setupOwner(email.value.trim(), pass.value, name.value.trim());
+      await signIn(email.value.trim(), pass.value);
+      mountApp();
+    } catch (ex) {
+      err.textContent = ex.message || 'No se pudo crear la cuenta.';
+      btn.disabled = false; btn.textContent = 'Crear cuenta de dueño';
+    }
+  };
+  const form = el('form', { class: 'auth-card', onSubmit: submit }, [
+    el('div', { class: 'auth-logo', text: 'JIcrea' }),
+    el('h2', { text: 'Primera puesta en marcha' }),
+    el('p', { class: 'auth-sub', text: 'Creá tu usuario de dueño para empezar a usar el sistema.' }),
+    el('label', { class: 'field' }, [ el('span', { text: 'Nombre' }), name ]),
+    el('label', { class: 'field' }, [ el('span', { text: 'Email' }), email ]),
+    el('label', { class: 'field' }, [ el('span', { text: 'Contraseña' }), pass ]),
+    err, btn,
+  ]);
+  return el('div', { class: 'auth-screen' }, [form]);
 }
 
 // ── 2. Login ─────────────────────────────────────────────────────────────
@@ -112,9 +143,11 @@ function shell() {
 }
 
 // ── Montaje según estado ─────────────────────────────────────────────────
+let connectionFailed = false;
 function mountApp() {
   clear(app);
-  if (!CONFIGURED) { app.appendChild(setupScreen()); return; }
+  if (connectionFailed) { app.appendChild(connectionScreen()); return; }
+  if (session.needsSetup) { app.appendChild(setupOwnerScreen()); return; }
   if (!session.user) { app.appendChild(loginScreen()); return; }
 
   app.appendChild(shell());
@@ -139,11 +172,16 @@ function mountApp() {
 }
 
 // ── Init ─────────────────────────────────────────────────────────────────
-(async function init() {
+async function init() {
+  clear(app);
   app.appendChild(loader());
-  if (CONFIGURED) {
-    try { await loadSession(); } catch (e) { console.error(e); }
-    onAuthChange((s) => { if (!s && session.user) { session.user = null; mountApp(); } });
+  connectionFailed = false;
+  try {
+    await loadSession();
+  } catch (e) {
+    console.error(e);
+    connectionFailed = true;
   }
   mountApp();
-})();
+}
+init();

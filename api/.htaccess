@@ -1,0 +1,19 @@
+# Enrutar todo lo que entre a /api/ hacia index.php (la API resuelve la ruta).
+RewriteEngine On
+RewriteBase /api/
+
+# No reescribir si el archivo existe físicamente (no aplica a nuestra API, pero por las dudas)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
+
+# Proteger archivos sensibles del acceso directo por URL
+<FilesMatch "\.(sql|md)$">
+  Require all denied
+</FilesMatch>
+<Files "config.php">
+  Require all denied
+</Files>
+<Files "config.example.php">
+  Require all denied
+</Files>

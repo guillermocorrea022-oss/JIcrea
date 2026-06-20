@@ -1,40 +1,37 @@
 // ════════════════════════════════════════════════════════════════════════
-//  Autenticación y sesión. Maneja login, logout, usuario y rol (dueño/operario).
+//  Autenticación contra la API PHP (sesión por cookie). Rol dueño/operario.
 // ════════════════════════════════════════════════════════════════════════
-import { supabase } from './supabaseClient.js';
+import { api } from './api.js';
 
 export const session = {
   user: null,
   profile: null,
+  needsSetup: false,
   get role() { return this.profile?.role || 'operario'; },
   get isOwner() { return this.role === 'dueno'; },
   get name() { return this.profile?.full_name || this.user?.email || 'Usuario'; },
 };
 
 export async function loadSession() {
-  const { data: { session: s } } = await supabase.auth.getSession();
-  if (!s) { session.user = null; session.profile = null; return null; }
-  session.user = s.user;
-  const { data: prof } = await supabase
-    .from('profiles').select('*').eq('id', s.user.id).maybeSingle();
-  session.profile = prof || { id: s.user.id, full_name: s.user.email, role: 'operario' };
+  const r = await api.get('/auth/me');
+  session.user = r.user;
+  session.profile = r.user;
+  session.needsSetup = !!r.needs_setup;
   return session;
 }
 
 export async function signIn(email, password) {
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-  if (error) throw error;
-  await loadSession();
-  return data;
+  const r = await api.post('/auth/login', { email, password });
+  session.user = r.user; session.profile = r.user;
+  return r;
 }
 
 export async function signOut() {
-  await supabase.auth.signOut();
-  session.user = null;
-  session.profile = null;
+  try { await api.post('/auth/logout', {}); } catch (_) {}
+  session.user = null; session.profile = null;
 }
 
-// Reaccionar a cambios de sesión (logout en otra pestaña, expiración, etc.)
-export function onAuthChange(cb) {
-  supabase.auth.onAuthStateChange((_event, s) => cb(s));
+// Crea el primer usuario (dueño) en la primera puesta en marcha.
+export async function setupOwner(email, password, full_name) {
+  await api.post('/auth/setup', { email, password, full_name });
 }

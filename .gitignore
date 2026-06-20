@@ -4,8 +4,10 @@ Thumbs.db
 *.log
 node_modules/
 
-# Software de gestión — el seed tiene precios mayoristas: NUNCA al repo público
-supabase/seed.sql
-# (config.js SÍ se sube: la anon key es pública por diseño y la protege RLS)
+# Software de gestión (Hostinger PHP/MySQL)
+# El seed tiene precios mayoristas y config.php tiene la contraseña de la base:
+# NUNCA al repo público.
+api/sql/seed.sql
+api/config.php
 _*.js
 _*.txt
