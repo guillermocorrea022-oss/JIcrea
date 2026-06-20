@@ -190,7 +190,11 @@ body[data-business="alpargatas"] .navlink.is-active { background: #7FB069; color
 textarea.input { resize: vertical; }
 .input--sm { padding: .45rem .6rem; font-size: .85rem; }
 .input--qty { width: 70px; }
-.filters { display: flex; gap: .6rem; margin-bottom: 1.2rem; flex-wrap: wrap; }
+.filters { display: flex; gap: .6rem; margin-bottom: 1.2rem; flex-wrap: wrap; align-items: center; }
+.filters .input--sm { min-width: 260px; flex: 0 1 320px; }
+.legend { display: inline-flex; gap: .8rem; margin-left: auto; align-items: center; font-size: .78rem; color: var(--muted); }
+.legend__item { display: inline-flex; align-items: center; gap: .25rem; }
+.legend__item .badge { width: 14px; height: 14px; padding: 0; border-radius: 50%; }
 .check { display: flex; align-items: center; gap: .5rem; font-size: .9rem; cursor: pointer; }
 .check input { width: 16px; height: 16px; accent-color: var(--brand); }
 .check-row { display: flex; gap: 1.5rem; flex-wrap: wrap; }
