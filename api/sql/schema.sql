@@ -124,6 +124,7 @@ CREATE TABLE IF NOT EXISTS sales (
   total               DECIMAL(14,2) NOT NULL DEFAULT 0,
   total_minorista_ref DECIMAL(14,2) DEFAULT 0,
   total_cost          DECIMAL(14,2) NOT NULL DEFAULT 0,
+  is_historical       TINYINT(1) NOT NULL DEFAULT 0,
   created_at          DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   confirmed_at        DATETIME NULL,
   FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE SET NULL,
@@ -232,7 +233,8 @@ CREATE OR REPLACE VIEW v_product_sales_out AS
   SELECT si.product_id AS product_id, SUM(si.qty) AS qty_out
   FROM sale_items si
   JOIN sales s ON s.id = si.sale_id
-  WHERE s.status IN ('confirmado','en_proceso','entregado') AND si.product_id IS NOT NULL
+  WHERE s.status IN ('confirmado','en_proceso','entregado')
+    AND s.is_historical = 0 AND si.product_id IS NOT NULL
   GROUP BY si.product_id
   UNION ALL
   SELECT cc.component_id AS product_id, SUM(si.qty * cc.qty) AS qty_out
@@ -240,6 +242,7 @@ CREATE OR REPLACE VIEW v_product_sales_out AS
   JOIN sales s ON s.id = si.sale_id
   JOIN combo_components cc ON cc.combo_id = si.product_id
   WHERE s.status IN ('confirmado','en_proceso','entregado')
+    AND s.is_historical = 0
   GROUP BY cc.component_id;
 
 CREATE OR REPLACE VIEW v_product_stock AS
