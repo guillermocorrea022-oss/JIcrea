@@ -249,6 +249,10 @@
     lines.push("");
     lines.push("¿Cómo coordinamos la entrega y el pago?");
     const msg = encodeURIComponent(lines.join("\n"));
+    // Registrar el pedido en el sistema de gestión (no bloquea el WhatsApp).
+    if (window.JIcreaOrders && window.JIcreaOrders.configured) {
+      window.JIcreaOrders.pushOrder(cart, { total: totalPrice() });
+    }
     window.open("https://wa.me/" + WA_PHONE + "?text=" + msg, "_blank", "noopener");
   }
 
