@@ -69,6 +69,7 @@ export const Sales = {
 
 export const Purchases = {
   list: (module) => api.get('/purchases' + (module ? '?module=' + module : '')).then(withSupplier),
+  pending: () => api.get('/purchases').then(rows => rows.filter(p => p.status !== 'recibido')),
   create: (p) => api.post('/purchases', p),
   setStatus: (id, status) => api.patch('/purchases/' + id, {
     status, received_date: status === 'recibido' ? new Date().toISOString().slice(0, 10) : null,

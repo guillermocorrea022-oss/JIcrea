@@ -1,9 +1,9 @@
 // ════════════════════════════════════════════════════════════════════════
 //  DASHBOARD — métricas del mes, alertas de stock, pedidos web, últimas ventas.
 // ════════════════════════════════════════════════════════════════════════
-import { Sales, Products, Supplies, Finance, subscribe } from '../data.js';
+import { Sales, Products, Supplies, Finance, Purchases, subscribe } from '../data.js';
 import { session } from '../auth.js';
-import { el, statCard, pageHeader, table, badge, money, fmtDate, label, toast,
+import { el, statCard, pageHeader, table, badge, money, num, fmtDate, label, toast,
          confirmDialog, loader, firstOfMonthISO, monthLabel } from '../ui.js';
 import { go } from '../router.js';
 import { confirmSale, cancelSale, saleDetailModal } from './sales.js';
@@ -21,13 +21,14 @@ export default async function dashboard() {
 
   async function load() {
     const monthStart = firstOfMonthISO();
-    const [monthSales, pending, prodStock, supStock, recent, cash] = await Promise.all([
+    const [monthSales, pending, prodStock, supStock, recent, cash, purchPending] = await Promise.all([
       Sales.list({ from: monthStart }),
       Sales.pendingWeb(),
       Products.stock(),
       Supplies.stock(),
       Sales.recent(12),
-      Finance.cashFlow(),
+      session.isOwner ? Finance.cashFlow() : Promise.resolve([]),
+      Purchases.pending(),
     ]);
 
     // Métricas del mes (solo ventas que cuentan)
@@ -91,6 +92,35 @@ export default async function dashboard() {
       }
       content.appendChild(pendingCard);
     }
+
+    // Insumos por recibir / a levantar (todos los usuarios)
+    const purchCard = el('section', { class: 'card' }, [
+      el('div', { class: 'card__head' }, [
+        el('h2', { class: 'card__title', text: 'Insumos por recibir' }),
+        badge(String(purchPending.length), purchPending.length ? 'warn' : 'muted'),
+      ]),
+    ]);
+    if (!purchPending.length) {
+      purchCard.appendChild(el('div', { class: 'empty', text: 'No hay compras pendientes. Todo recibido.' }));
+    } else {
+      purchCard.appendChild(table([
+        { key: 'purchase_date', label: 'Fecha', render: r => fmtDate(r.purchase_date) },
+        { key: 'supply_name', label: 'Insumo', render: r => r.supply_name || '—' },
+        { key: 'module', label: 'Módulo', render: r => label(r.module) },
+        { key: 'qty', label: 'Cant.', align: 'right', render: r => num(r.qty) },
+        { key: 'status', label: 'Estado', render: r => badge(label(r.status), r.status === 'a_levantar' ? 'warn' : 'muted') },
+        { key: 'acc', label: '', align: 'right', render: r => {
+            const wrap = el('div', { class: 'row-actions' });
+            if (r.status === 'pedido')
+              wrap.appendChild(el('button', { class: 'btn btn--sm btn--ghost', text: 'A levantar',
+                onClick: async () => { await Purchases.setStatus(r.id, 'a_levantar'); toast('Marcado: a levantar.'); load(); } }));
+            wrap.appendChild(el('button', { class: 'btn btn--sm btn--primary', text: 'Recibido ✓',
+              onClick: async () => { try { await Purchases.setStatus(r.id, 'recibido'); toast('Recibido. Stock actualizado.'); load(); } catch (ex) { toast(ex.message, 'err'); } } }));
+            return wrap;
+          } },
+      ], purchPending));
+    }
+    content.appendChild(purchCard);
 
     // Grilla: alertas de stock + últimas ventas
     const grid = el('div', { class: 'col-2' });
