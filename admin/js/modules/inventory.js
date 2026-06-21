@@ -28,36 +28,36 @@ export default async function inventory(params) {
 
   async function loadProducts() {
     const all = (await Products.stock()).filter(p => p.is_active);
-    const search = el('input', { class: 'input input--sm', placeholder: '🔍 Buscar producto por nombre…' });
+    const search = el('input', { class: 'input input--sm', placeholder: 'Buscar producto por nombre…' });
     const wrap = el('div', {});
     const cols = [
       { key: 'name', label: 'Producto' },
       { key: 'category', label: 'Categoría', render: r => r.category || '—' },
-      { key: 'stock_actual', label: 'Stock', align: 'right', render: r => stockLight(r.stock_actual, r.low_stock_threshold) },
-      { key: 'cost', label: 'Costo', align: 'right', render: r => money(r.cost) },
-      { key: 'price_minorista', label: 'P. Minorista', align: 'right', render: r => money(r.price_minorista) },
+      { key: 'stock_actual', label: 'Stock', align: 'center', render: r => stockLight(r.stock_actual, r.low_stock_threshold) },
+      { key: 'cost', label: 'Costo', align: 'center', render: r => money(r.cost) },
+      { key: 'price_minorista', label: 'P. Minorista', align: 'center', render: r => money(r.price_minorista) },
     ];
     if (session.isOwner) cols.push(
-      { key: 'price_mayor_a', label: 'Mayor A', align: 'right', render: r => money(r.price_mayor_a) });
+      { key: 'price_mayor_a', label: 'Mayor A', align: 'center', render: r => money(r.price_mayor_a) });
     const draw = () => {
       const q = search.value.trim().toLowerCase();
       const rows = q ? all.filter(p => (p.name || '').toLowerCase().includes(q)) : all;
       wrap.replaceChildren(table(cols, rows, { empty: 'No hay productos con ese nombre.' }));
     };
     search.addEventListener('input', draw);
-    body.replaceChildren(el('div', {}, [ el('div', { class: 'filters' }, [search, stockLegend()]), wrap ]));
+    body.replaceChildren(el('div', {}, [ el('div', { class: 'toolbar' }, [searchBox(search)]), wrap ]));
     draw();
   }
 
   async function loadSupplies() {
     const all = await Supplies.stock();
-    const search = el('input', { class: 'input input--sm', placeholder: '🔍 Buscar insumo por nombre…' });
+    const search = el('input', { class: 'input input--sm', placeholder: 'Buscar insumo por nombre…' });
     const wrap = el('div', {});
     const cols = [
       { key: 'name', label: 'Insumo' },
-      { key: 'stock_inicial', label: 'Inicial', align: 'right', render: r => num(r.stock_inicial) },
-      { key: 'stock_actual', label: 'Stock actual', align: 'right', render: r => stockLight(r.stock_actual, r.low_stock_threshold) },
-      { key: 'unit_cost', label: 'Costo unit.', align: 'right', render: r => money(r.unit_cost) },
+      { key: 'stock_inicial', label: 'Inicial', align: 'center', render: r => num(r.stock_inicial) },
+      { key: 'stock_actual', label: 'Stock actual', align: 'center', render: r => stockLight(r.stock_actual, r.low_stock_threshold) },
+      { key: 'unit_cost', label: 'Costo unit.', align: 'center', render: r => money(r.unit_cost) },
     ];
     const draw = () => {
       const q = search.value.trim().toLowerCase();
@@ -65,7 +65,7 @@ export default async function inventory(params) {
       wrap.replaceChildren(table(cols, rows, { empty: 'No hay insumos con ese nombre.' }));
     };
     search.addEventListener('input', draw);
-    body.replaceChildren(el('div', {}, [ el('div', { class: 'filters' }, [search, stockLegend()]), wrap ]));
+    body.replaceChildren(el('div', {}, [ el('div', { class: 'toolbar' }, [searchBox(search)]), wrap ]));
     draw();
   }
 
@@ -167,11 +167,12 @@ function stockLight(stock, threshold) {
   else kind = s <= 5 ? 'danger' : (s <= 20 ? 'warn' : 'ok');
   return badge(num(s), kind);
 }
-function stockLegend() {
-  return el('div', { class: 'legend' }, [
-    el('span', { class: 'legend__item' }, [ badge('', 'danger'), document.createTextNode(' poco') ]),
-    el('span', { class: 'legend__item' }, [ badge('', 'warn'), document.createTextNode(' medio') ]),
-    el('span', { class: 'legend__item' }, [ badge('', 'ok'), document.createTextNode(' bastante') ]),
+// Caja de búsqueda linda: ícono lupa + input redondeado.
+function searchBox(input) {
+  input.classList.add('searchbox__input');
+  return el('div', { class: 'searchbox' }, [
+    el('span', { class: 'searchbox__icon', text: '🔍' }),
+    input,
   ]);
 }
 
