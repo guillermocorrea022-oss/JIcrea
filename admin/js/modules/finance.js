@@ -95,7 +95,7 @@ export default async function finance(params) {
 }
 
 async function pagoForm(onDone) {
-  const company = el('select', { class: 'input' }, ['Empresa 1', 'Empresa 2'].map(c => el('option', { text: c })));
+  const company = el('select', { class: 'input' }, ['JIcrea', 'AR&BE'].map(c => el('option', { text: c })));
   const month = el('input', { class: 'input', type: 'month', value: firstOfMonthISO(-1).slice(0, 7) });
   const concept = el('select', { class: 'input' }, CONCEPTS.map(c => el('option', { text: c })));
   const amount = el('input', { class: 'input', type: 'number', min: '0', step: '0.01' });

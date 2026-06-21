@@ -88,7 +88,7 @@ async function newSaleForm(onDone) {
   const orderDate = el('input', { class: 'input', type: 'date', value: todayISO() });
   const deliveryDate = el('input', { class: 'input', type: 'date' });
   const zone = el('input', { class: 'input', placeholder: 'Zona / envío' });
-  const company = el('select', { class: 'input' }, ['Empresa 1', 'Empresa 2'].map(c => el('option', { text: c })));
+  const company = el('select', { class: 'input' }, ['JIcrea', 'AR&BE'].map(c => el('option', { text: c })));
   const paid = el('input', { type: 'checkbox' });
   const notes = el('textarea', { class: 'input', rows: 2, placeholder: 'Notas' });
 

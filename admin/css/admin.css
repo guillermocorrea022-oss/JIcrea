@@ -254,7 +254,7 @@ textarea.input { resize: vertical; }
 .toast--ok { border-left-color: var(--brand); }
 
 /* ── MISC ────────────────────────────────────────────────────────────── */
-.empty { padding: 2.5rem 1rem; text-align: center; color: var(--muted); font-size: .95rem; }
+.empty { padding: 2.5rem 1rem; text-align: center; color: var(--muted); font-size: .95rem; background: var(--cream-2); border: 1px dashed var(--line); border-radius: 10px; }
 .muted { color: var(--muted); font-size: .85rem; }
 .loader { display: flex; justify-content: center; padding: 3rem; }
 .spinner { width: 32px; height: 32px; border: 3px solid var(--line); border-top-color: var(--brand); border-radius: 50%; animation: spin .7s linear infinite; }
